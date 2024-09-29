@@ -1,0 +1,14 @@
+
+{
+  "type": "service_account",
+  "project_id": "sandbox-429002",
+  "private_key_id": "9b7eff309a7d648eac979d561bf16b14ab839153",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQCeBZcHvZ0yhlsm\n/OSQtpy8gNsVXBqpgVYSD82L+InDcIkxfOaRHMDoerH2lVXEGva8nTXg5MK5MTWH\nvAWhZJijMOxRDkNfKuF+utYLWU2SEzs2lRxhJuZTX+MDwj30VHMRYwpv3ZImh1lj\nvOeljFaXtUglL56Ftjt/gE2QDALg07BXQD4fvhidUIX0yjl1BuR83RIlR1YhKXda\n1UCTrB4sOB+qKmPc6n7Nm5XCwC0WpanIAv1aZdWxuEAj0AVOACP+CXkyLNOBDAj7\nt8HUEYgylrZO52f+XNgr8ZGwBeehUOas9guxHQ+ZlRG/vNQQwV2ahb7fCglnqG3j\nEjAzDJllAgMBAAECggEASeo1dhJ0eFCuTHNYenRgpi/jyn71nbn4x6QKsmFEF14J\nXlOdCd2YQmY53iyGHJ+8MAedTx/SEYv6DQ6e15pVZ2gX8eYpD1fgeEXunwpbpWtH\ndEWVK8BlVjRw3K48CpCB7m0UUbUjitAeuO+Ar0gQrQ/HulUm4kaWWBJstWdY5U6D\nXSduobNGE6aq4rRNcCIy7IkSxKAQTzo1F6QSBmMC2j8t0FO7KbbA2wpeLifKf0Hv\nqGbIIohwcp9mFVIum/1qutAwwNAAaxSZe+DB+g0YU1eF59A6MWxl2qYnbwa4F2di\nD6uBbJbTcD6pQ//qIrK81E03SwlwfSWd91lyoSwqFQKBgQDPCq1Y18cobyd8OAiX\nxL0Xlp0wOL7F+pv2rWFQvaYhIHtiT/2QRfLax1QTM06eTCnlAYf7+ha1GrphkPZk\nVfRv+V5u9gs7qpBw0SRQbToDXlbxQZVxZ3PgEOmGxzIjsc1qDEpP3E2ZeMD7YdBq\n5UJCtHtWWp6MrLNeI3fzAACo9wKBgQDDY3t5DQ6y3AnmqPaCSyb+MHK+9fizbmAa\nmsDtc8HAGz6sIvhtoOwlHbXbulwQsL33vzyLMtMhu77nwxd1zzvw4OBbPVX3+3PZ\nKqHkNF4osFdPJDNoKF8IiBhvWHIIWJLZSjdtstHZfwkJbPhxiFGnjeD1EAJV2fr5\nG/HGQl01gwKBgEXJ+JKo8XX8udeSX7sg0wh/eW7Gwe+kQSxOVy5LLxOdilmiUvtt\nyKXcaMesFMUhMUIDWR4jt8HGR6sZnSRHIQUZjq5ie3jaTqPoq4/8sYBvLWlXTROT\n5qhRqxYGUS1dArvLdsUionmoDYzu9L0DmGk5wxVhqG4MzM1fsVAU4SQTAoGAdcNk\nDBW+ojbVEN0NloJNQi9ZOZdvClagPejAF14JjQvevkllik3Php9dmM2956FfHg95\nIjzD3DUYXv/LCAqbihc/oj5Zrlkz/dQgNzcI+WUvelfLVB/hB3dfotyf/j/EYorE\n1a1NpdVXUQMIywTqkh6FU68OeUgkaDhbhK9DFpkCgYEAoefE8E3frbEUFjlBuEYm\nC2Ilm9LBg+by3SN8ivMcXa8FJjJmDSysu3dHItHxHv+iFAp5t5ChDC+eoA9xX94j\nYProqTFJlVlvYsjjpn2v7vlq+MpZ46yvw+yVGSXdufx6RAMQGFXq4+L3mUZXIad6\nDujKmprQ+W0DVk4xPc/spfM=\n-----END PRIVATE KEY-----\n",
+  "client_email": "video-editor-service-account@sandbox-429002.iam.gserviceaccount.com",
+  "client_id": "116064564728986576317",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/video-editor-service-account%40sandbox-429002.iam.gserviceaccount.com",
+  "universe_domain": "googleapis.com"
+}
