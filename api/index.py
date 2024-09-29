@@ -1,6 +1,5 @@
 from flask import Flask, request, jsonify
-import requests
-from api.vercel.vercel import set_key, get_key
+from vercel import set_key, get_key
 
 
 
