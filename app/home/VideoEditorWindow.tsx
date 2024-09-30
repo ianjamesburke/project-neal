@@ -1,5 +1,4 @@
 import React from 'react';
-import VideoPreviewTopBar from './VideoWindow/VideoPreviewTopBar';
 import VideoPreview from './VideoWindow/VideoPreview';
 import Timeline from './VideoWindow/Timeline';
 
@@ -15,7 +14,6 @@ const VideoEditor: React.FC = () => {
     </div>
   );
 };
-
 
 
 export default VideoEditor;
