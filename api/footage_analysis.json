@@ -1,0 +1,39 @@
+{ 
+    "footage_analysis": [   
+        {
+            "url": "aHR0cHM6Ly91dGZzLmlvL2YvbVdpU2J1NUI2MEpJdXBHT1J2VmZWZ0tNNzBpSGJkVURUNDkyc0Y4WlExY09YcnFu",
+            "clips": [
+                {
+                    "description": "A person showing off NO BS toothpaste packaging to camera",
+                    "in_frame": 0,
+                    "out_frame": 7
+                },
+                {
+                    "description": "The person then shows off the NO BS tablets",
+                    "in_frame": 8,
+                    "out_frame": 14
+                }
+            ]
+        },
+        {
+            "url": "aHR0cHM6Ly91dGZzLmlvL2YvbVdpU2J1NUI2MEpJbmp3dVpDTUp0VUxhRlBOSEtpbTBnWHF5OVc2ZllUckcyTUox",
+            "clips": [
+                {
+                    "description": "A person showing off NO BS toothpaste packaging to camera",
+                    "in_frame": 0,
+                    "out_frame": 6
+                }
+            ]
+        },
+        {
+            "url": "aHR0cHM6Ly91dGZzLmlvL2YvbVdpU2J1NUI2MEpJWXh2OW9ZaTMxdExTNGM5Yk1lUUpSRUd5SHVPNnozTnNncFZr",
+            "clips": [
+                {
+                    "description": "A girl smiling after using NO BS toothpastes tablets.",
+                    "in_frame": 0,
+                    "out_frame": 2
+                }
+            ]
+        }
+    ]
+}

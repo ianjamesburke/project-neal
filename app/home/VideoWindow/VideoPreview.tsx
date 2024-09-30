@@ -17,39 +17,6 @@ const VideoPreview: React.FC = () => {
 
 
 
-  // MVP - move the fetch off client component
-  useEffect(() => {
-    const fetchSource = async () => {
-      try {
-        console.log('Fetching source...');
-        const response = await fetch('/api/kv?key=test_key2');
-        const data = await response.json();
-        console.log('Received data:', data);
-        if (data.value) {
-          let parsedSource;
-          if (typeof data.value === 'string') {
-            try {
-              parsedSource = JSON.parse(data.value);
-            } catch (parseError) {
-              console.error('Error parsing value as JSON:', parseError);
-              parsedSource = data.value; // Use the original string if parsing fails
-            }
-          } else {
-            parsedSource = data.value; // Use as-is if it's already an object
-          }
-          console.log('Parsed source:', parsedSource);
-          setSource(parsedSource);
-        } else {
-          console.log('No value found in data');
-        }
-      } catch (error) {
-        console.error('Error fetching source:', error);
-      }
-    };
-
-    fetchSource();
-  }, []);
-
   useEffect(() => {
     if (containerRef.current && source) {
       console.log('Initializing Preview with source:', source);
@@ -84,10 +51,17 @@ const VideoPreview: React.FC = () => {
   const refreshPreview = useCallback(async () => {
     console.log('Refreshing preview...');
     try {
-      const response = await fetch('/api/kv?key=test_key');
+      const response = await fetch('/api/get_from_kv/payload');
       const data = await response.json();
       if (data.value) {
-        let parsedSource = typeof data.value === 'string' ? JSON.parse(data.value) : data.value;
+        let parsedSource = data.value;
+        
+        // Parse and decode the source for each element
+        parsedSource.elements = parsedSource.elements.map((element: { source: string; }) => ({
+          ...element,
+          source: element.source ? atob(element.source) : element.source
+        }));
+
         setSource(parsedSource);
         if (previewRef.current) {
           await previewRef.current.setSource(parsedSource);

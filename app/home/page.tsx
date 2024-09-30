@@ -10,7 +10,7 @@ const SpliceAI: React.FC = () => {
       <div className="w-1/3 overflow-auto">
         <ChatSection onVideoReady={() => {}} />
       </div>
-      <div className="flex-grow overflow-auto pl-4">
+      <div className="overflow-auto pl-4">
         <VideoEditorWindow />
       </div>
     </div>

@@ -5,8 +5,6 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 
 
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || 'https://project-neal-flask.vercel.app';
-
 type Message = {
   id: number
   text: string
@@ -70,8 +68,8 @@ const ChatSection: React.FC<ChatSectionProps> = ({ onVideoReady }) => {
       });
 
       if (!response.ok) {
-        const errorText = await response.text();
-        throw new Error(`HTTP error! status: ${response.status}, message: ${errorText}`);
+        const errorData = await response.json();
+        throw new Error(`HTTP error! status: ${response.status}, message: ${JSON.stringify(errorData)}`);
       }
 
       const data = await response.json();
@@ -101,9 +99,15 @@ const ChatSection: React.FC<ChatSectionProps> = ({ onVideoReady }) => {
       }
     } catch (error) {
       console.error("Error fetching AI response:", error);
+      let errorMessage = "Sorry, there was an error processing your request. The backend might be unavailable. Please try again later.";
+      
+      if (error instanceof Error) {
+        errorMessage += ` Error details: ${error.message}`;
+      }
+      
       setMessages(prevMessages => [...prevMessages, {
         id: messages.length + 1,
-        text: "Sorry, there was an error processing your request. The backend might be unavailable. Please try again later.",
+        text: errorMessage,
         sender: "ai"
       }]);
       setBackendError(true);
@@ -113,9 +117,9 @@ const ChatSection: React.FC<ChatSectionProps> = ({ onVideoReady }) => {
   }
 
   async function scriptReady(chatLog: { role: string, content: string }[]) {
-    console.log("Script is ready! Sending fetch to render video...")
+    console.log("Script is ready! Sending fetch to build payload...")
     try {
-      const response = await fetch(`${API_BASE_URL}/render-video`, {
+      const response = await fetch(`api/build-payload`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -129,16 +133,20 @@ const ChatSection: React.FC<ChatSectionProps> = ({ onVideoReady }) => {
       }
 
       const data = await response.json()
-      console.log("generate video response data:", data)
+      console.log("build-payload data:", data)
 
-      const renderId = data.render_id;
-      // You might want to do something with renderId here
+      const payload_key = data.payload_key;
+      console.log("payload successfully generated")
+      console.log("payload_key:", payload_key)
 
     } catch (error) {
       console.error("Error generating video:", error)
     }
   }
 
+
+
+  
   async function sendMessage(text: string, isSuggestion: boolean = false) {
     const newUserMessage: Message = { id: messages.length + 1, text, sender: "user" }
     setMessages(prevMessages => [...prevMessages, newUserMessage])

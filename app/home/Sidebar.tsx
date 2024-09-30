@@ -20,7 +20,7 @@ const sidebarItems: SidebarItem[] = [
 const Sidebar: React.FC = () => {
   return (
     <nav className="flex flex-col w-24 items-center text-xs font-medium text-center text-white text-opacity-60 max-md:hidden h-full py-4">
-      <div className="flex flex-col items-center space-y-4 flex-grow overflow-y-auto">
+      <div className="flex flex-col items-center space-y-4 flex-grow overflow-y-auto p-2 pt-6">
         {sidebarItems.map((item, index) => (
           <button
             key={index}

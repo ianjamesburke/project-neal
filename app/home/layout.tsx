@@ -10,7 +10,7 @@ export default function SpliceLayout({ children }: { children: React.ReactNode }
       <div className="flex flex-grow overflow-hidden">
         <Sidebar />
         <div className="w-px border-r border-neutral-800" />
-        <main className="flex-grow overflow-auto p-8">
+        <main className="flex-grow overflow-auto p-6">
           {children}
         </main>
       </div>
