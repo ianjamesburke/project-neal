@@ -17,10 +17,10 @@ interface ChatSectionProps {
 }
 
 const ChatSection: React.FC<ChatSectionProps> = ({ onVideoReady }) => {
-  const initialMessage = "Hello! Welcome to Storytime. We help you create winning product videos. I currently come pre-loaded with free footage of popular products on TikTok shop. Select a product below to begin..."
+  const initialMessage = "Hello! Welcome to Project-Neal. I'm here to help you create high converting video creative. I am currently in alpha and can only but feel free to talk to me and we can get a script for your ad going."
   
   const [messages, setMessages] = useState<Message[]>([
-    { id: 1, text: initialMessage, sender: "ai", suggestions: ["No BS Toothpaste", "Product 2", "Product 3", "I just like buttons"] }
+    { id: 1, text: initialMessage, sender: "ai", suggestions: ["These", "Don't", "Do anything...", "...unless"] }
   ])
   const [input, setInput] = useState("")
   const messagesContainerRef = useRef<HTMLDivElement>(null)
@@ -182,7 +182,7 @@ const ChatSection: React.FC<ChatSectionProps> = ({ onVideoReady }) => {
                     ? 'bg-neutral-800'
                     : 'bg-neutral-800 bg-opacity-50'
                 }`}>
-                  <p className="text-sm">{message.text}</p>
+                  <p className="text-sm whitespace-pre-wrap">{message.text}</p>
                   {message.suggestions && (
                     <div className="mt-2 space-y-2">
                       {message.suggestions.map((suggestion, index) => (
