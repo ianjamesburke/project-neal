@@ -96,7 +96,7 @@ const ChatSection: React.FC<ChatSectionProps> = ({ onVideoReady }) => {
 
       if (data.script_ready) {
         scriptReady(chatLog)
-      }
+      } 
     } catch (error) {
       console.error("Error fetching AI response:", error);
       let errorMessage = "Sorry, there was an error processing your request. The backend might be unavailable. Please try again later.";

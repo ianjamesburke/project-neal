@@ -11,7 +11,7 @@ KV_REST_API_TOKEN="AVPgAAIjcDFhOWVjM2ViMjFkOWI0NjQzOWRiOWMzNzczMDQyZWRhYXAxMA"
 KV_REST_API_READ_ONLY_TOKEN="AlPgAAIgcDHZgxRC-1a_Ajlnc5cxL76FA4TmVItF361wtTEiF_6LyQ"
 
 
-kv = vercel_kv.KV(url=KV_URL, rest_api_url=KV_REST_API_URL, rest_api_token=KV_REST_API_TOKEN, rest_api_read_only_token=KV_REST_API_READ_ONLY_TOKEN)
+kv = vercel_kv.KV()
 
 
 def set_key(key: str, value: str | dict) -> bool:

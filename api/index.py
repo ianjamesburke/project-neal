@@ -77,7 +77,7 @@ def build_payload_route():
         # call function
         payload = build_payload(chat_log)
 
-        payload_key = "payload"
+        payload_key = "temp_payload_key"
 
         # Send to Vercel KV
         set_key(payload_key, payload)

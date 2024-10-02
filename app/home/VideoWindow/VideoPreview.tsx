@@ -51,7 +51,7 @@ const VideoPreview: React.FC = () => {
   const refreshPreview = useCallback(async () => {
     console.log('Refreshing preview...');
     try {
-      const response = await fetch('/api/get_from_kv/payload');
+      const response = await fetch('/api/get_from_kv/temp_payload_key');
       const data = await response.json();
       if (data.value) {
         let parsedSource = data.value;
