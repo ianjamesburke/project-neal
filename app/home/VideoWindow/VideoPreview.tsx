@@ -15,8 +15,6 @@ const VideoPreview: React.FC = () => {
   const handleRef = useRef<HTMLDivElement>(null);
   const [dragContext, setDragContext] = useState<{ startX: number; startTime: number } | null>(null);
 
-
-
   useEffect(() => {
     if (containerRef.current && source) {
       console.log('Initializing Preview with source:', source);
@@ -35,6 +33,8 @@ const VideoPreview: React.FC = () => {
     }
   }, [source]);
 
+
+
   const setTime = async (time: number) => {
     if (previewRef.current) {
       await previewRef.current.setTime(time);
@@ -47,11 +47,10 @@ const VideoPreview: React.FC = () => {
     ? currentTime / previewRef.current.state.duration
     : 0;
 
-  // Add a function to refresh the preview
   const refreshPreview = useCallback(async () => {
     console.log('Refreshing preview...');
     try {
-      const response = await fetch('/api/get_from_kv/temp_payload_key');
+      const response = await fetch('/api/get_from_kv/payload');
       const data = await response.json();
       if (data.value) {
         let parsedSource = data.value;
@@ -71,6 +70,14 @@ const VideoPreview: React.FC = () => {
       console.error('Error refreshing preview:', error);
     }
   }, []);
+
+  
+
+  useEffect(() => {
+    refreshPreview();
+  }, [refreshPreview]);
+
+
 
   return (
     <div>
