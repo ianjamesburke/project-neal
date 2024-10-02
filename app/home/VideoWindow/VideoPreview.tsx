@@ -82,7 +82,7 @@ const VideoPreview: React.FC = () => {
   return (
     <div>
       <VideoPreviewTopBar onRefresh={refreshPreview} />
-      <div ref={containerRef} className="relative w-full aspect-video max-w-full bg-gray-800">
+      <div ref={containerRef} className="relative w-full aspect-video max-w-full bg-gray-800 checkerboard">
         {/* The Creatomate Preview will be rendered here */}
       </div>
       <div className="mt-4">
