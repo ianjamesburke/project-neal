@@ -10,6 +10,7 @@ BUCKET_NAME = 'sandbox-bucket-1892304'
 TEMP_DIR = '/tmp'
 
 
+
 def initialize_gcs_client():
     """Initialize and return Google Cloud Storage client."""
     os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = CREDENTIALS_FILE
