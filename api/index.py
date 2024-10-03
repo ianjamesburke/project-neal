@@ -1,6 +1,6 @@
 import logging
 from flask import Flask, request, jsonify
-from api.vercel import set_key, get_key
+from api.kv_handler import set_key, get_key
 from api.message_assistant import message_assistant
 from api.build_payload import build_payload
 import json

@@ -4,7 +4,7 @@ from dotenv import load_dotenv
 from pydantic import BaseModel, Field
 from typing import List
 import uuid
-import vercel
+import api.kv_handler as kv_handler
 import json
 import base64
 
