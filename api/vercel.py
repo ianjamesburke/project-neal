@@ -13,10 +13,10 @@ KV_REST_API_TOKEN = os.getenv("KV_REST_API_TOKEN")
 KV_REST_API_READ_ONLY_TOKEN = os.getenv("KV_REST_API_READ_ONLY_TOKEN")
 
 # Log the loaded environment variables for debugging
-print(f"KV_URL: {KV_URL}")
-print(f"KV_REST_API_URL: {KV_REST_API_URL}")
-print(f"KV_REST_API_TOKEN: {KV_REST_API_TOKEN}")
-print(f"KV_REST_API_READ_ONLY_TOKEN: {KV_REST_API_READ_ONLY_TOKEN}")
+# print(f"KV_URL: {KV_URL}")
+# print(f"KV_REST_API_URL: {KV_REST_API_URL}")
+# print(f"KV_REST_API_TOKEN: {KV_REST_API_TOKEN}")
+# print(f"KV_REST_API_READ_ONLY_TOKEN: {KV_REST_API_READ_ONLY_TOKEN}")
 
 # Initialize KV with explicit configuration
 kv_config = vercel_kv.KVConfig(
