@@ -1,16 +1,16 @@
+import logging
 from flask import Flask, request, jsonify
 from api.vercel import set_key, get_key
 from api.message_assistant import message_assistant
 from api.build_payload import build_payload
 import json
 
-
-
+# Initialize Flask app
 app = Flask(__name__)
 app.debug = True
 
-
-
+# Configure logging
+# logging.basicConfig(level=logging.DEBUG, format='%(asctime)s %(levelname)s %(message)s')
 
 @app.route("/api/python")
 def hello_world():
@@ -29,6 +29,7 @@ def add_to_kv():
         result = set_key(key, value)
         return jsonify({"message": "Key-value pair added successfully", "result": result})
     except Exception as e:
+        logging.error(f"Error adding key-value pair: {e}")
         return jsonify({"error": str(e)}), 500
 
 
@@ -41,6 +42,7 @@ def get_from_kv(key):
         
         return jsonify({"key": key, "value": value}), 200
     except Exception as e:
+        logging.error(f"Error retrieving key: {e}")
         return jsonify({"error": str(e)}), 500
     
 
@@ -55,12 +57,13 @@ def message_assistant_route():
         thread_id = data.get('thread_id')
 
         # call function
-        response, script_ready, thread_id = message_assistant(chat_log, thread_id)
+        response, script_ready, ask_for_uploads, thread_id = message_assistant(chat_log, thread_id)
 
         # return result
-        return jsonify({ "response": response, "script_ready": script_ready, "thread_id": thread_id })
+        return jsonify({ "response": response, "script_ready": script_ready, "ask_for_uploads": ask_for_uploads, "thread_id": thread_id })
     
     except Exception as e:
+        logging.error(f"Error in message_assistant_route: {e}")
         return jsonify({"error": str(e)}), 500
     
 
@@ -89,5 +92,5 @@ def build_payload_route():
 
 
     except Exception as e:
-        print(f"An error occurred in render_video: {e}")
+        logging.error(f"An error occurred in build_payload_route: {e}")
         return jsonify({"error": "An error occurred while starting the video rendering."}), 500

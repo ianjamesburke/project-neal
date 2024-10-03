@@ -30,6 +30,9 @@ const ChatSection: React.FC<ChatSectionProps> = ({ onVideoReady }) => {
   const [isAIResponding, setIsAIResponding] = useState(false)
   const [threadId, setThreadId] = useState<string | null>(null)
   const [backendError, setBackendError] = useState(false);
+  const [askForUploads, setAskForUploads] = useState(false);
+  const [filesUploaded, setFilesUploaded] = useState(false);
+  const [uploadMessageId, setUploadMessageId] = useState<number | null>(null);
 
   const scrollToBottom = () => {
     if (messagesContainerRef.current) {
@@ -84,6 +87,7 @@ const ChatSection: React.FC<ChatSectionProps> = ({ onVideoReady }) => {
         sender: "ai",
         suggestions: []
       }
+
       setMessages(prevMessages => [...prevMessages, aiResponse]);
 
       setChatLog(prevChatLog => {
@@ -96,7 +100,12 @@ const ChatSection: React.FC<ChatSectionProps> = ({ onVideoReady }) => {
 
       if (data.script_ready) {
         scriptReady(chatLog)
-      } 
+      }
+
+      if (data.ask_for_uploads && !filesUploaded && uploadMessageId === null) {
+        setAskForUploads(true);
+        setUploadMessageId(aiResponse.id);
+      }
     } catch (error) {
       console.error("Error fetching AI response:", error);
       let errorMessage = "Sorry, there was an error processing your request. The backend might be unavailable. Please try again later.";
@@ -144,9 +153,13 @@ const ChatSection: React.FC<ChatSectionProps> = ({ onVideoReady }) => {
     }
   }
 
+  const handleFileUpload = () => {
+    console.log("Upload button clicked");
+    // Logic to handle file upload
+    setFilesUploaded(true);
+    // Do not set askForUploads to false here
+  };
 
-
-  
   async function sendMessage(text: string, isSuggestion: boolean = false) {
     const newUserMessage: Message = { id: messages.length + 1, text, sender: "user" }
     setMessages(prevMessages => [...prevMessages, newUserMessage])
@@ -197,6 +210,16 @@ const ChatSection: React.FC<ChatSectionProps> = ({ onVideoReady }) => {
                         </Button>
                       ))}
                     </div>
+                  )}
+                  {message.sender === 'ai' && message.id === uploadMessageId && (
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      className="mt-4 transition-transform duration-200 ease-in-out hover:scale-105 bg-neutral-700 text-white border-neutral-600 hover:bg-neutral-600"
+                      onClick={handleFileUpload}
+                    >
+                      Upload Files
+                    </Button>
                   )}
                 </div>
               </div>

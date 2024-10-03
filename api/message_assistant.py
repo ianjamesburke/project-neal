@@ -42,15 +42,21 @@ def message_assistant(chat_log, thread_id=None):
         chat_log.append({"role": "assistant", "content": response['response']})
 
         ai_response = response['response']
+        
         try:
             script_ready = response['script_ready']
         except:
             script_ready = False
 
-        return ai_response, script_ready, thread_id
+        try:
+            ask_for_uploads = response['ask_for_uploads']
+        except:
+            ask_for_uploads = False
+
+        return ai_response, script_ready, ask_for_uploads, thread_id
     else:
         print(run.status)
-        return f"openai assistant failed: {run.status}", None, thread_id
+        return f"openai assistant failed: {run.status}", None, None, thread_id
     
 
 def test_chat():
@@ -58,9 +64,10 @@ def test_chat():
         {"role": "user", "content": "Hello, how are you?"}
         ]
     thread_id = None
-    response, script_ready, thread_id = message_assistant(chat_log, thread_id)
+    response, script_ready, ask_for_uploads, thread_id = message_assistant(chat_log, thread_id)
     print("response:", response)
     print("script_ready:", script_ready)
+    print("ask_for_uploads:", ask_for_uploads)
     print("thread_id:", thread_id) 
 
 
