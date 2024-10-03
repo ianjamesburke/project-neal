@@ -5,14 +5,28 @@ from dotenv import load_dotenv
 
 # Load environment variables from .env file
 load_dotenv()
-KV_URL="redis://default:AVPgAAIjcDFhOWVjM2ViMjFkOWI0NjQzOWRiOWMzNzczMDQyZWRhYXAxMA@living-garfish-21472.upstash.io:6379"
-KV_REST_API_URL="https://living-garfish-21472.upstash.io"
-KV_REST_API_TOKEN="AVPgAAIjcDFhOWVjM2ViMjFkOWI0NjQzOWRiOWMzNzczMDQyZWRhYXAxMA"
-KV_REST_API_READ_ONLY_TOKEN="AlPgAAIgcDHZgxRC-1a_Ajlnc5cxL76FA4TmVItF361wtTEiF_6LyQ"
 
+# Ensure environment variables are loaded
+KV_URL = os.getenv("KV_URL")
+KV_REST_API_URL = os.getenv("KV_REST_API_URL")
+KV_REST_API_TOKEN = os.getenv("KV_REST_API_TOKEN")
+KV_REST_API_READ_ONLY_TOKEN = os.getenv("KV_REST_API_READ_ONLY_TOKEN")
 
-kv = vercel_kv.KV()
+# Log the loaded environment variables for debugging
+print(f"KV_URL: {KV_URL}")
+print(f"KV_REST_API_URL: {KV_REST_API_URL}")
+print(f"KV_REST_API_TOKEN: {KV_REST_API_TOKEN}")
+print(f"KV_REST_API_READ_ONLY_TOKEN: {KV_REST_API_READ_ONLY_TOKEN}")
 
+# Initialize KV with explicit configuration
+kv_config = vercel_kv.KVConfig(
+    url=KV_URL,
+    rest_api_url=KV_REST_API_URL,
+    rest_api_token=KV_REST_API_TOKEN,
+    rest_api_read_only_token=KV_REST_API_READ_ONLY_TOKEN
+)
+
+kv = vercel_kv.KV(kv_config=kv_config)
 
 def set_key(key: str, value: str | dict) -> bool:
     try:
@@ -25,8 +39,6 @@ def set_key(key: str, value: str | dict) -> bool:
     except Exception as error:
         raise Exception(f"Error setting key: {error}")
 
-
-
 def get_key(key: str) -> str | dict:
     try:
         result = kv.get(key)
@@ -38,8 +50,6 @@ def get_key(key: str) -> str | dict:
             return result
     except Exception as error:
         raise Exception(f"Error getting key: {error}")
-
-
 
 # Test functions
 def run_tests():
@@ -73,8 +83,6 @@ def run_tests():
     result = get_key("complex_key")
     print("Result:", result)
     print("Type:", type(result))
-
-
 
 if __name__ == "__main__":
     run_tests()
