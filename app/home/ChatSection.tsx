@@ -189,7 +189,13 @@ const ChatSection: React.FC<ChatSectionProps> = ({ onVideoReady }) => {
           {messages.map((message) => (
             <div key={message.id} className={`flex ${message.sender === 'user' ? 'justify-end' : 'justify-start'}`}>
               <div className={`flex items-start max-w-[80%] ${message.sender === 'user' ? 'flex-row-reverse' : 'flex-row'}`}>
-                <div className="flex shrink-0 self-start w-8 h-8 bg-white rounded-full" aria-hidden="true"></div>
+                <div className="flex shrink-0 self-start w-8 h-8">
+                  {message.sender === 'user' ? (
+                    <img loading="lazy" src="https://cdn.builder.io/api/v1/image/assets/TEMP/dd4368c4193fe4718cfa135c8756b207c6c60327fb1b953e7cc4b74b0e20c21b?placeholderIfAbsent=true&apiKey=63d274d5dd09415cb8f5e51781b306a4" alt="User avatar" className="object-contain w-8 h-8 rounded-full" />
+                  ) : (
+                    <img loading="lazy" src="https://cdn.builder.io/api/v1/image/assets/TEMP/dc4cb80a02a243578c9954e82786edefd12c5ff04884d7847e26ef6f467d0be6?placeholderIfAbsent=true&apiKey=63d274d5dd09415cb8f5e51781b306a4" alt="Logo" className="object-contain w-8 h-8 rounded-half"/>
+                  )}
+                </div>
                 <div className={`mx-2 p-3 rounded-lg ${
                   message.sender === 'user' 
                     ? 'bg-neutral-800'
