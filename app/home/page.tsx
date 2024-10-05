@@ -3,7 +3,6 @@
 import React, { useState } from 'react';
 import ChatSection from './ChatSection';
 import VideoEditorWindow from './VideoEditorWindow';
-import VideoPreview from './VideoWindow/VideoPreview';
 
 const SpliceAI: React.FC = () => {
   const [renderId, setRenderId] = useState<string | null>(null);

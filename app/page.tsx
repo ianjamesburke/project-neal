@@ -1,6 +1,5 @@
 import { Button } from "@/components/ui/button"
 import Link from 'next/link'
-import VideoPreview from './home/VideoWindow/VideoPreview';
 
 export default function LandingPage() {
   const videoUrl = 'https://f002.backblazeb2.com/file/creatomate-c8xg3hsxdu/135adfb6-2cb9-47c1-8908-01a8aaa8cafd.mp4';
