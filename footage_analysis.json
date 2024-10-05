@@ -1,0 +1,39 @@
+{ 
+    "footage_analysis": [   
+        {
+            "url": "https://utfs.io/f/mWiSbu5B60JIlsdlbQfRjLq1DG8ZYt30f4NFUwruh6dXgnCl",
+            "clips": [
+                {
+                    "description": "Someone using a fabric shaver",
+                    "in_frame": 0,
+                    "out_frame": 9
+                },
+                {
+                    "description": "Someone using a fabric shaver",
+                    "in_frame": 9,
+                    "out_frame": 26
+                }
+            ]
+        },
+        {
+            "url": "https://utfs.io/f/mWiSbu5B60JISDpcFKTbIuWJV8nyPDQFXv0YmcE4dfi9HLTS",
+            "clips": [
+                {
+                    "description": "Someone using a fabric shaver on a blue pair of shorts",
+                    "in_frame": 0,
+                    "out_frame": 23
+                }
+            ]
+        },
+        {
+            "url": "https://utfs.io/f/mWiSbu5B60JIHVLB3ODLDPsBZQR9AWmdNCqxkSh81V3Gtpyj",
+            "clips": [
+                {
+                    "description": "Someone using a fabric shaver",
+                    "in_frame": 0,
+                    "out_frame": 27
+                }
+            ]
+        }
+    ]
+}

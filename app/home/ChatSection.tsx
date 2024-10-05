@@ -4,7 +4,6 @@ import React, { useState, useRef, useEffect } from 'react';
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 
-
 type Message = {
   id: number
   text: string
@@ -13,14 +12,14 @@ type Message = {
 }
 
 interface ChatSectionProps {
-  onVideoReady: (url: string) => void;
+  onRenderIdChange: (renderId: string | null) => void;
 }
 
-const ChatSection: React.FC<ChatSectionProps> = ({ onVideoReady }) => {
-  const initialMessage = "Hello! Welcome to Project-Neal. I'm here to help you create high converting video creative. I am currently in alpha and can only but feel free to talk to me and we can get a script for your ad going."
+const ChatSection: React.FC<ChatSectionProps> = ({ onRenderIdChange }) => {
+  const initialMessage = "Hello! Welcome to Project-Neal. I'm here to help you create high converting video creative. Tell me what is your product called and tell me a bit about it. \n\n i only know about one product right now shhhh"
   
   const [messages, setMessages] = useState<Message[]>([
-    { id: 1, text: initialMessage, sender: "ai", suggestions: ["These", "Don't", "Do anything...", "...unless"] }
+    { id: 1, text: initialMessage, sender: "ai", suggestions: ["Enter debug mode"] }
   ])
   const [input, setInput] = useState("")
   const messagesContainerRef = useRef<HTMLDivElement>(null)
@@ -106,6 +105,8 @@ const ChatSection: React.FC<ChatSectionProps> = ({ onVideoReady }) => {
         setAskForUploads(true);
         setUploadMessageId(aiResponse.id);
       }
+
+
     } catch (error) {
       console.error("Error fetching AI response:", error);
       let errorMessage = "Sorry, there was an error processing your request. The backend might be unavailable. Please try again later.";
@@ -126,7 +127,7 @@ const ChatSection: React.FC<ChatSectionProps> = ({ onVideoReady }) => {
   }
 
   async function scriptReady(chatLog: { role: string, content: string }[]) {
-    console.log("Script is ready! Sending fetch to build payload...")
+    console.log("Script is ready! Sending fetch to build payload...");
     try {
       const response = await fetch(`api/build-payload`, {
         method: 'POST',
@@ -135,21 +136,23 @@ const ChatSection: React.FC<ChatSectionProps> = ({ onVideoReady }) => {
           'Accept': 'application/json',
         },
         body: JSON.stringify({ chat_log: chatLog }),
-      })
+      });
 
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
 
-      const data = await response.json()
-      console.log("build-payload data:", data)
-
-      const payload_key = data.payload_key;
-      console.log("payload successfully generated")
-      console.log("payload_key:", payload_key)
+      const data = await response.json();
+      const render_id = data.render_id;
+      const video_url = data.video_url;
+      console.log("build-payload data:", render_id, video_url);
+      
+      if (data.render_id) {
+        onRenderIdChange(data.render_id);
+      }
 
     } catch (error) {
-      console.error("Error generating video:", error)
+      console.error("Error generating video:", error);
     }
   }
 

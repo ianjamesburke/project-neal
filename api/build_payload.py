@@ -4,7 +4,6 @@ from dotenv import load_dotenv
 from pydantic import BaseModel, Field
 from typing import List
 import uuid
-import api.kv_handler as kv_handler
 import json
 import base64
 
@@ -12,7 +11,7 @@ import base64
 load_dotenv()
 
 # Retrieve variables from environment
-generate_scriptAssistantID = os.getenv("GENERATE_SCRIPT_ASSISTANT_ID")
+generate_scriptAssistantID = 'asst_zp79pmKorwEFozq2gUQ9oIGU'
 
 client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 
@@ -30,10 +29,7 @@ class ScriptOutput(BaseModel):
 def make_call_to_generate_editing_script(context):
 
     """
-    Input is the chat log and 
-    
-
-
+    Input is the chat log and footage analysis data
 
     """
     
@@ -64,14 +60,13 @@ def make_call_to_generate_editing_script(context):
         response_format=ScriptOutput
     )
 
-    output = ScriptOutput(**parsed_content)  # Directly initialize the Pydantic model from the parsed content
-    clips = output.clips
+    # Directly initialize the Pydantic model from the parsed content
+    # output = ScriptOutput(**parsed_content)
+    output = ScriptOutput(**parsed_content.dict())  # Ensure it's a dictionary
 
-    output = parsed_content.choices[0].message.parsed
-
-    clips = []
 
     # Convert each ClipInfo object to a dictionary
+    clips = []
     for clip in output.clips:
         clip_dict = {
             "voiceover_source": clip.voiceover_source,
@@ -80,18 +75,12 @@ def make_call_to_generate_editing_script(context):
             "clip_end_time": clip.clip_end_time
         }
         clips.append(clip_dict)
-    
-    # with open('clips.json', 'w') as f:
-    #     json.dump(clips, f, indent=4)
 
     # Return the list of dictionaries
     return clips
 
 
-
-def build_context(placeholder_chat_log, footage_analysis):
-
-    def simplify_conversation(chat_log):
+def simplify_conversation(chat_log):
         simplified = []
         for entry in chat_log:
             if entry['role'] == 'user':
@@ -100,12 +89,14 @@ def build_context(placeholder_chat_log, footage_analysis):
                 simplified.append(f"AI:\n [{entry['content']}]")
         return "\n".join(simplified)
 
-    simplified_chat = simplify_conversation(placeholder_chat_log)
 
 
+def build_context(chat_log, footage_analysis) -> str:
+
+    simplified_chat = simplify_conversation(chat_log)
 
     context = f'''
-    the following is a chat log of a user interacting with an AI assistant talking about how they want the video to be
+    the following is a chat log of a user interacting with an AI assistant talking about how their video should be edited.
     
     CHAT LOG START:
     {simplified_chat}
@@ -143,6 +134,7 @@ def create_payload_from_clip_list_and_audio_url(data: dict) -> dict:
     for index, clip in enumerate(clips):
         voiceover_source = clip["voiceover_source"]
         broll_url = clip["broll_url"]
+        broll_url = base64.urlsafe_b64encode(broll_url.encode()).decode()
 
         voiceover_id = str(uuid.uuid4())  # Generate ID for voiceover
 
@@ -227,21 +219,19 @@ def build_payload(chat_log):
 
     # MVP encoding URL issue needs to be fixed
 
-    # # Placeholder footage analysis data
-    # with open('footage_analysis.json', 'r') as f:
-    #     footage_analysis = json.load(f)
+    # Placeholder footage analysis data
+    with open('footage_analysis.json', 'r') as f:
+        footage_analysis = json.load(f)
 
-    # # simple concatination
-    # context = build_context(chat_log, footage_analysis)
+    # simple concatination
+    context = build_context(chat_log, footage_analysis)
 
-    # # AI generated editing insrtuctions creation
-    # clips = make_call_to_generate_editing_script(context)
+    # AI generated editing insrtuctions creation
+    clips = make_call_to_generate_editing_script(context)
 
-    # # audio_url = random.choice(audio_urls)
+    # audio_url = random.choice(audio_urls)
 
-    # payload = create_payload_from_clip_list_and_audio_url(clips)
-
-    # payload = {"this is a test payload":"testing"}
+    payload = create_payload_from_clip_list_and_audio_url(clips)
 
     placeholder_payload = {
         "output_format": "mp4",
@@ -260,8 +250,14 @@ def build_payload(chat_log):
 
 
 
-    return placeholder_payload
+    return payload
 
 
-
-
+if __name__ == "__main__":
+    # test pip
+    chat_log = [
+        {"role": "user", "content": "a short video of someone using a fabric shaver"}
+    ]
+    context = build_context(chat_log, None)
+    result = make_call_to_generate_editing_script(context)
+    print(result)
