@@ -1,16 +1,38 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  rewrites: async () => {
+  reactStrictMode: true,
+  images: {
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "lh3.googleusercontent.com",
+      },
+    ],
+  },
+  reactStrictMode: true,
+  /*
+  async rewrites() {
     return [
       {
-        source: '/api/:path*',
-        destination:
-          process.env.NODE_ENV === 'development'
-            ? 'http://127.0.0.1:5328/api/:path*'
-            : '/api/',
+        source: "/api/:path*",
+        destination: "http://localhost:5328/api/:path*",
       },
-    ]
+    ];
   },
-}
+  */
+  async headers() {
+    return [
+      {
+        source: "/((?!api/).*)",
+        headers: [
+          {
+            key: "X-Frame-Options",
+            value: "DENY",
+          },
+        ],
+      },
+    ];
+  },
+};
 
-module.exports = nextConfig
+module.exports = nextConfig;
