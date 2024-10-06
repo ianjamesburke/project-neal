@@ -1,19 +1,24 @@
-# TODO
 
-update assistant Id in the vercel .env
+
+# MVP TODOS
+
+User Auth
+- enable user auth and protect home page
+- 
+
 
 
 
 # roadmap
 
-get chat working
+
 
 get footage upload working
-- encode the urls for kv storage
 
 
 
-
-
-# todo
-
+# wishlist
+link to tiktoks for reference
+loading bars
+timeline editor
+cost efficient ai calls
