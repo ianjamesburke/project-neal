@@ -11,12 +11,19 @@ const nextConfig = {
   },
   reactStrictMode: true,
 
-
+  // Updated rewrites configuration
   async rewrites() {
     return [
       {
-        source: "/api/:path((?!auth).*)",
-        destination: "http://localhost:5328/api/:path*",
+        source: '/api/auth/:path*',
+        destination: '/api/auth/:path*',
+      },
+      {
+        source: '/api/:path*',
+        destination:
+          process.env.NODE_ENV === 'development'
+            ? 'http://127.0.0.1:5328/api/:path*'
+            : '/api/',
       },
     ];
   },
@@ -35,7 +42,5 @@ const nextConfig = {
     ];
   },
 };
-
-
 
 module.exports = nextConfig;
