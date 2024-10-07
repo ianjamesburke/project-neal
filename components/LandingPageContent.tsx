@@ -4,6 +4,8 @@ import { LoginLink, LogoutLink } from "@kinde-oss/kinde-auth-nextjs/components";
 import { useKindeAuth } from "@kinde-oss/kinde-auth-nextjs";
 import { useEffect, useState } from "react";
 
+
+
 export default function LandingPageContent() {
   const { isAuthenticated, user } = useKindeAuth();
   const [isLoading, setIsLoading] = useState(true);
