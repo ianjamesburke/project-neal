@@ -10,16 +10,17 @@ const nextConfig = {
     ],
   },
   reactStrictMode: true,
-  /*
+
+
   async rewrites() {
     return [
       {
-        source: "/api/:path*",
+        source: "/api/:path((?!auth).*)",
         destination: "http://localhost:5328/api/:path*",
       },
     ];
   },
-  */
+
   async headers() {
     return [
       {
@@ -34,5 +35,7 @@ const nextConfig = {
     ];
   },
 };
+
+
 
 module.exports = nextConfig;
