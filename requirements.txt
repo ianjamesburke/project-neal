@@ -2,4 +2,4 @@ Flask==3.0.3
 requests
 openai
 pydantic==2.9.2
-dotenv
+python-dotenv
