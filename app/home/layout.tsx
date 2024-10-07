@@ -1,8 +1,8 @@
 "use client"
 
 import React from 'react';
-import Sidebar from './Sidebar';
-import Header from './Header';
+import Sidebar from '@/components/Sidebar';
+import Header from '@/components/Header';
 
 export default function SpliceLayout({ children }: { children: React.ReactNode }) {
   return (

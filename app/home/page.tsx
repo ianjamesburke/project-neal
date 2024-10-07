@@ -1,8 +1,8 @@
 "use client"
 
 import React, { useState } from 'react';
-import ChatSection from './ChatSection';
-import VideoEditorWindow from './VideoEditorWindow';
+import ChatSection from '@/components/ChatSection';
+import VideoEditorWindow from '@/components/VideoEditorWindow';
 
 const SpliceAI: React.FC = () => {
   const [renderId, setRenderId] = useState<string | null>(null);
