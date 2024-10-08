@@ -1,10 +1,13 @@
+import { withUt } from "uploadthing/tw";
+
 /** @type {import('tailwindcss').Config} */
-module.exports = {
+export default withUt({
     darkMode: ['class'],
     content: [
     './pages/**/*.{js,ts,jsx,tsx,mdx}',
     './components/**/*.{js,ts,jsx,tsx,mdx}',
     './app/**/*.{js,ts,jsx,tsx,mdx}',
+    './src/**/*.{ts,tsx,mdx}', // Add this line to include src directory
   ],
   theme: {
   	extend: {
@@ -62,4 +65,4 @@ module.exports = {
   	}
   },
   plugins: [require("tailwindcss-animate")],
-}
+});
