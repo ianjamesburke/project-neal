@@ -3,6 +3,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
+import { UploadButton } from "@/src/utils/uploadthing";
 
 type Message = {
   id: number
@@ -221,14 +222,18 @@ const ChatSection: React.FC<ChatSectionProps> = ({ onRenderIdChange }) => {
                     </div>
                   )}
                   {message.sender === 'ai' && message.id === uploadMessageId && (
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      className="mt-4 transition-transform duration-200 ease-in-out hover:scale-105 bg-neutral-700 text-white border-neutral-600 hover:bg-neutral-600"
-                      onClick={handleFileUpload}
-                    >
-                      Upload Files
-                    </Button>
+                    <div className="mt-4">
+                      <UploadButton
+                        endpoint="videoUploader"
+                        onClientUploadComplete={(res) => {
+                          console.log("Files: ", res);
+                          alert("Upload Completed");
+                        }}
+                        onUploadError={(error: Error) => {
+                          alert(`ERROR! ${error.message}`);
+                        }}
+                      />
+                    </div>
                   )}
                 </div>
               </div>
