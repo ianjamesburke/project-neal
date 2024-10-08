@@ -7,15 +7,20 @@ import uuid
 import base64
 import requests
 import json
-
+from dotenv import load_dotenv
 
 ### INITIALIZE APP ###
 app = Flask(__name__)
 app.debug = True
 
-client = OpenAI(api_key=os.environ.get('OPENAI_API_KEY'))
 
+load_dotenv()
 
+try:
+    api_key = os.environ.get('OPENAI_API_KEY')
+    client = OpenAI(api_key=api_key)
+except Exception as e:
+    raise Exception(f"Error: {e}")
 
 
 
@@ -314,7 +319,7 @@ def get_render_status(render_id):
 
 
 ### ROUTES ###
-@app.route('/api/render-status/<render_id>', methods=['GET'])
+@app.route('/flask/render-status/<render_id>', methods=['GET'])
 def render_status(render_id):
     try:
         status = get_render_status(render_id)
@@ -325,7 +330,7 @@ def render_status(render_id):
 
 
 
-@app.route("/api/message-assistant", methods=['POST'])
+@app.route("/flask/message-assistant", methods=['POST'])
 def message_assistant_route():
     try:
         # get data
@@ -347,7 +352,7 @@ def message_assistant_route():
     
 
 
-@app.route('/api/build-payload', methods=['POST'])
+@app.route('/flask/build-payload', methods=['POST'])
 def build_payload_route():
     try:
         data = request.json

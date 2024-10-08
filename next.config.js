@@ -15,15 +15,11 @@ const nextConfig = {
   async rewrites() {
     return [
       {
-        source: '/api/auth/:path*',
-        destination: '/api/auth/:path*',
-      },
-      {
-        source: '/api/:path*',
+        source: '/flask/:path*',
         destination:
           process.env.NODE_ENV === 'development'
-            ? 'http://127.0.0.1:5328/api/:path*'
-            : '/api/',
+            ? 'http://127.0.0.1:5328/flask/:path*'
+            : '/flask/:path*',
       },
     ];
   },

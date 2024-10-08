@@ -3,7 +3,8 @@
 import { LoginLink, LogoutLink } from "@kinde-oss/kinde-auth-nextjs/components";
 import { useKindeAuth } from "@kinde-oss/kinde-auth-nextjs";
 import { useEffect, useState } from "react";
-
+import Link from 'next/link';
+import { Button } from "./ui/button";
 
 
 export default function LandingPageContent() {
@@ -24,11 +25,20 @@ export default function LandingPageContent() {
     <>
       <h1 className="text-4xl font-bold mb-8">Welcome</h1>
       {isAuthenticated ? (
-        <LogoutLink className="text-blue-500 hover:underline">
-          Sign out
-        </LogoutLink>
+        <div className="flex flex-col items-center space-y-4"> {/* Changed to flex-col, items-center and space-y-4 for vertical spacing and centering */}
+          <Link href="/dashboard">
+            <Button>Enter Dashboard</Button>
+          </Link>
+          <LogoutLink>
+            <Button>Sign out</Button>
+          </LogoutLink>
+        </div>
       ) : (
-        <LoginLink className="text-blue-500 hover:underline">Sign in</LoginLink>
+        <div className="flex space-x-4"> {/* Added flex and space-x-4 for spacing */}
+          <LoginLink>
+            <Button>Sign in</Button>
+          </LoginLink>
+        </div>
       )}
     </>
   );
