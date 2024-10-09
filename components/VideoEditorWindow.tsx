@@ -1,6 +1,6 @@
-'use client';
+"use client";
 
-import React, { useRef, useEffect, useState } from 'react';
+import React, { useRef, useEffect, useState } from "react";
 import {
   ChevronLeft,
   ChevronRight,
@@ -13,8 +13,8 @@ import {
   Underline,
   AlignLeft,
   RefreshCw,
-} from 'lucide-react';
-import { Button } from '@/components/ui/button';
+} from "lucide-react";
+import { Button } from "@/components/ui/button";
 
 interface VideoEditorWindowProps {
   renderId: string | null;
@@ -23,7 +23,9 @@ interface VideoEditorWindowProps {
 const VideoEditorWindow: React.FC<VideoEditorWindowProps> = ({ renderId }) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const trackRef = useRef<HTMLDivElement>(null);
-  const [videoUrl, setVideoUrl] = useState<string | null>('https://f002.backblazeb2.com/file/creatomate-c8xg3hsxdu/135adfb6-2cb9-47c1-8908-01a8aaa8cafd.mp4');
+  const [videoUrl, setVideoUrl] = useState<string | null>(
+    "https://f002.backblazeb2.com/file/creatomate-c8xg3hsxdu/135adfb6-2cb9-47c1-8908-01a8aaa8cafd.mp4"
+  );
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
   useEffect(() => {
@@ -41,10 +43,10 @@ const VideoEditorWindow: React.FC<VideoEditorWindowProps> = ({ renderId }) => {
         const data = await response.json();
 
         console.log("Polling render status:", data.status);
-        
-        if (data.status === 'succeeded') {
+
+        if (data.status === "succeeded") {
           if (!data.videoUrl) {
-            console.error('Render succeeded but videoUrl is missing.');
+            console.error("Render succeeded but videoUrl is missing.");
             return;
           }
           console.log("Video render completed:", data.videoUrl);
@@ -52,7 +54,7 @@ const VideoEditorWindow: React.FC<VideoEditorWindowProps> = ({ renderId }) => {
           setVideoUrl(data.videoUrl);
         }
       } catch (error) {
-        console.error('Error polling render status:', error);
+        console.error("Error polling render status:", error);
       }
     }, 2500);
   };
@@ -61,36 +63,88 @@ const VideoEditorWindow: React.FC<VideoEditorWindowProps> = ({ renderId }) => {
     <div className="flex flex-col w-full h-full overflow-hidden">
       {/* VideoPreviewTopBar */}
       <div className="flex flex-wrap gap-1 sm:gap-2 w-full p-2">
-        <Button variant="default" size="sm" aria-label="font" className="text-xs sm:text-sm">
+        <Button
+          variant="default"
+          size="sm"
+          aria-label="font"
+          className="text-xs sm:text-sm"
+        >
           Font
         </Button>
-        <Button variant="default" size="icon" aria-label="Decrease font size" className="w-6 h-6 sm:w-8 sm:h-8">
+        <Button
+          variant="default"
+          size="icon"
+          aria-label="Decrease font size"
+          className="w-6 h-6 sm:w-8 sm:h-8"
+        >
           -
         </Button>
-        <span className="flex items-center justify-center text-xs sm:text-sm text-white">48</span>
-        <Button variant="default" size="icon" aria-label="Increase font size" className="w-6 h-6 sm:w-8 sm:h-8">
+        <span className="flex items-center justify-center text-xs sm:text-sm text-white">
+          48
+        </span>
+        <Button
+          variant="default"
+          size="icon"
+          aria-label="Increase font size"
+          className="w-6 h-6 sm:w-8 sm:h-8"
+        >
           +
         </Button>
-        <Button variant="default" size="icon" aria-label="Bold" className="w-6 h-6 sm:w-8 sm:h-8">
+        <Button
+          variant="default"
+          size="icon"
+          aria-label="Bold"
+          className="w-6 h-6 sm:w-8 sm:h-8"
+        >
           <Bold className="w-4 h-4 sm:w-5 sm:h-5" />
         </Button>
-        <Button variant="default" size="icon" aria-label="Italic" className="w-6 h-6 sm:w-8 sm:h-8">
+        <Button
+          variant="default"
+          size="icon"
+          aria-label="Italic"
+          className="w-6 h-6 sm:w-8 sm:h-8"
+        >
           <Italic className="w-4 h-4 sm:w-5 sm:h-5" />
         </Button>
-        <Button variant="default" size="icon" aria-label="Change case" className="w-6 h-6 sm:w-8 sm:h-8">
+        <Button
+          variant="default"
+          size="icon"
+          aria-label="Change case"
+          className="w-6 h-6 sm:w-8 sm:h-8"
+        >
           aA
         </Button>
-        <Button variant="default" size="icon" aria-label="Underline" className="w-6 h-6 sm:w-8 sm:h-8">
+        <Button
+          variant="default"
+          size="icon"
+          aria-label="Underline"
+          className="w-6 h-6 sm:w-8 sm:h-8"
+        >
           <Underline className="w-4 h-4 sm:w-5 sm:h-5" />
         </Button>
-        <Button variant="default" size="icon" aria-label="Align text" className="w-6 h-6 sm:w-8 sm:h-8">
+        <Button
+          variant="default"
+          size="icon"
+          aria-label="Align text"
+          className="w-6 h-6 sm:w-8 sm:h-8"
+        >
           <AlignLeft className="w-4 h-4 sm:w-5 sm:h-5" />
         </Button>
-        <Button variant="default" size="icon" aria-label="Select area" className="w-6 h-6 sm:w-8 sm:h-8">
+        <Button
+          variant="default"
+          size="icon"
+          aria-label="Select area"
+          className="w-6 h-6 sm:w-8 sm:h-8"
+        >
           <div className="flex shrink-0 w-3 h-3 sm:w-4 sm:h-4 rounded border border-white border-solid"></div>
         </Button>
         <div className="flex gap-1 sm:gap-2 ml-auto">
-          <Button variant="default" size="icon" aria-label="Add shape" className="w-6 h-6 sm:w-8 sm:h-8">
+          <Button
+            variant="default"
+            size="icon"
+            aria-label="Add shape"
+            className="w-6 h-6 sm:w-8 sm:h-8"
+          >
             <img
               loading="lazy"
               src="https://cdn.builder.io/api/v1/image/assets/TEMP/f175bfb4432f331a0e6d522eac6042de6c99fb76586831462bf76b727116e06d?placeholderIfAbsent=true&apiKey=63d274d5dd09415cb8f5e51781b306a4"
@@ -98,7 +152,12 @@ const VideoEditorWindow: React.FC<VideoEditorWindowProps> = ({ renderId }) => {
               className="object-contain w-full h-full rounded-none"
             />
           </Button>
-          <Button variant="default" size="icon" aria-label="Add image" className="w-6 h-6 sm:w-8 sm:h-8">
+          <Button
+            variant="default"
+            size="icon"
+            aria-label="Add image"
+            className="w-6 h-6 sm:w-8 sm:h-8"
+          >
             <img
               loading="lazy"
               src="https://cdn.builder.io/api/v1/image/assets/TEMP/f1dff542c81b18f169c1719a5589a4bc911de3cd8aedd1b4a946fc58e9de21fa?placeholderIfAbsent=true&apiKey=63d274d5dd09415cb8f5e51781b306a4"
@@ -106,7 +165,12 @@ const VideoEditorWindow: React.FC<VideoEditorWindowProps> = ({ renderId }) => {
               className="object-contain w-full h-full rounded-none"
             />
           </Button>
-          <Button variant="default" size="icon" aria-label="Refresh preview" className="w-6 h-6 sm:w-8 sm:h-8">
+          <Button
+            variant="default"
+            size="icon"
+            aria-label="Refresh preview"
+            className="w-6 h-6 sm:w-8 sm:h-8"
+          >
             <RefreshCw className="w-4 h-4 sm:w-5 sm:h-5" />
           </Button>
         </div>
@@ -115,9 +179,13 @@ const VideoEditorWindow: React.FC<VideoEditorWindowProps> = ({ renderId }) => {
 
       {/* Video Preview */}
       <div className="flex-grow overflow-hidden rounded-lg checkerboard flex items-center justify-center">
-        {videoUrl ? ( 
+        {videoUrl ? (
           // For some reason, you have to add key={videoUrl} to force the video to reload
-          <video key={videoUrl} className="max-w-full max-h-full object-contain" controls> 
+          <video
+            key={videoUrl}
+            className="max-w-full max-h-full object-contain"
+            controls
+          >
             <source src={videoUrl} />
             Your browser does not support the video tag.
           </video>
@@ -132,7 +200,9 @@ const VideoEditorWindow: React.FC<VideoEditorWindowProps> = ({ renderId }) => {
       <div className="flex items-center justify-between mx-2 my-2 w-full align-middle">
         {/* Left section */}
         <div className="flex items-center gap-2 space-x-2">
-          <span className="text-sm sm:text-base font-medium text-white whitespace-nowrap">Clip Editor</span>
+          <span className="text-sm sm:text-base font-medium text-white whitespace-nowrap">
+            Clip Editor
+          </span>
           <button aria-label="Previous clip">
             <ChevronLeft className="w-4 h-4 sm:w-5 sm:h-5" />
           </button>
@@ -149,7 +219,10 @@ const VideoEditorWindow: React.FC<VideoEditorWindowProps> = ({ renderId }) => {
 
         {/* Center section */}
         <div className="flex-grow">
-          <button aria-label="Play/Pause" className="w-[60px] sm:w-[81px] h-[11px] flex items-center justify-center">
+          <button
+            aria-label="Play/Pause"
+            className="w-[60px] sm:w-[81px] h-[11px] flex items-center justify-center"
+          >
             <Play className="w-4 h-4 sm:w-5 sm:h-5" />
           </button>
         </div>
