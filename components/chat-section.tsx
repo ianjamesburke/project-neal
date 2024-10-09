@@ -3,7 +3,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { UploadButton } from "@/src/utils/uploadthing";
+import { UploadButton } from "@/lib/utils/uploadthing";
 
 type Message = {
   id: number;
@@ -39,35 +39,6 @@ const ChatSection: React.FC<ChatSectionProps> = ({ onRenderIdChange }) => {
   const [askForUploads, setAskForUploads] = useState(false);
   const [filesUploaded, setFilesUploaded] = useState(false);
   const [uploadMessageId, setUploadMessageId] = useState<number | null>(null);
-
-  const scrollToBottom = () => {
-    if (messagesContainerRef.current) {
-      messagesContainerRef.current.scrollTo({
-        top: messagesContainerRef.current.scrollHeight,
-        behavior: "smooth",
-      });
-    }
-  };
-
-  useEffect(() => {
-    scrollToBottom();
-  }, [messages]);
-
-  useEffect(() => {
-    if (
-      !isAIResponding &&
-      chatLog.length > 0 &&
-      chatLog[chatLog.length - 1].role === "user"
-    ) {
-      setIsAIResponding(true);
-    }
-  }, [chatLog, isAIResponding]);
-
-  useEffect(() => {
-    if (isAIResponding && !backendError) {
-      fetchAIResponse();
-    }
-  }, [isAIResponding, backendError]);
 
   async function fetchAIResponse() {
     try {
@@ -146,6 +117,22 @@ const ChatSection: React.FC<ChatSectionProps> = ({ onRenderIdChange }) => {
     }
   }
 
+  async function sendMessage(text: string, isSuggestion: boolean = false) {
+    const newUserMessage: Message = {
+      id: messages.length + 1,
+      text,
+      sender: "user",
+    };
+    setMessages((prevMessages) => [...prevMessages, newUserMessage]);
+    setInput("");
+
+    setChatLog((prevChatLog) => {
+      const updatedChatLog = [...prevChatLog, { role: "user", content: text }];
+      console.log("Updated chat log after user message:", updatedChatLog);
+      return updatedChatLog;
+    });
+  }
+
   async function scriptReady(chatLog: { role: string; content: string }[]) {
     console.log("Script is ready! Sending fetch to build payload...");
     try {
@@ -182,31 +169,45 @@ const ChatSection: React.FC<ChatSectionProps> = ({ onRenderIdChange }) => {
     // Do not set askForUploads to false here
   };
 
-  async function sendMessage(text: string, isSuggestion: boolean = false) {
-    const newUserMessage: Message = {
-      id: messages.length + 1,
-      text,
-      sender: "user",
-    };
-    setMessages((prevMessages) => [...prevMessages, newUserMessage]);
-    setInput("");
-
-    setChatLog((prevChatLog) => {
-      const updatedChatLog = [...prevChatLog, { role: "user", content: text }];
-      console.log("Updated chat log after user message:", updatedChatLog);
-      return updatedChatLog;
-    });
-  }
-
   const handleSendClick = () => {
     if (input.trim()) {
       sendMessage(input);
     }
   };
 
+  const scrollToBottom = () => {
+    if (messagesContainerRef.current) {
+      messagesContainerRef.current.scrollTo({
+        top: messagesContainerRef.current.scrollHeight,
+        behavior: "smooth",
+      });
+    }
+  };
+
   const handleSuggestionClick = (suggestion: string) => {
     sendMessage(suggestion, true);
   };
+
+  // Effects
+  useEffect(() => {
+    scrollToBottom();
+  }, [messages]);
+
+  useEffect(() => {
+    if (
+      !isAIResponding &&
+      chatLog.length > 0 &&
+      chatLog[chatLog.length - 1].role === "user"
+    ) {
+      setIsAIResponding(true);
+    }
+  }, [chatLog, isAIResponding]);
+
+  useEffect(() => {
+    if (isAIResponding && !backendError) {
+      fetchAIResponse();
+    }
+  }, [isAIResponding, backendError]);
 
   return (
     <section className="flex flex-col h-full w-full text-sm text-white bg-neutral-800 bg-opacity-30 overflow-hidden rounded-2xl border border-neutral-800">

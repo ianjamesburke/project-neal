@@ -1,8 +1,8 @@
 "use client";
 
+import Header from "@/layouts/header";
+import Sidebar from "@/layouts/sidebar";
 import React from "react";
-import Sidebar from "../../components/Sidebar";
-import Header from "../../components/Header";
 
 export default function SpliceLayout({
   children,
@@ -15,7 +15,6 @@ export default function SpliceLayout({
       <div className="h-px border-b border-neutral-800" />
       <div className="flex flex-grow overflow-hidden">
         <Sidebar />
-        <div className="w-px border-r border-neutral-800" />
         <main className="flex-grow overflow-auto p-6 hidden md:block">
           {children}
         </main>

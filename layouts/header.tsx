@@ -4,9 +4,12 @@ import React, { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Share } from "lucide-react";
 import { useKindeBrowserClient } from "@kinde-oss/kinde-auth-nextjs";
+import Image from "next/image";
 
 export default function Header() {
   const { user, isAuthenticated, isLoading } = useKindeBrowserClient();
+
+  // States
   const [isAuthChecked, setIsAuthChecked] = useState(false);
 
   useEffect(() => {
@@ -16,22 +19,30 @@ export default function Header() {
   }, [isLoading]);
 
   return (
-    <header className="flex items-center justify-between w-full h-8 my-4">
-      <div className="flex items-center gap-10 mx-8">
-        <img
+    <header className="flex items-center justify-between h-16">
+      <div className="flex justify-center gap-10 w-[64px] h-16 border-r border-neutral-800">
+        <Image
           loading="lazy"
-          src="https://cdn.builder.io/api/v1/image/assets/TEMP/dc4cb80a02a243578c9954e82786edefd12c5ff04884d7847e26ef6f467d0be6?placeholderIfAbsent=true&apiKey=63d274d5dd09415cb8f5e51781b306a4"
+          src="/assets/icons/logo.svg"
           alt="Logo"
-          className="w-auto h-8"
+          width={32}
+          height={32}
         />
+      </div>
+      <div className="">
+        <span>File</span>
+        <span>Edit</span>
+        <span>Resources</span>
       </div>
       <div className="flex items-center gap-8">
         <div className="flex gap-2 text-base font-medium text-right text-white">
-          <img
+          <Image
             loading="lazy"
-            src="https://cdn.builder.io/api/v1/image/assets/TEMP/d8a793d7610b9154de873802f6f0ca44596cdf510e3968ecafd646a4ed61a7f9?placeholderIfAbsent=true&apiKey=63d274d5dd09415cb8f5e51781b306a4"
+            src="https://cdn.builder.io/api/v1/image/assets/TEMP/d8a793d7610b9154de873802f6f0ca44596cdf510e3968ecafd646a4ed61a7f9?placeholderIfAbsent=true&apiKey=63d274d5dd09415cb8f5e51781b306a4.svg"
             alt=""
-            className="object-contain shrink-0 self-start w-5 aspect-[1.18]"
+            className="object-contain shrink-0 self-start aspect-[1.18]"
+            width={20}
+            height={20}
           />
           <div className="basis-auto">
             <span className="text-white">Project Title /</span> File Name
@@ -46,11 +57,13 @@ export default function Header() {
           )}
         </div>
 
-        <img
+        <Image
           loading="lazy"
           src="https://cdn.builder.io/api/v1/image/assets/TEMP/dd4368c4193fe4718cfa135c8756b207c6c60327fb1b953e7cc4b74b0e20c21b?placeholderIfAbsent=true&apiKey=63d274d5dd09415cb8f5e51781b306a4"
           alt="User avatar"
-          className="object-contain shrink-0 w-10 rounded-full aspect-square"
+          className="object-contain shrink-0 rounded-full aspect-square"
+          width={40}
+          height={40}
         />
         <div className="flex items-center gap-4 mx-4">
           <Button variant="secondary">Projects</Button>
