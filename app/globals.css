@@ -70,10 +70,9 @@
     --chart-4: 280 65% 60%;
     --chart-5: 340 75% 55%;
   }
-    /* app/globals.css */
-    .checkerboard {
-    background-image:
-      linear-gradient(45deg, #000 25%, transparent 25%),
+  /* app/globals.css */
+  .checkerboard {
+    background-image: linear-gradient(45deg, #000 25%, transparent 25%),
       linear-gradient(135deg, #000 25%, transparent 25%),
       linear-gradient(45deg, transparent 75%, #000 75%),
       linear-gradient(135deg, transparent 75%, #000 75%);

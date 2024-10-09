@@ -1,6 +1,6 @@
-'use client';
+"use client";
 
-import React, { createContext, useState } from 'react';
+import React, { createContext, useState } from "react";
 
 interface VideoContextType {
   videoUrl: string;
@@ -8,12 +8,14 @@ interface VideoContextType {
 }
 
 export const VideoContext = createContext<VideoContextType>({
-  videoUrl: '',
+  videoUrl: "",
   setVideoUrl: () => {},
 });
 
-export const VideoProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [videoUrl, setVideoUrl] = useState('');
+export const VideoProvider: React.FC<{ children: React.ReactNode }> = ({
+  children,
+}) => {
+  const [videoUrl, setVideoUrl] = useState("");
 
   return (
     <VideoContext.Provider value={{ videoUrl, setVideoUrl }}>

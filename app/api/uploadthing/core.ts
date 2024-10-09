@@ -6,7 +6,7 @@ const auth = (req: Request) => ({ id: "fakeId" }); // Fake auth function
 
 export const ourFileRouter = {
   videoUploader: f({
-    video: { maxFileSize: "16MB", maxFileCount: 10 }
+    video: { maxFileSize: "16MB", maxFileCount: 10 },
   })
     .middleware(async ({ req }) => {
       const user = await auth(req);
