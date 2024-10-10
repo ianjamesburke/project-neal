@@ -1,26 +1,18 @@
-"use client";
-
-import React, { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
-import { Share } from "lucide-react";
-import { useKindeBrowserClient } from "@kinde-oss/kinde-auth-nextjs";
+import { Download, Folder, Share } from "lucide-react";
 import Image from "next/image";
+import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Skeleton } from "@/components/ui/skeleton";
 
-export default function Header() {
-  const { user, isAuthenticated, isLoading } = useKindeBrowserClient();
-
-  // States
-  const [isAuthChecked, setIsAuthChecked] = useState(false);
-
-  useEffect(() => {
-    if (!isLoading) {
-      setIsAuthChecked(true);
-    }
-  }, [isLoading]);
+export async function Header() {
+  const { getUser } = getKindeServerSession();
+  const user = await getUser();
+  const isAuthenticated = !!user;
 
   return (
-    <header className="flex items-center justify-between h-16">
-      <div className="flex justify-center gap-10 w-[64px] h-16 border-r border-neutral-800">
+    <header className="flex items-center h-16">
+      <div className="flex justify-center gap-10 min-w-[64px] h-16 border-r border-neutral-800">
         <Image
           loading="lazy"
           src="/assets/icons/logo.svg"
@@ -29,48 +21,42 @@ export default function Header() {
           height={32}
         />
       </div>
-      <div className="">
-        <span>File</span>
-        <span>Edit</span>
-        <span>Resources</span>
-      </div>
-      <div className="flex items-center gap-8">
-        <div className="flex gap-2 text-base font-medium text-right text-white">
-          <Image
-            loading="lazy"
-            src="https://cdn.builder.io/api/v1/image/assets/TEMP/d8a793d7610b9154de873802f6f0ca44596cdf510e3968ecafd646a4ed61a7f9?placeholderIfAbsent=true&apiKey=63d274d5dd09415cb8f5e51781b306a4.svg"
-            alt=""
-            className="object-contain shrink-0 self-start aspect-[1.18]"
-            width={20}
-            height={20}
-          />
-          <div className="basis-auto">
-            <span className="text-white">Project Title /</span> File Name
+      <div className="flex items-center justify-between w-full">
+        <div className="flex gap-16 text-base text-white pl-16">
+          <span>File</span>
+          <span>Edit</span>
+          <span>Resources</span>
+        </div>
+        <div className="flex items-center gap-8 mr-8">
+          <div className="flex items-center gap-2 text-base font-medium text-right text-white">
+            <Folder className="w-5 h-5  opacity-40" />
+            <div className="basis-auto ">
+              <span className="text-white text-base opacity-40">
+                Project Title /
+              </span>{" "}
+              File Name
+            </div>
           </div>
-        </div>
 
-        <div className="flex items-center gap-4 text-white">
-          {isAuthChecked && isAuthenticated ? (
-            <span>Hello {user?.given_name}</span>
-          ) : (
-            <span>THIS IS A TEST MESSAGE</span>
-          )}
-        </div>
-
-        <Image
-          loading="lazy"
-          src="https://cdn.builder.io/api/v1/image/assets/TEMP/dd4368c4193fe4718cfa135c8756b207c6c60327fb1b953e7cc4b74b0e20c21b?placeholderIfAbsent=true&apiKey=63d274d5dd09415cb8f5e51781b306a4"
-          alt="User avatar"
-          className="object-contain shrink-0 rounded-full aspect-square"
-          width={40}
-          height={40}
-        />
-        <div className="flex items-center gap-4 mx-4">
-          <Button variant="secondary">Projects</Button>
-          <Button variant="share">
-            <Share size="icon" className="h-4 mr-2" />
-            Export
-          </Button>
+          <div className="flex items-center gap-2">
+            <Avatar className="mr-2 cursor-pointer">
+              <AvatarImage
+                src={
+                  user?.picture ||
+                  "https://cdn.builder.io/api/v1/image/assets/TEMP/dd4368c4193fe4718cfa135c8756b207c6c60327fb1b953e7cc4b74b0e20c21b?placeholderIfAbsent=true&apiKey=63d274d5dd09415cb8f5e51781b306a4"
+                }
+                alt="Avatar"
+              />
+              <AvatarFallback>
+                <Skeleton className="bg-muted-foreground w-full h-full" />
+              </AvatarFallback>
+            </Avatar>
+            <Button variant="dark">Preview</Button>
+            <Button variant="share">
+              <Download className="w-4 h-4" />
+              Share
+            </Button>
+          </div>
         </div>
       </div>
     </header>

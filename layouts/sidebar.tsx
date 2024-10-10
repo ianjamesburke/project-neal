@@ -5,7 +5,7 @@ import { cn } from "@/lib/utils/cn";
 
 import Image from "next/image";
 
-const Sidebar: React.FC = () => {
+export async function Sidebar() {
   const active = "Splice AI";
   return (
     <aside className="flex flex-col  w-16 border-r border-neutral-800 items-center text-xs font-medium text-center text-white text-opacity-60 max-md:hidden h-full">
@@ -72,6 +72,4 @@ const Sidebar: React.FC = () => {
       </div>
     </aside>
   );
-};
-
-export default Sidebar;
+}

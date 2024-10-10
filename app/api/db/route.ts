@@ -3,7 +3,7 @@ import { MongoClient } from "mongodb";
 
 /** This is used to pull the user data from the database */
 export async function GET() {
-  const client = new MongoClient(process.env.MONGODB_URI, {});
+  const client = new MongoClient(process.env.MONGODB_URI!, {});
 
   try {
     // Connect the client to the server	(optional starting in v4.7)
@@ -21,7 +21,7 @@ export async function GET() {
 
 /** This is used to update the database */
 export async function POST(req) {
-  const client = new MongoClient(process.env.MONGODB_URI, {});
+  const client = new MongoClient(process.env.MONGODB_URI!, {});
   const data = await req.json();
 
   try {

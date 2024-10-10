@@ -1,7 +1,5 @@
-"use client";
-
-import Header from "@/layouts/header";
-import Sidebar from "@/layouts/sidebar";
+import { Header } from "@/layouts/header";
+import { Sidebar } from "@/layouts/sidebar";
 import React from "react";
 
 export default function SpliceLayout({
