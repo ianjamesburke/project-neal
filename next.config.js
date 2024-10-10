@@ -18,7 +18,7 @@ const nextConfig = {
         source: '/flask/:path*',
         destination:
           process.env.NODE_ENV === 'development'
-            ? 'http://127.0.0.1:5328/flask/:path*'
+            ? 'https://127.0.0.1:5328/flask/:path*'
             : '/flask/:path*',
       },
     ];
@@ -37,15 +37,6 @@ const nextConfig = {
       },
     ];
   },
-
-  // Added environment variables
-  env: {
-    KINDE_SITE_URL: process.env.KINDE_SITE_URL ?? `https://${process.env.VERCEL_URL}`,
-    KINDE_POST_LOGOUT_REDIRECT_URL:
-      process.env.KINDE_POST_LOGOUT_REDIRECT_URL ?? `https://${process.env.VERCEL_URL}`,
-    KINDE_POST_LOGIN_REDIRECT_URL:
-      process.env.KINDE_POST_LOGIN_REDIRECT_URL ?? `https://${process.env.VERCEL_URL}/dashboard`
-  }
 };
 
 module.exports = nextConfig;

@@ -1,41 +1,31 @@
-import { NextResponse } from "next/server";
 import { MongoClient } from "mongodb";
+import { NextResponse } from "next/server";
 
-/** This is used to pull the user data from the database */
+const uri = process.env.MONGODB_URI;
+const client = new MongoClient(uri, {
+  // Add any necessary options here
+});
+
 export async function GET() {
-  const client = new MongoClient(process.env.MONGODB_URI, {});
-
+  console.log("GET request received");
   try {
-    // Connect the client to the server	(optional starting in v4.7)
+    console.log("Attempting to connect to MongoDB");
     await client.connect();
-    // Send a ping to confirm a successful connection
-    await client.db("admin").command({ ping: 1 });
-    console.log(
-      "Pinged your deployment. You successfully connected to MongoDB!"
-    );
-  } finally {
-    // Ensures that the client will close when you finish/error
-    await client.close();
-  }
-}
+    console.log("Connected to MongoDB");
 
-/** This is used to update the database */
-export async function POST(req) {
-  const client = new MongoClient(process.env.MONGODB_URI, {});
-  const data = await req.json();
+    const database = client.db("your_database_name");
+    const collection = database.collection("userdata");
 
-  try {
-    /*
-        await client.connect()
-        const db = client.db('userdata')
-        const coll = db.collection('users')
-        await coll.insertMany(data)
-        */
+    console.log("Attempting to fetch data");
+    const userdata = await collection.find({}).limit(10).toArray();
+    console.log("Data fetched successfully");
 
-    return NextResponse.json(data);
+    return NextResponse.json(userdata, { status: 200 });
   } catch (error) {
-    return NextResponse.json({ error: "Unable to connect to database" });
+    console.error("Database error:", error);
+    return NextResponse.json({ error: error.message }, { status: 500 });
   } finally {
+    console.log("Closing MongoDB connection");
     await client.close();
   }
 }
