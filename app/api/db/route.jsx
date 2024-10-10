@@ -13,14 +13,15 @@ export async function GET() {
     await client.connect();
     console.log("Connected to MongoDB");
 
-    const database = client.db("your_database_name");
-    const collection = database.collection("userdata");
+    const database = client.db("userdata");
+    const collection = database.collection("users");
 
     console.log("Attempting to fetch data");
-    const userdata = await collection.find({}).limit(10).toArray();
-    console.log("Data fetched successfully");
+    // You will change the user_id to the one you want to fetch
+    const userdata = await collection.find({user_id:123456}).toArray();
+    userdata && console.log("Data fetched successfully");
 
-    return NextResponse.json(userdata, { status: 200 });
+    return NextResponse.json(userdata[0].video_url, { status: 200 });
   } catch (error) {
     console.error("Database error:", error);
     return NextResponse.json({ error: error.message }, { status: 500 });
