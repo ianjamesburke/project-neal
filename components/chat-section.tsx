@@ -4,6 +4,7 @@ import React, { useState, useRef, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { UploadButton } from "@/lib/utils/uploadthing";
+import Image from "next/image";
 
 type Message = {
   id: number;
@@ -210,11 +211,8 @@ const ChatSection: React.FC<ChatSectionProps> = ({ onRenderIdChange }) => {
   }, [isAIResponding, backendError]);
 
   return (
-    <section className="flex flex-col h-full w-full text-sm text-white bg-neutral-800 bg-opacity-30 overflow-hidden rounded-2xl border border-neutral-800">
-      <div
-        ref={messagesContainerRef}
-        className="flex-grow overflow-y-auto px-4 py-4"
-      >
+    <section className="flex h-full w-full flex-col overflow-hidden rounded-2xl border border-neutral-800 bg-neutral-800/30 text-sm text-white">
+      <div ref={messagesContainerRef} className="grow overflow-y-auto p-4">
         <div className="flex flex-col gap-4">
           {messages.map((message) => (
             <div
@@ -224,35 +222,35 @@ const ChatSection: React.FC<ChatSectionProps> = ({ onRenderIdChange }) => {
               }`}
             >
               <div
-                className={`flex items-start max-w-[80%] ${
+                className={`flex max-w-[80%] items-start ${
                   message.sender === "user" ? "flex-row-reverse" : "flex-row"
                 }`}
               >
-                <div className="flex shrink-0 self-start w-8 h-8">
+                <div className="flex h-8 w-8 shrink-0 self-start">
                   {message.sender === "user" ? (
-                    <img
+                    <Image
                       loading="lazy"
                       src="https://cdn.builder.io/api/v1/image/assets/TEMP/dd4368c4193fe4718cfa135c8756b207c6c60327fb1b953e7cc4b74b0e20c21b?placeholderIfAbsent=true&apiKey=63d274d5dd09415cb8f5e51781b306a4"
                       alt="User avatar"
-                      className="object-contain w-8 h-8 rounded-full"
+                      className="h-8 w-8 rounded-full object-contain"
                     />
                   ) : (
-                    <img
+                    <Image
                       loading="lazy"
-                      src="https://cdn.builder.io/api/v1/image/assets/TEMP/dc4cb80a02a243578c9954e82786edefd12c5ff04884d7847e26ef6f467d0be6?placeholderIfAbsent=true&apiKey=63d274d5dd09415cb8f5e51781b306a4"
+                      src="https://cdn.builder.io/api/v1/image/assets/TEMP/dc4cb80a02a243578c9954e82786edefd12c5ff04884d7847e26ef6f467d0be6?placeholderIfAbsent=true&apiKey=63d274d5dd09415cb8f5e51781b306a4.svg"
                       alt="Logo"
-                      className="object-contain w-8 h-8 rounded-half"
+                      className="h-8 w-8 object-contain"
                     />
                   )}
                 </div>
                 <div
-                  className={`mx-2 p-3 rounded-lg ${
+                  className={`mx-2 rounded-lg p-3 ${
                     message.sender === "user"
                       ? "bg-neutral-800"
                       : "bg-neutral-800 bg-opacity-50"
                   }`}
                 >
-                  <p className="text-sm whitespace-pre-wrap">{message.text}</p>
+                  <p className="whitespace-pre-wrap text-sm">{message.text}</p>
                   {message.suggestions && (
                     <div className="mt-2 space-y-2">
                       {message.suggestions.map((suggestion, index) => (
@@ -260,7 +258,7 @@ const ChatSection: React.FC<ChatSectionProps> = ({ onRenderIdChange }) => {
                           key={index}
                           variant="outline"
                           size="sm"
-                          className="mr-2 mt-2 transition-transform duration-200 ease-in-out hover:scale-105 bg-neutral-700 text-white border-neutral-600 hover:bg-neutral-600"
+                          className="mr-2 mt-2 border-neutral-600 bg-neutral-700 text-white transition-transform duration-200 ease-in-out hover:scale-105 hover:bg-neutral-600"
                           onClick={() => handleSuggestionClick(suggestion)}
                         >
                           {suggestion}
@@ -294,25 +292,25 @@ const ChatSection: React.FC<ChatSectionProps> = ({ onRenderIdChange }) => {
           e.preventDefault();
           handleSendClick();
         }}
-        className="flex items-center px-4 py-3 w-full bg-neutral-800 rounded-b-2xl"
+        className="flex w-full items-center rounded-b-2xl bg-neutral-800 px-4 py-3"
       >
         <Input
           type="text"
           placeholder="Respond to the AI..."
           value={input}
           onChange={(e) => setInput(e.target.value)}
-          className="flex-grow bg-transparent border-none focus:outline-none text-white text-sm mr-2"
+          className="mr-2 grow border-none bg-transparent text-sm text-white focus:outline-none"
         />
         <Button
           type="submit"
           aria-label="Send message"
-          className="bg-transparent border-none p-0"
+          className="border-none bg-transparent p-0"
         >
-          <img
+          <Image
             loading="lazy"
-            src="https://cdn.builder.io/api/v1/image/assets/TEMP/579006c474f7fd0463e8d5c08fe8fd4ed4a766705cb8b34c72e15d8db8c5fbf8?placeholderIfAbsent=true&apiKey=63d274d5dd09415cb8f5e51781b306a4"
+            src="https://cdn.builder.io/api/v1/image/assets/TEMP/579006c474f7fd0463e8d5c08fe8fd4ed4a766705cb8b34c72e15d8db8c5fbf8?placeholderIfAbsent=true&apiKey=63d274d5dd09415cb8f5e51781b306a4.svg"
             alt=""
-            className="object-contain w-8 h-8"
+            className="h-8 w-8 object-contain"
           />
         </Button>
       </form>

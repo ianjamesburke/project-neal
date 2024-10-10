@@ -15,18 +15,19 @@ import {
   RefreshCw,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import Image from "next/image";
 
 interface VideoEditorWindowProps {
   renderId: string | null;
 }
 
 const VideoEditorWindow: React.FC<VideoEditorWindowProps> = ({ renderId }) => {
-  const containerRef = useRef<HTMLDivElement>(null);
+  /* const containerRef = useRef<HTMLDivElement>(null); */
   const trackRef = useRef<HTMLDivElement>(null);
   const [videoUrl, setVideoUrl] = useState<string | null>(
     "https://f002.backblazeb2.com/file/creatomate-c8xg3hsxdu/135adfb6-2cb9-47c1-8908-01a8aaa8cafd.mp4"
   );
-  const [isLoading, setIsLoading] = useState<boolean>(true);
+  /* const [isLoading, setIsLoading] = useState<boolean>(true); */
 
   useEffect(() => {
     if (renderId) {
@@ -60,9 +61,9 @@ const VideoEditorWindow: React.FC<VideoEditorWindowProps> = ({ renderId }) => {
   };
 
   return (
-    <div className="flex flex-col w-full h-full overflow-hidden">
+    <div className="flex h-full w-full flex-col overflow-hidden">
       {/* VideoPreviewTopBar */}
-      <div className="flex flex-wrap gap-1 sm:gap-2 w-full p-2">
+      <div className="flex w-full flex-wrap gap-1 p-2 sm:gap-2">
         <Button
           variant="default"
           size="sm"
@@ -75,18 +76,18 @@ const VideoEditorWindow: React.FC<VideoEditorWindowProps> = ({ renderId }) => {
           variant="default"
           size="icon"
           aria-label="Decrease font size"
-          className="w-6 h-6 sm:w-8 sm:h-8"
+          className="h-6 w-6 sm:h-8 sm:w-8"
         >
           -
         </Button>
-        <span className="flex items-center justify-center text-xs sm:text-sm text-white">
+        <span className="flex items-center justify-center text-xs text-white sm:text-sm">
           48
         </span>
         <Button
           variant="default"
           size="icon"
           aria-label="Increase font size"
-          className="w-6 h-6 sm:w-8 sm:h-8"
+          className="h-6 w-6 sm:h-8 sm:w-8"
         >
           +
         </Button>
@@ -94,23 +95,23 @@ const VideoEditorWindow: React.FC<VideoEditorWindowProps> = ({ renderId }) => {
           variant="default"
           size="icon"
           aria-label="Bold"
-          className="w-6 h-6 sm:w-8 sm:h-8"
+          className="h-6 w-6 sm:h-8 sm:w-8"
         >
-          <Bold className="w-4 h-4 sm:w-5 sm:h-5" />
+          <Bold className="h-4 w-4 sm:h-5 sm:w-5" />
         </Button>
         <Button
           variant="default"
           size="icon"
           aria-label="Italic"
-          className="w-6 h-6 sm:w-8 sm:h-8"
+          className="h-6 w-6 sm:h-8 sm:w-8"
         >
-          <Italic className="w-4 h-4 sm:w-5 sm:h-5" />
+          <Italic className="h-4 w-4 sm:h-5 sm:w-5" />
         </Button>
         <Button
           variant="default"
           size="icon"
           aria-label="Change case"
-          className="w-6 h-6 sm:w-8 sm:h-8"
+          className="h-6 w-6 sm:h-8 sm:w-8"
         >
           aA
         </Button>
@@ -118,112 +119,112 @@ const VideoEditorWindow: React.FC<VideoEditorWindowProps> = ({ renderId }) => {
           variant="default"
           size="icon"
           aria-label="Underline"
-          className="w-6 h-6 sm:w-8 sm:h-8"
+          className="h-6 w-6 sm:h-8 sm:w-8"
         >
-          <Underline className="w-4 h-4 sm:w-5 sm:h-5" />
+          <Underline className="h-4 w-4 sm:h-5 sm:w-5" />
         </Button>
         <Button
           variant="default"
           size="icon"
           aria-label="Align text"
-          className="w-6 h-6 sm:w-8 sm:h-8"
+          className="h-6 w-6 sm:h-8 sm:w-8"
         >
-          <AlignLeft className="w-4 h-4 sm:w-5 sm:h-5" />
+          <AlignLeft className="h-4 w-4 sm:h-5 sm:w-5" />
         </Button>
         <Button
           variant="default"
           size="icon"
           aria-label="Select area"
-          className="w-6 h-6 sm:w-8 sm:h-8"
+          className="h-6 w-6 sm:h-8 sm:w-8"
         >
-          <div className="flex shrink-0 w-3 h-3 sm:w-4 sm:h-4 rounded border border-white border-solid"></div>
+          <div className="flex h-3 w-3 shrink-0 rounded border border-solid border-white sm:h-4 sm:w-4"></div>
         </Button>
-        <div className="flex gap-1 sm:gap-2 ml-auto">
+        <div className="ml-auto flex gap-1 sm:gap-2">
           <Button
             variant="default"
             size="icon"
             aria-label="Add shape"
-            className="w-6 h-6 sm:w-8 sm:h-8"
+            className="h-6 w-6 sm:h-8 sm:w-8"
           >
-            <img
+            <Image
               loading="lazy"
-              src="https://cdn.builder.io/api/v1/image/assets/TEMP/f175bfb4432f331a0e6d522eac6042de6c99fb76586831462bf76b727116e06d?placeholderIfAbsent=true&apiKey=63d274d5dd09415cb8f5e51781b306a4"
+              src="https://cdn.builder.io/api/v1/image/assets/TEMP/f175bfb4432f331a0e6d522eac6042de6c99fb76586831462bf76b727116e06d?placeholderIfAbsent=true&apiKey=63d274d5dd09415cb8f5e51781b306a4.svg"
               alt=""
-              className="object-contain w-full h-full rounded-none"
+              className="h-full w-full rounded-none object-contain"
             />
           </Button>
           <Button
             variant="default"
             size="icon"
             aria-label="Add image"
-            className="w-6 h-6 sm:w-8 sm:h-8"
+            className="h-6 w-6 sm:h-8 sm:w-8"
           >
-            <img
+            <Image
               loading="lazy"
-              src="https://cdn.builder.io/api/v1/image/assets/TEMP/f1dff542c81b18f169c1719a5589a4bc911de3cd8aedd1b4a946fc58e9de21fa?placeholderIfAbsent=true&apiKey=63d274d5dd09415cb8f5e51781b306a4"
+              src="https://cdn.builder.io/api/v1/image/assets/TEMP/f1dff542c81b18f169c1719a5589a4bc911de3cd8aedd1b4a946fc58e9de21fa?placeholderIfAbsent=true&apiKey=63d274d5dd09415cb8f5e51781b306a4.svg"
               alt=""
-              className="object-contain w-full h-full rounded-none"
+              className="h-full w-full rounded-none object-contain"
             />
           </Button>
           <Button
             variant="default"
             size="icon"
             aria-label="Refresh preview"
-            className="w-6 h-6 sm:w-8 sm:h-8"
+            className="h-6 w-6 sm:h-8 sm:w-8"
           >
-            <RefreshCw className="w-4 h-4 sm:w-5 sm:h-5" />
+            <RefreshCw className="h-4 w-4 sm:h-5 sm:w-5" />
           </Button>
         </div>
       </div>
       {/* VideoPreviewTopBar End */}
 
       {/* Video Preview */}
-      <div className="flex-grow overflow-hidden rounded-lg checkerboard flex items-center justify-center">
+      <div className="checkerboard flex grow items-center justify-center overflow-hidden rounded-lg">
         {videoUrl ? (
           // For some reason, you have to add key={videoUrl} to force the video to reload
           <video
             key={videoUrl}
-            className="max-w-full max-h-full object-contain"
+            className="max-h-full max-w-full object-contain"
             controls
           >
             <source src={videoUrl} />
             Your browser does not support the video tag.
           </video>
         ) : (
-          <div className="w-full h-full flex items-center justify-center">
+          <div className="flex h-full w-full items-center justify-center">
             <p className="text-gray-400">No video available</p>
           </div>
         )}
       </div>
 
       {/* VideoTimelineTopBar */}
-      <div className="flex items-center justify-between mx-2 my-2 w-full align-middle">
+      <div className="m-2 flex w-full items-center justify-between align-middle">
         {/* Left section */}
         <div className="flex items-center gap-2 space-x-2">
-          <span className="text-sm sm:text-base font-medium text-white whitespace-nowrap">
+          <span className="whitespace-nowrap text-sm font-medium text-white sm:text-base">
             Clip Editor
           </span>
           <button aria-label="Previous clip">
-            <ChevronLeft className="w-4 h-4 sm:w-5 sm:h-5" />
+            <ChevronLeft className="h-4 w-4 sm:h-5 sm:w-5" />
           </button>
           <button aria-label="Next clip">
-            <ChevronRight className="w-4 h-4 sm:w-5 sm:h-5" />
+            <ChevronRight className="h-4 w-4 sm:h-5 sm:w-5" />
           </button>
           <button aria-label="Split clip">
-            <Scissors className="w-4 h-4 sm:w-5 sm:h-5" />
+            <Scissors className="h-4 w-4 sm:h-5 sm:w-5" />
           </button>
           <button aria-label="Delete clip">
-            <Trash2 className="w-4 h-4 sm:w-5 sm:h-5" />
+            <Trash2 className="h-4 w-4 sm:h-5 sm:w-5" />
           </button>
         </div>
 
         {/* Center section */}
-        <div className="flex-grow">
+        <div className="grow">
           <button
             aria-label="Play/Pause"
-            className="w-[60px] sm:w-[81px] h-[11px] flex items-center justify-center"
+            className="flex h-[11px] w-[60px] items-center justify-center sm:w-[81px]"
           >
-            <Play className="w-4 h-4 sm:w-5 sm:h-5" />
+            <Play className="h-4 w-4 sm:h-5 sm:w-5" />
           </button>
         </div>
 
@@ -231,9 +232,9 @@ const VideoEditorWindow: React.FC<VideoEditorWindowProps> = ({ renderId }) => {
         <div className="flex items-center">
           <button
             aria-label="Toggle fullscreen"
-            className="mr-3 flex shrink-0 w-3 h-3 sm:w-4 sm:h-4 rounded border border-white border-solid items-center justify-center"
+            className="mr-3 flex h-3 w-3 shrink-0 items-center justify-center rounded border border-solid border-white sm:h-4 sm:w-4"
           >
-            <Maximize className="w-4 h-4 sm:w-5 sm:h-5" />
+            <Maximize className="h-4 w-4 sm:h-5 sm:w-5" />
           </button>
         </div>
       </div>
@@ -241,8 +242,8 @@ const VideoEditorWindow: React.FC<VideoEditorWindowProps> = ({ renderId }) => {
 
       {/* Timeline */}
       <div>
-        <div className="flex gap-5 justify-between items-center mt-2.5 mr-4 text-xs font-medium text-white whitespace-nowrap max-md:mr-2.5">
-          <div className="flex gap-8 self-stretch my-auto">
+        <div className="mr-4 mt-2.5 flex items-center justify-between gap-5 whitespace-nowrap text-xs font-medium text-white max-md:mr-2.5">
+          <div className="my-auto flex gap-8 self-stretch">
             <span>00:00</span>
             <span>00:05</span>
             <span>00:10</span>
@@ -256,62 +257,62 @@ const VideoEditorWindow: React.FC<VideoEditorWindowProps> = ({ renderId }) => {
             <span>01:00</span>
           </div>
         </div>
-        <img
+        <Image
           loading="lazy"
-          src="https://cdn.builder.io/api/v1/image/assets/TEMP/ff8ec43f06abb4bd47592dd853bbfee2ad7c92e3ceee4991ee9b15d0e8860e0b?placeholderIfAbsent=true&apiKey=63d274d5dd09415cb8f5e51781b306a4"
+          src="https://cdn.builder.io/api/v1/image/assets/TEMP/ff8ec43f06abb4bd47592dd853bbfee2ad7c92e3ceee4991ee9b15d0e8860e0b?placeholderIfAbsent=true&apiKey=63d274d5dd09415cb8f5e51781b306a4.svg"
           alt="Video timeline"
-          className="object-contain mt-2.5 rounded-none aspect-[23.26] w-[750px] max-md:max-w-full"
+          className="mt-2.5 aspect-[23.26] w-[750px] rounded-none object-contain max-md:max-w-full"
         />
-        <div className="flex flex-wrap gap-1 mt-1 max-md:max-w-full">
+        <div className="mt-1 flex flex-wrap gap-1 max-md:max-w-full">
           <button aria-label="Toggle audio">
-            <img
+            <Image
               loading="lazy"
-              src="https://cdn.builder.io/api/v1/image/assets/TEMP/0931d74cf02cde574e1c388ab1bae81dd09b9ff1fcef5f1474c66fea62975221?placeholderIfAbsent=true&apiKey=63d274d5dd09415cb8f5e51781b306a4"
+              src="https://cdn.builder.io/api/v1/image/assets/TEMP/0931d74cf02cde574e1c388ab1bae81dd09b9ff1fcef5f1474c66fea62975221?placeholderIfAbsent=true&apiKey=63d274d5dd09415cb8f5e51781b306a4.svg"
               alt=""
-              className="object-contain shrink-0 w-8 rounded-none aspect-square"
+              className="aspect-square w-8 shrink-0 rounded-none object-contain"
             />
           </button>
-          <div className="flex shrink-0 h-8 rounded-lg bg-neutral-800 w-[51px]"></div>
+          <div className="flex h-8 w-[51px] shrink-0 rounded-lg bg-neutral-800"></div>
           <button
             aria-label="Add audio track"
-            className="flex flex-col justify-center items-start px-2 py-2.5 rounded-lg border border-indigo-400 border-solid bg-indigo-400 bg-opacity-20 max-md:pr-5 max-md:max-w-full"
+            className="flex flex-col items-start justify-center rounded-lg border border-solid border-indigo-400 bg-indigo-400/20 px-2 py-2.5 max-md:max-w-full max-md:pr-5"
           >
-            <img
+            <Image
               loading="lazy"
-              src="https://cdn.builder.io/api/v1/image/assets/TEMP/cec8a37156bff22674bc0314cbf3700b890805b8f22f1e312b405678fa31c69c?placeholderIfAbsent=true&apiKey=63d274d5dd09415cb8f5e51781b306a4"
+              src="https://cdn.builder.io/api/v1/image/assets/TEMP/cec8a37156bff22674bc0314cbf3700b890805b8f22f1e312b405678fa31c69c?placeholderIfAbsent=true&apiKey=63d274d5dd09415cb8f5e51781b306a4.svg"
               alt=""
-              className="object-contain w-4 aspect-[1.14]"
+              className="aspect-[1.14] w-4 object-contain"
             />
           </button>
         </div>
-        <div className="flex flex-wrap gap-1 mt-1 max-md:max-w-full">
+        <div className="mt-1 flex flex-wrap gap-1 max-md:max-w-full">
           <button aria-label="Toggle video">
-            <img
+            <Image
               loading="lazy"
-              src="https://cdn.builder.io/api/v1/image/assets/TEMP/cdbf3053fedfeb27b017ced2c04cba4cf55a4cffcab03110545659ce43cb4d61?placeholderIfAbsent=true&apiKey=63d274d5dd09415cb8f5e51781b306a4"
+              src="https://cdn.builder.io/api/v1/image/assets/TEMP/cdbf3053fedfeb27b017ced2c04cba4cf55a4cffcab03110545659ce43cb4d61?placeholderIfAbsent=true&apiKey=63d274d5dd09415cb8f5e51781b306a4.svg"
               alt=""
-              className="object-contain shrink-0 w-8 rounded-none aspect-square"
+              className="aspect-square w-8 shrink-0 rounded-none object-contain"
             />
           </button>
-          <div className="flex shrink-0 h-8 rounded-lg bg-neutral-800 w-[122px]"></div>
+          <div className="flex h-8 w-[122px] shrink-0 rounded-lg bg-neutral-800"></div>
           <button
             aria-label="Add video track"
-            className="flex flex-col justify-center items-start px-2.5 py-2.5 bg-indigo-400 rounded-lg max-md:pr-5"
+            className="flex flex-col items-start justify-center rounded-lg bg-indigo-400 p-2.5 max-md:pr-5"
           >
-            <img
+            <Image
               loading="lazy"
-              src="https://cdn.builder.io/api/v1/image/assets/TEMP/7a8af2284f4343ec2c60d583b6ebf14e8b401e7dff3d49455dcf4e8a460bbfe2?placeholderIfAbsent=true&apiKey=63d274d5dd09415cb8f5e51781b306a4"
+              src="https://cdn.builder.io/api/v1/image/assets/TEMP/7a8af2284f4343ec2c60d583b6ebf14e8b401e7dff3d49455dcf4e8a460bbfe2?placeholderIfAbsent=true&apiKey=63d274d5dd09415cb8f5e51781b306a4.svg"
               alt=""
-              className="object-contain w-3 aspect-square"
+              className="aspect-square w-3 object-contain"
             />
           </button>
-          <div className="flex shrink-0 max-w-full h-8 rounded-lg bg-neutral-800 w-[395px]"></div>
+          <div className="flex h-8 w-[395px] max-w-full shrink-0 rounded-lg bg-neutral-800"></div>
         </div>
       </div>
       {/* Timeline End */}
 
       <div className="mt-4">
-        <div className="relative h-4 bg-gray-900 rounded">
+        <div className="relative h-4 rounded bg-gray-900">
           <div ref={trackRef} className="absolute inset-0"></div>
         </div>
       </div>

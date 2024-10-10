@@ -4,5 +4,8 @@
     "next/typescript",
     "plugin:tailwindcss/recommended",
     "prettier"
-  ]
+  ],
+  "rules": {
+    "@typescript-eslint/no-unused-vars": "warn"
+  }
 }

@@ -8,19 +8,19 @@ export default function SpliceLayout({
   children: React.ReactNode;
 }) {
   return (
-    <div className="flex flex-col h-screen overflow-hidden bg-neutral-950">
+    <div className="flex flex-col overflow-hidden bg-neutral-950">
       <Header />
       <div className="h-px border-b border-neutral-800" />
-      <div className="flex flex-grow overflow-hidden">
+      <div className="flex grow overflow-hidden">
         <Sidebar />
-        <main className="flex-grow overflow-auto p-6 hidden md:block">
+        <main className="hidden grow overflow-auto p-6 md:block">
           {children}
         </main>
-        <div className="flex-grow flex items-center justify-center md:hidden">
-          <h1 className="text-center text-white mx-24">
-            {" "}
-            We're sorry, but our app is currently not optimized for mobile.
-            Please come back and visit us on a desktop.
+        <div className="flex grow items-center justify-center md:hidden">
+          <h1 className="mx-24 text-center text-white">
+            {
+              "We're sorry, but our app is currently not optimized for mobile. Please come back and visit us on a desktop."
+            }
           </h1>
         </div>
       </div>

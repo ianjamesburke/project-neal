@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import { Download, Folder, Share } from "lucide-react";
+import { Download, Folder, TvMinimalPlay } from "lucide-react";
 import Image from "next/image";
 import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -8,11 +8,10 @@ import { Skeleton } from "@/components/ui/skeleton";
 export async function Header() {
   const { getUser } = getKindeServerSession();
   const user = await getUser();
-  const isAuthenticated = !!user;
 
   return (
-    <header className="flex items-center h-16">
-      <div className="flex justify-center gap-10 min-w-[64px] h-16 border-r border-neutral-800">
+    <header className="flex h-16 items-center">
+      <div className="flex h-16 min-w-[64px] justify-center gap-10 border-r border-neutral-800">
         <Image
           loading="lazy"
           src="/assets/icons/logo.svg"
@@ -21,17 +20,17 @@ export async function Header() {
           height={32}
         />
       </div>
-      <div className="flex items-center justify-between w-full">
-        <div className="flex gap-16 text-base text-white pl-16">
+      <div className="flex w-full items-center justify-between">
+        <div className="flex gap-16 pl-16 text-base text-white">
           <span>File</span>
           <span>Edit</span>
           <span>Resources</span>
         </div>
-        <div className="flex items-center gap-8 mr-8">
-          <div className="flex items-center gap-2 text-base font-medium text-right text-white">
-            <Folder className="w-5 h-5  opacity-40" />
-            <div className="basis-auto ">
-              <span className="text-white text-base opacity-40">
+        <div className="mr-8 flex items-center gap-8">
+          <div className="flex items-center gap-2 text-right text-base font-medium text-white">
+            <Folder className="h-5 w-5 opacity-40" />
+            <div className="basis-auto">
+              <span className="text-base text-white opacity-40">
                 Project Title /
               </span>{" "}
               File Name
@@ -48,12 +47,15 @@ export async function Header() {
                 alt="Avatar"
               />
               <AvatarFallback>
-                <Skeleton className="bg-muted-foreground w-full h-full" />
+                <Skeleton className="h-full w-full bg-muted-foreground" />
               </AvatarFallback>
             </Avatar>
-            <Button variant="dark">Preview</Button>
+            <Button variant="dark">
+              <TvMinimalPlay className="h-4 w-4" />
+              Preview
+            </Button>
             <Button variant="share">
-              <Download className="w-4 h-4" />
+              <Download className="h-4 w-4" />
               Share
             </Button>
           </div>

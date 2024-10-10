@@ -8,17 +8,17 @@ import Image from "next/image";
 export async function Sidebar() {
   const active = "Splice AI";
   return (
-    <aside className="flex flex-col  w-16 border-r border-neutral-800 items-center text-xs font-medium text-center text-white text-opacity-60 max-md:hidden h-full">
+    <aside className="flex h-full w-16 flex-col items-center border-r border-neutral-800 text-center text-xs font-medium text-white text-opacity-60 max-md:hidden">
       <nav>
-        <ul className="flex flex-col items-center flex-grow overflow-y-auto">
+        <ul className="flex grow flex-col items-center overflow-y-auto">
           {SIDEBAR_ITEMS.map((item, index) => {
             return (
               <li key={index}>
                 <button
                   className={cn(
-                    `flex flex-col border-r group border-neutral-800 gap-1.5 h-16 w-16 p-3 items-center whitespace-nowrap transition-colors overflow-hidden`,
-                    "hover:bg-dark-800 hover:border-neutral-800 ",
-                    active === item.label && "!bg-dark-700 !border-neutral-800 "
+                    `group flex h-16 w-16 flex-col items-center gap-1.5 overflow-hidden whitespace-nowrap border-r border-neutral-800 p-3 transition-colors`,
+                    "hover:border-neutral-800 hover:bg-dark-800",
+                    active === item.label && "!border-neutral-800 !bg-dark-700"
                   )}
                   onClick={() => {
                     /* Add click handler here */
@@ -27,11 +27,19 @@ export async function Sidebar() {
                   <Image
                     src={item.icon}
                     alt={item.icon}
-                    width={20}
-                    height={20}
-                    className="invert opacity-40 group-hover:opacity-100"
+                    width={24}
+                    height={24}
+                    className={cn(
+                      "opacity-40 invert group-hover:opacity-100",
+                      active === item.label && "opacity-100"
+                    )}
                   />
-                  <span className="text-[10px] group-hover:text-white">
+                  <span
+                    className={cn(
+                      "text-[10px] group-hover:text-white",
+                      active === item.label && "text-white"
+                    )}
+                  >
                     {item.label}
                   </span>
                 </button>
@@ -41,9 +49,9 @@ export async function Sidebar() {
         </ul>
       </nav>
 
-      <div className="mt-auto flex flex-col items-center space-y-4 pb-8 px-3">
+      <div className="mt-auto flex flex-col items-center space-y-4 px-3 pb-8">
         <button
-          className="flex flex-col gap-1.5 items-center bg-transparent border-none"
+          className="flex flex-col items-center gap-1.5 border-none bg-transparent"
           onClick={() => {
             /* Add click handler for settings */
           }}
@@ -51,22 +59,22 @@ export async function Sidebar() {
           <Image
             loading="lazy"
             src="/assets/icons/settings.svg"
-            className="invert cursor-pointer"
+            className="cursor-pointer invert"
             alt="Settings"
-            width={20}
-            height={20}
+            width={24}
+            height={24}
           />
-          <div className="text-white text-[10px]">Settings</div>
+          <div className="text-[10px] text-white">Settings</div>
         </button>
 
-        <div className="bg-purple p-3 rounded-full">
+        <div className="h-10 w-10 rounded-full bg-purple p-3">
           <Image
             loading="lazy"
             src="/assets/icons/faq.svg"
             alt="FAQ"
-            className="invert cursor-pointer"
-            width={20}
-            height={20}
+            className="cursor-pointer invert"
+            width={16}
+            height={16}
           />
         </div>
       </div>

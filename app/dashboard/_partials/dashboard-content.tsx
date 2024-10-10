@@ -14,6 +14,7 @@ export default function DashboardContent() {
       <div className="w-1/3 overflow-auto">
         <ChatSection onRenderIdChange={setRenderId} />
       </div>
+      <div className="h-full w-px bg-dark-700"></div>
       <div className="overflow-auto pl-4">
         <VideoEditorWindow renderId={renderId} />
       </div>
