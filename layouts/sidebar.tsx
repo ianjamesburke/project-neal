@@ -16,8 +16,8 @@ const Sidebar: React.FC = () => {
               <li key={index}>
                 <button
                   className={cn(
-                    `flex flex-col border-r border-neutral-800 gap-1.5 h-16 w-16 p-3 items-center whitespace-nowrap transition-colors overflow-hidden`,
-                    "hover:bg-dark-800 hover:border-neutral-800",
+                    `flex flex-col border-r group border-neutral-800 gap-1.5 h-16 w-16 p-3 items-center whitespace-nowrap transition-colors overflow-hidden`,
+                    "hover:bg-dark-800 hover:border-neutral-800 ",
                     active === item.label && "!bg-dark-700 !border-neutral-800 "
                   )}
                   onClick={() => {
@@ -29,9 +29,11 @@ const Sidebar: React.FC = () => {
                     alt={item.icon}
                     width={20}
                     height={20}
-                    className="invert opacity-40"
+                    className="invert opacity-40 group-hover:opacity-100"
                   />
-                  <span className="text-[10px]">{item.label}</span>
+                  <span className="text-[10px] group-hover:text-white">
+                    {item.label}
+                  </span>
                 </button>
               </li>
             );
