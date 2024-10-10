@@ -1,4 +1,4 @@
-import UIProvider from "@/components/UIProvider";
+import UIProvider from "@/components/ui-provider";
 import "./globals.css";
 import { Inter } from "next/font/google";
 
