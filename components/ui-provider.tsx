@@ -1,42 +1,79 @@
 "use client";
 
 import { KindeProvider } from "@kinde-oss/kinde-auth-nextjs";
-import { useEffect, useState } from "react";
+import {
+  Dispatch,
+  SetStateAction,
+  createContext,
+  useContext,
+  useEffect,
+  useState,
+} from "react";
 
-interface Data {
-  // Define the data structure here
+interface UserData {
+  user_id: number | undefined;
+  video_url: string | undefined;
 }
 
-export default function UIProvider({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+// Update the context type
+export const UserDataContext = createContext<{
+  data: UserData;
+  setData: Dispatch<SetStateAction<UserData>>;
+}>({
+  data: { user_id: undefined, video_url: undefined },
+  setData: () => {},
+});
+
+const UIProvider = ({ children }: { children: React.ReactNode }) => {
   /** State to store the data fetched from the database */
-  const [data, setData] = useState<Data | undefined>(undefined);
+  const [data, setData] = useState<UserData>({
+    user_id: undefined,
+    video_url: undefined,
+  });
+
   /** grabs data from database */
   const getData = async () => {
     const response = await fetch("/api/db", { method: "GET" });
     if (response.ok) {
       const result = await response.json();
       return result;
-
-      // do something with the data
-      // This is where you would store the data in a state and pass it down to the children using react hooks
     } else {
       console.error("Error fetching data");
     }
   };
 
   useEffect(() => {
-    // This react hook makes sure the data fetched into managed state stays synced with the page rendering
-    // The dependency is currently set to initial render only
-    setData(getData());
+    const fetchData = async () => {
+      try {
+        const rawData = await getData();
+        setData(rawData);
+      } catch (error) {
+        console.error("Error fetching or parsing data:", error);
+        // Handle the error appropriately (e.g., set an error state)
+      }
+    };
+
+    fetchData();
   }, []);
 
   return (
     <div>
-      <KindeProvider>{children}</KindeProvider>
+      <KindeProvider>
+        <UserDataContext.Provider value={{ data, setData }}>
+          {children}
+        </UserDataContext.Provider>
+      </KindeProvider>
     </div>
   );
+};
+
+/** This lets other child components to set the edited files subdirectory folder */
+export function useUserData() {
+  const context = useContext(UserDataContext);
+  if (context === undefined) {
+    throw new Error("useUserData must be used within a userDataProvider");
+  }
+  return context;
 }
+
+export default UIProvider;
