@@ -29,13 +29,6 @@ const VideoEditorWindow: React.FC<VideoEditorWindowProps> = ({ renderId }) => {
   );
   /* const [isLoading, setIsLoading] = useState<boolean>(true); */
 
-  useEffect(() => {
-    if (renderId) {
-      console.log("Received renderId:", renderId);
-      pollRenderStatus(renderId);
-    }
-  }, [renderId]);
-
   const pollRenderStatus = async (renderId: string) => {
     console.log("Beginning polling render status for:", renderId);
     const interval = setInterval(async () => {
@@ -59,6 +52,13 @@ const VideoEditorWindow: React.FC<VideoEditorWindowProps> = ({ renderId }) => {
       }
     }, 2500);
   };
+
+  useEffect(() => {
+    if (renderId) {
+      console.log("Received renderId:", renderId);
+      pollRenderStatus(renderId);
+    }
+  }, [renderId]);
 
   return (
     <div className="flex h-full w-full flex-col overflow-hidden">
@@ -151,6 +151,8 @@ const VideoEditorWindow: React.FC<VideoEditorWindowProps> = ({ renderId }) => {
               src="https://cdn.builder.io/api/v1/image/assets/TEMP/f175bfb4432f331a0e6d522eac6042de6c99fb76586831462bf76b727116e06d?placeholderIfAbsent=true&apiKey=63d274d5dd09415cb8f5e51781b306a4.svg"
               alt=""
               className="h-full w-full rounded-none object-contain"
+              width={24}
+              height={24}
             />
           </Button>
           <Button
@@ -164,6 +166,8 @@ const VideoEditorWindow: React.FC<VideoEditorWindowProps> = ({ renderId }) => {
               src="https://cdn.builder.io/api/v1/image/assets/TEMP/f1dff542c81b18f169c1719a5589a4bc911de3cd8aedd1b4a946fc58e9de21fa?placeholderIfAbsent=true&apiKey=63d274d5dd09415cb8f5e51781b306a4.svg"
               alt=""
               className="h-full w-full rounded-none object-contain"
+              width={24}
+              height={24}
             />
           </Button>
           <Button
@@ -261,7 +265,9 @@ const VideoEditorWindow: React.FC<VideoEditorWindowProps> = ({ renderId }) => {
           loading="lazy"
           src="https://cdn.builder.io/api/v1/image/assets/TEMP/ff8ec43f06abb4bd47592dd853bbfee2ad7c92e3ceee4991ee9b15d0e8860e0b?placeholderIfAbsent=true&apiKey=63d274d5dd09415cb8f5e51781b306a4.svg"
           alt="Video timeline"
-          className="mt-2.5 aspect-[23.26] w-[750px] rounded-none object-contain max-md:max-w-full"
+          className="mt-2.5 aspect-[23.26] rounded-none object-contain max-md:max-w-full"
+          width={750}
+          height={750}
         />
         <div className="mt-1 flex flex-wrap gap-1 max-md:max-w-full">
           <button aria-label="Toggle audio">
@@ -269,7 +275,9 @@ const VideoEditorWindow: React.FC<VideoEditorWindowProps> = ({ renderId }) => {
               loading="lazy"
               src="https://cdn.builder.io/api/v1/image/assets/TEMP/0931d74cf02cde574e1c388ab1bae81dd09b9ff1fcef5f1474c66fea62975221?placeholderIfAbsent=true&apiKey=63d274d5dd09415cb8f5e51781b306a4.svg"
               alt=""
-              className="aspect-square w-8 shrink-0 rounded-none object-contain"
+              className="aspect-square shrink-0 rounded-none object-contain"
+              width={32}
+              height={32}
             />
           </button>
           <div className="flex h-8 w-[51px] shrink-0 rounded-lg bg-neutral-800"></div>
@@ -282,6 +290,8 @@ const VideoEditorWindow: React.FC<VideoEditorWindowProps> = ({ renderId }) => {
               src="https://cdn.builder.io/api/v1/image/assets/TEMP/cec8a37156bff22674bc0314cbf3700b890805b8f22f1e312b405678fa31c69c?placeholderIfAbsent=true&apiKey=63d274d5dd09415cb8f5e51781b306a4.svg"
               alt=""
               className="aspect-[1.14] w-4 object-contain"
+              width={16}
+              height={16}
             />
           </button>
         </div>
@@ -291,7 +301,9 @@ const VideoEditorWindow: React.FC<VideoEditorWindowProps> = ({ renderId }) => {
               loading="lazy"
               src="https://cdn.builder.io/api/v1/image/assets/TEMP/cdbf3053fedfeb27b017ced2c04cba4cf55a4cffcab03110545659ce43cb4d61?placeholderIfAbsent=true&apiKey=63d274d5dd09415cb8f5e51781b306a4.svg"
               alt=""
-              className="aspect-square w-8 shrink-0 rounded-none object-contain"
+              className="aspect-square shrink-0 rounded-none object-contain"
+              width={32}
+              height={32}
             />
           </button>
           <div className="flex h-8 w-[122px] shrink-0 rounded-lg bg-neutral-800"></div>
@@ -304,6 +316,8 @@ const VideoEditorWindow: React.FC<VideoEditorWindowProps> = ({ renderId }) => {
               src="https://cdn.builder.io/api/v1/image/assets/TEMP/7a8af2284f4343ec2c60d583b6ebf14e8b401e7dff3d49455dcf4e8a460bbfe2?placeholderIfAbsent=true&apiKey=63d274d5dd09415cb8f5e51781b306a4.svg"
               alt=""
               className="aspect-square w-3 object-contain"
+              width={12}
+              height={12}
             />
           </button>
           <div className="flex h-8 w-[395px] max-w-full shrink-0 rounded-lg bg-neutral-800"></div>

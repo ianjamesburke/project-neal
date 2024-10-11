@@ -10,7 +10,7 @@ export async function Header() {
   const user = await getUser();
 
   return (
-    <header className="flex h-16 items-center">
+    <header className="flex h-16 items-center border-b border-neutral-800">
       <div className="flex h-16 min-w-[64px] justify-center gap-10 border-r border-neutral-800">
         <Image
           loading="lazy"

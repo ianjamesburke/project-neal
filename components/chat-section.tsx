@@ -21,6 +21,7 @@ const ChatSection: React.FC<ChatSectionProps> = ({ onRenderIdChange }) => {
   const initialMessage =
     "Hello! Welcome to Project-Neal. I'm here to help you create high converting video creative. Tell me what is your product called and tell me a bit about it. \n\n i only know about one product right now shhhh";
 
+  // States
   const [messages, setMessages] = useState<Message[]>([
     {
       id: 1,
@@ -232,14 +233,17 @@ const ChatSection: React.FC<ChatSectionProps> = ({ onRenderIdChange }) => {
                       loading="lazy"
                       src="https://cdn.builder.io/api/v1/image/assets/TEMP/dd4368c4193fe4718cfa135c8756b207c6c60327fb1b953e7cc4b74b0e20c21b?placeholderIfAbsent=true&apiKey=63d274d5dd09415cb8f5e51781b306a4"
                       alt="User avatar"
-                      className="h-8 w-8 rounded-full object-contain"
+                      width={32}
+                      height={32}
+                      className=" rounded-full object-contain"
                     />
                   ) : (
                     <Image
                       loading="lazy"
                       src="https://cdn.builder.io/api/v1/image/assets/TEMP/dc4cb80a02a243578c9954e82786edefd12c5ff04884d7847e26ef6f467d0be6?placeholderIfAbsent=true&apiKey=63d274d5dd09415cb8f5e51781b306a4.svg"
                       alt="Logo"
-                      className="h-8 w-8 object-contain"
+                      width={32}
+                      height={32}
                     />
                   )}
                 </div>
@@ -247,7 +251,7 @@ const ChatSection: React.FC<ChatSectionProps> = ({ onRenderIdChange }) => {
                   className={`mx-2 rounded-lg p-3 ${
                     message.sender === "user"
                       ? "bg-neutral-800"
-                      : "bg-neutral-800 bg-opacity-50"
+                      : "bg-neutral-800/50"
                   }`}
                 >
                   <p className="whitespace-pre-wrap text-sm">{message.text}</p>
@@ -310,7 +314,8 @@ const ChatSection: React.FC<ChatSectionProps> = ({ onRenderIdChange }) => {
             loading="lazy"
             src="https://cdn.builder.io/api/v1/image/assets/TEMP/579006c474f7fd0463e8d5c08fe8fd4ed4a766705cb8b34c72e15d8db8c5fbf8?placeholderIfAbsent=true&apiKey=63d274d5dd09415cb8f5e51781b306a4.svg"
             alt=""
-            className="h-8 w-8 object-contain"
+            width={32}
+            height={32}
           />
         </Button>
       </form>
