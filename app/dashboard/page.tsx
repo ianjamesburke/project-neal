@@ -1,20 +1,9 @@
-"use client";
-
-import React, { useState } from "react";
-import ChatSection from "../../components/ChatSection";
-import VideoEditorWindow from "../../components/VideoEditorWindow";
+import DashboardContent from "./_partials/dashboard-content";
 
 const SpliceAI: React.FC = () => {
-  const [renderId, setRenderId] = useState<string | null>(null);
-
   return (
     <div className="flex h-full max-md:flex-col">
-      <div className="w-1/3 overflow-auto">
-        <ChatSection onRenderIdChange={setRenderId} />
-      </div>
-      <div className="overflow-auto pl-4">
-        <VideoEditorWindow renderId={renderId} />
-      </div>
+      <DashboardContent />
     </div>
   );
 };

@@ -11,7 +11,7 @@ import base64
 load_dotenv()
 
 # Retrieve variables from environment
-generate_scriptAssistantID = 'asst_zp79pmKorwEFozq2gUQ9oIGU'
+generate_scriptAssistantID = os.getenv("GENERATE_SCRIPT_ASSISTANT_ID")
 
 client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 
@@ -46,7 +46,7 @@ def make_call_to_generate_editing_script(context):
     # Run the assistant
     run = client.beta.threads.runs.create(
         thread_id=thread.id,
-        assistant_id=generate_scriptAssistantID
+        assistant_id=os.getenv("GENERATE_SCRIPT_ASSISTANT_ID"),
     )
 
     # Wait for the run to complete

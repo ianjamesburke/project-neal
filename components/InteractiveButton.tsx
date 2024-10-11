@@ -1,7 +1,7 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { useUserData } from "./UIProvider";
+import { useUserData } from "./ui-provider";
 
 export function InteractiveButton() {
   const { data } = useUserData();

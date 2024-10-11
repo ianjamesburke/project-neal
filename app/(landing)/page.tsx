@@ -1,28 +1,15 @@
-"use client";
-
 import { LoginLink, LogoutLink } from "@kinde-oss/kinde-auth-nextjs/components";
-import { useEffect, useState } from "react";
 import Link from "next/link";
+import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
 import { Button } from "@/components/ui/button";
-import { useKindeBrowserClient } from "@kinde-oss/kinde-auth-nextjs";
 
-export default function LandingPageContent() {
-  const [isLoading, setIsLoading] = useState(true);
-  const { user } = useKindeBrowserClient();
-
-  // This useEffect hook is where you would apply logic to check if the user is authenticated or not and set the isLoading state accordingly.
-  useEffect(() => {
-    setIsLoading(false);
-  }, [user]);
-
-  if (isLoading) {
-    return <div>Loading...</div>;
-  }
+export default async function LandingPage() {
+  const { isAuthenticated } = getKindeServerSession();
 
   return (
-    <>
+    <div className="flex flex-col items-center justify-center min-h-screen bg-black text-white">
       <h1 className="text-4xl font-bold mb-8">Welcome</h1>
-      {user?.id ? (
+      {(await isAuthenticated()) ? (
         <div className="flex flex-col items-center space-y-4">
           {/* Changed to flex-col, items-center and space-y-4 for vertical spacing and centering */}
           <Link href="/dashboard">
@@ -40,6 +27,6 @@ export default function LandingPageContent() {
           </LoginLink>
         </div>
       )}
-    </>
+    </div>
   );
 }
