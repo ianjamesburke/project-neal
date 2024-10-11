@@ -61,7 +61,7 @@ const VideoEditorWindow: React.FC<VideoEditorWindowProps> = ({ renderId }) => {
   }, [renderId]);
 
   return (
-    <div className="flex h-full w-full flex-col overflow-hidden">
+    <div className="flex h-full w-full flex-col overflow-x-hidden p-6 pl-4">
       {/* VideoPreviewTopBar */}
       <div className="flex w-full flex-wrap gap-1 p-2 sm:gap-2">
         <Button
