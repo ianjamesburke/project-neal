@@ -1,9 +1,24 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { NextResponse } from "next/server";
+import type { NextRequest } from "next/server";
+import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
 
-/** This is the middleware function that sets the userID in the header */
-export default async function middleware(req: NextRequest) {
-  const response = NextResponse.next();
+export async function middleware(request: NextRequest) {
+  const { isAuthenticated, getUser } = getKindeServerSession();
 
-  // Set the user ID in the header so it can be passed down to client components
-  return response;
+  if (request.nextUrl.pathname.startsWith("/dashboard") || request.nextUrl.pathname.startsWith("/api/db")) {
+    if (await isAuthenticated()) {
+      const user = await getUser();
+      const response = NextResponse.next();
+      response.headers.set("userID", user.id);
+      return response;
+    } else {
+      return NextResponse.redirect(new URL("/", request.url));
+    }
+  }
+
+  return NextResponse.next();
+}
+
+export const config = {
+  matcher: ["/dashboard/:path*", "/api/db"],
 };

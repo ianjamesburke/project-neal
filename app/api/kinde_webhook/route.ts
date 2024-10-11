@@ -2,48 +2,76 @@ import { NextRequest, NextResponse } from "next/server";
 import jwksClient from "jwks-rsa";
 import jwt from "jsonwebtoken";
 
-// The Kinde issuer URL should already be in your `.env` file
-// from when you initially set up Kinde. This will fetch your
-// public JSON web keys file
 const client = jwksClient({
   jwksUri: `${process.env.KINDE_ISSUER_URL}/.well-known/jwks.json`,
 });
 
 export async function POST(req: NextRequest) {
+  console.log("Received webhook request");
   try {
-    // Get the token from the request
     const token = await req.text();
+    console.log("Received token:", token);
 
-    // Decode the token
-    const { header } = jwt.decode(token, { complete: true });
+    const { header, payload } = jwt.decode(token, { complete: true });
+    console.log("Decoded payload:", payload);
+
     const { kid } = header;
 
-    // Verify the token
     const key = await client.getSigningKey(kid);
     const signingKey = key.getPublicKey();
     const event = await jwt.verify(token, signingKey);
 
-    // Handle various events
-    switch (event?.type) {
-      case "user.updated":
-        // handle user updated event
-        // e.g update database with event.data
-        console.log(event.data);
-        break;
-      case "user.created":
-        // handle user created event
-        // e.g add user to database with event.data
-        console.log(event.data);
-        break;
-      default:
-        // other events that we don't handle
-        break;
+    console.log("Verified event:", event);
+
+    if (event?.type === "user.created") {
+      const userData = event.data;
+      console.log("New user created:", userData);
+
+      // Instead of making an internal fetch request, let's directly call a function
+      // to handle the database operation
+      const result = await createUserInDatabase(userData);
+      console.log("DB creation result:", result);
     }
-  } catch (err) {
-    if (err instanceof Error) {
-      console.error(err.message);
-      return NextResponse.json({ message: err.message }, { status: 400 });
-    }
+
+    return NextResponse.json({ status: 200, statusText: "success" });
+  } catch (err: any) {
+    console.error("Webhook error:", err);
+    return NextResponse.json({ message: err.message }, { status: 400 });
   }
-  return NextResponse.json({ status: 200, statusText: "success" });
+}
+
+async function createUserInDatabase(userData: any) {
+  const { MongoClient } = require("mongodb");
+  const uri = process.env.MONGODB_URI;
+  const client = new MongoClient(uri, {
+    // Add any necessary options here
+  });
+
+  try {
+    await client.connect();
+    console.log("Connected to MongoDB");
+    const db = client.db("userdata");
+    const coll = db.collection("users");
+
+    const result = await coll.updateOne(
+      { user_id: userData.id },
+      {
+        $set: {
+          email: userData.email,
+          given_name: userData.given_name,
+          family_name: userData.family_name,
+          user_id: userData.id,
+        },
+      },
+      { upsert: true }
+    );
+
+    console.log("Database operation result:", result);
+    return { success: true, message: "Data updated successfully" };
+  } catch (error) {
+    console.error("Database error:", error);
+    throw error;
+  } finally {
+    await client.close();
+  }
 }
