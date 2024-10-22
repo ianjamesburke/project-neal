@@ -44,7 +44,7 @@ export function Sidebar() {
                     !item.locked &&
                       "group-hover:text-white hover:border-neutral-800 hover:bg-dark-800",
                     item.locked && "cursor-default",
-                    mode === item.label && "!border-neutral-800 !bg-dark-700"
+                    mode === item.label && "!border-neutral-800 !bg-dark-700 !text-white"
                   )}
                 >
                   <Image
@@ -55,17 +55,17 @@ export function Sidebar() {
                     width={24}
                     height={24}
                     className={cn(
-                      "opacity-40 invert  transition-all",
-                      mode === item.label && !item.locked && "opacity-100 ",
-                      !item.locked && "group-hover:opacity-100"
+                      "opacity-40 invert transition-all",
+                      mode === item.label && !item.locked && "opacity-100 !text-white",
+                      !item.locked && "group-hover:opacity-100 group-hover:text-white"
                     )}
                   />
 
                   <span
                     className={cn(
-                      "text-[10px] ",
-                      !item.locked && "group-hover:text-white transition-all",
-                      mode === item.label && "text-white"
+                      "text-[10px] text-[#6c6c6c] opacity-100 transition-all",
+                      mode === item.label && !item.locked && "opacity-100 !text-white",
+                      !item.locked && "group-hover:opacity-100 group-hover:text-white"
                     )}
                   >
                     {item.label}
