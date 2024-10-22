@@ -4,14 +4,19 @@ import React, { useState, useRef, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { UploadButton } from "@/lib/utils/uploadthing";
-import Image from "next/image";
 import { MoveRight, Paperclip } from "lucide-react";
+import { cn } from "@/lib/utils/cn";
 
 type Message = {
   id: number;
   text: string;
   sender: "user" | "ai";
   suggestions?: string[];
+};
+
+type ChatLog = {
+  role: "user" | "assistant";
+  content: string;
 };
 
 interface ChatSectionProps {
@@ -24,16 +29,36 @@ const ChatSection: React.FC<ChatSectionProps> = ({ onRenderIdChange }) => {
 
   // States
   const [messages, setMessages] = useState<Message[]>([
-    {
+    /* {
       id: 1,
       text: initialMessage,
       sender: "ai",
       suggestions: ["Enter debug mode"],
+    }, */
+    {
+      id: 2,
+      text: "People are tired of chemical-heavy skincare products, so we introduced our totally organic facial cream.",
+      sender: "ai",
+    },
+    {
+      id: 3,
+      text: "People are tired of chemical-heavy skincare products.",
+      sender: "user",
+    },
+    {
+      id: 4,
+      text: "Hello bro",
+      sender: "user",
+    },
+    {
+      id: 5,
+      text: "People are tired of chemical-heavy skincare products, so we introduced our totally organic facial cream.",
+      sender: "ai",
     },
   ]);
   const [input, setInput] = useState("");
   const messagesContainerRef = useRef<HTMLDivElement>(null);
-  const [chatLog, setChatLog] = useState<{ role: string; content: string }[]>([
+  const [chatLog, setChatLog] = useState<ChatLog[]>([
     { role: "assistant", content: initialMessage },
   ]);
   const [isAIResponding, setIsAIResponding] = useState(false);
@@ -79,7 +104,7 @@ const ChatSection: React.FC<ChatSectionProps> = ({ onRenderIdChange }) => {
       setMessages((prevMessages) => [...prevMessages, aiResponse]);
 
       setChatLog((prevChatLog) => {
-        const updatedChatLog = [
+        const updatedChatLog: ChatLog[] = [
           ...prevChatLog,
           { role: "assistant", content: data.response },
         ];
@@ -130,7 +155,10 @@ const ChatSection: React.FC<ChatSectionProps> = ({ onRenderIdChange }) => {
     setInput("");
 
     setChatLog((prevChatLog) => {
-      const updatedChatLog = [...prevChatLog, { role: "user", content: text }];
+      const updatedChatLog: ChatLog[] = [
+        ...prevChatLog,
+        { role: "user" as const, content: text },
+      ];
       console.log("Updated chat log after user message:", updatedChatLog);
       return updatedChatLog;
     });
@@ -213,23 +241,28 @@ const ChatSection: React.FC<ChatSectionProps> = ({ onRenderIdChange }) => {
   }, [isAIResponding, backendError]);
 
   return (
-    <section className="flex h-full w-full flex-col overflow-hidden rounded-2xl pt-8 pb-4 px-4 border border-dark-700 bg-dark-800/30 text-sm text-white">
+    <section className="flex h-full w-full flex-col overflow-hidden rounded-2xl border border-dark-700 bg-dark-800 px-4 pb-4 pt-8 text-sm text-white">
       <div ref={messagesContainerRef} className="grow overflow-y-auto">
-        <div className="flex flex-col gap-4">
-          {messages.map((message) => (
+        <div className="flex flex-col">
+          {messages.map((message, index) => (
             <div
               key={message.id}
               className={`flex ${
                 message.sender === "user" ? "justify-end" : "justify-start"
-              }`}
+              } ${index > 0 && messages[index - 1].sender !== message.sender ? "mt-4" : "mt-1"}`}
             >
               <div
-                className={`flex max-w-[80%] items-start ${
+                className={`flex max-w-[80%] items-start gap-4 ${
                   message.sender === "user" ? "flex-row-reverse" : "flex-row"
                 }`}
               >
-                <div className="flex h-8 w-8 shrink-0 self-start">
-                  {message.sender === "user" ? (
+                <div
+                  className={cn(
+                    "flex h-8 w-8 shrink-0 self-start",
+                    message.sender === "user" && "hidden"
+                  )}
+                >
+                  {/* {message.sender === "ai" && (
                     <Image
                       loading="lazy"
                       src="https://cdn.builder.io/api/v1/image/assets/TEMP/dd4368c4193fe4718cfa135c8756b207c6c60327fb1b953e7cc4b74b0e20c21b?placeholderIfAbsent=true&apiKey=63d274d5dd09415cb8f5e51781b306a4"
@@ -238,24 +271,20 @@ const ChatSection: React.FC<ChatSectionProps> = ({ onRenderIdChange }) => {
                       height={32}
                       className=" rounded-full object-contain"
                     />
-                  ) : (
-                    <Image
-                      loading="lazy"
-                      src="https://cdn.builder.io/api/v1/image/assets/TEMP/dc4cb80a02a243578c9954e82786edefd12c5ff04884d7847e26ef6f467d0be6?placeholderIfAbsent=true&apiKey=63d274d5dd09415cb8f5e51781b306a4.svg"
-                      alt="Logo"
-                      width={32}
-                      height={32}
-                    />
+                  )} */}
+                  {message.sender === "ai" && (
+                    <div className="h-8 w-8 rounded-full bg-gray"></div>
                   )}
                 </div>
+                {/* MESSAGE CONTENT */}
                 <div
-                  className={`mx-2 rounded-lg p-3 ${
-                    message.sender === "user"
-                      ? "bg-neutral-800"
-                      : "bg-neutral-800/50"
+                  className={` ${
+                    message.sender === "user" && "rounded-lg  bg-dark-700  p-3"
                   }`}
                 >
-                  <p className="whitespace-pre-wrap text-sm">{message.text}</p>
+                  <p className="whitespace-pre-wrap text-base font-normal">
+                    {message.text}
+                  </p>
                   {message.suggestions && (
                     <div className="mt-2 space-y-2">
                       {message.suggestions.map((suggestion, index) => (
@@ -297,10 +326,10 @@ const ChatSection: React.FC<ChatSectionProps> = ({ onRenderIdChange }) => {
           e.preventDefault();
           handleSendClick();
         }}
-        className="flex w-full items-center rounded-lg h-10 border border-dark-700 p-1.5"
+        className="flex h-10 w-full items-center rounded-lg border border-dark-700 bg-dark-800 p-1.5"
       >
         <div onClick={() => document.getElementById("file-input")?.click()}>
-          <Paperclip className="w-6 h-6" />
+          <Paperclip className="h-6 w-6" />
         </div>
         <input type="file" id="file-input" className="hidden" />
         <Input
@@ -308,10 +337,10 @@ const ChatSection: React.FC<ChatSectionProps> = ({ onRenderIdChange }) => {
           placeholder="Respond to the AI..."
           value={input}
           onChange={(e) => setInput(e.target.value)}
-          className="mr-2 pl-2.5 border-none bg-transparent text-sm text-white focus:outline-none"
+          className="mr-2 border-none bg-transparent pl-2.5 text-sm text-white focus:outline-none"
         />
         <Button type="submit" variant={"white"} className="h-[30px] w-12">
-          <MoveRight className="w-6 h-6" />
+          <MoveRight className="h-6 w-6" />
         </Button>
       </form>
     </section>
