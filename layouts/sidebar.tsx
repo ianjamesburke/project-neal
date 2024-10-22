@@ -19,7 +19,7 @@ export function Sidebar() {
     <aside className="flex h-full w-16 flex-col items-center border-r border-neutral-800 text-center text-xs font-medium text-white text-opacity-60 max-md:hidden">
       <nav>
         <ul className="flex grow flex-col items-center overflow-y-auto">
-          <div className="flex h-16 min-w-[64px] justify-center items-center gap-10 border-r border-neutral-800">
+          <div className="flex h-16 min-w-[64px] items-center justify-center gap-10 border-r border-neutral-800">
             {/* <Image
           loading="lazy"
           src="/assets/icons/logo.svg"
@@ -34,7 +34,11 @@ export function Sidebar() {
             return (
               <li key={index}>
                 <button
-                  onClick={() => onClickItem(item.label)}
+                  onClick={() => {
+                    if (!item.locked) {
+                      onClickItem(item.label);
+                    }
+                  }}
                   className={cn(
                     `group flex h-16 w-16 flex-col items-center gap-1.5 overflow-hidden whitespace-nowrap border-r border-neutral-800 p-3 transition-all`,
                     !item.locked &&
@@ -74,16 +78,16 @@ export function Sidebar() {
       </nav>
 
       <div className="mt-auto flex flex-col items-center space-y-4 px-3 pb-8 ">
-        <button className="flex flex-col items-center gap-1.5 border-none bg-transparent group transition-all">
+        <button className="group flex flex-col items-center gap-1.5 border-none bg-transparent transition-all">
           <Image
             loading="lazy"
             src="/assets/icons/settings.svg"
-            className="cursor-pointer invert opacity-40 group-hover:opacity-100  transition-all"
+            className="cursor-pointer opacity-40 invert transition-all  group-hover:opacity-100"
             alt="Settings"
             width={24}
             height={24}
           />
-          <div className="text-[10px] group-hover:text-white transition-all">
+          <div className="text-[10px] transition-all group-hover:text-white">
             Settings
           </div>
         </button>
