@@ -43,10 +43,12 @@
     --chart-4: 43 74% 66%;
     --chart-5: 27 87% 67%;
     --radius: 0.5rem;
-    --purple: #8779db;
+    --purple: 249 58% 67%;
+    --purple-foreground: 249 90% 65%;
     --dark-800: #101010;
     --dark-700: #232324;
-    --gray-dark: #d9d9d9;
+    --gray-dark: #6c6c6c;
+    --gray: #d9d9d9;
   }
   .dark {
     --background: 0 0% 3.9%;
@@ -73,10 +75,12 @@
     --chart-3: 30 80% 55%;
     --chart-4: 280 65% 60%;
     --chart-5: 340 75% 55%;
-    --purple: #8779db;
+    --purple: 249 58% 67%;
+    --purple-foreground: 249 90% 65%;
     --dark-800: #101010;
     --dark-700: #232324;
-    --gray-dark: #d9d9d9;
+    --gray-dark: #6c6c6c;
+    --gray: #d9d9d9;
   }
   /* app/globals.css */
   .checkerboard {
@@ -101,3 +105,4 @@
     @apply bg-background text-foreground;
   }
 }
+

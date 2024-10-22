@@ -2,18 +2,33 @@
 
 import { useState } from "react";
 import { Slider } from "@/components/ui/slider";
-import ChatSection from "@/components/chat-section";
 import VideoEditorWindow from "@/components/video-editor-window";
 import { LayoutGrid, Maximize2 } from "lucide-react";
+import { useSidebarStore } from "@/lib/store/sidebar-store";
+import { UploadSection } from "./upload-section";
+import ChatSection from "./chat-section";
 
 export default function DashboardContent() {
+  const { mode } = useSidebarStore();
+
   // States
   const [renderId, setRenderId] = useState<string | null>(null);
+
+  const SectionRenderer = () => {
+    if (mode === "Splice AI")
+      return <ChatSection onRenderIdChange={setRenderId} />;
+
+    if (mode === "Uploads") {
+      return <UploadSection />;
+    }
+
+    return null;
+  };
 
   return (
     <div className="flex h-[calc(100vh-64px)] max-md:flex-col">
       <div className="w-1/3 border-r border-dark-700 p-6">
-        <ChatSection onRenderIdChange={setRenderId} />
+        <SectionRenderer />
       </div>
 
       <div className="h-[calc(100%-40px)] w-full">

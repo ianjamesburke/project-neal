@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { UploadButton } from "@/lib/utils/uploadthing";
 import Image from "next/image";
+import { MoveRight, Paperclip } from "lucide-react";
 
 type Message = {
   id: number;
@@ -212,8 +213,8 @@ const ChatSection: React.FC<ChatSectionProps> = ({ onRenderIdChange }) => {
   }, [isAIResponding, backendError]);
 
   return (
-    <section className="flex h-full w-full flex-col overflow-hidden rounded-2xl border border-neutral-800 bg-neutral-800/30 text-sm text-white">
-      <div ref={messagesContainerRef} className="grow overflow-y-auto p-4">
+    <section className="flex h-full w-full flex-col overflow-hidden rounded-2xl pt-8 pb-4 px-4 border border-dark-700 bg-dark-800/30 text-sm text-white">
+      <div ref={messagesContainerRef} className="grow overflow-y-auto">
         <div className="flex flex-col gap-4">
           {messages.map((message) => (
             <div
@@ -296,27 +297,21 @@ const ChatSection: React.FC<ChatSectionProps> = ({ onRenderIdChange }) => {
           e.preventDefault();
           handleSendClick();
         }}
-        className="flex w-full items-center rounded-b-2xl bg-neutral-800 px-4 py-3"
+        className="flex w-full items-center rounded-lg h-10 border border-dark-700 p-1.5"
       >
+        <div onClick={() => document.getElementById("file-input")?.click()}>
+          <Paperclip className="w-6 h-6" />
+        </div>
+        <input type="file" id="file-input" className="hidden" />
         <Input
           type="text"
           placeholder="Respond to the AI..."
           value={input}
           onChange={(e) => setInput(e.target.value)}
-          className="mr-2 grow border-none bg-transparent text-sm text-white focus:outline-none"
+          className="mr-2 pl-2.5 border-none bg-transparent text-sm text-white focus:outline-none"
         />
-        <Button
-          type="submit"
-          aria-label="Send message"
-          className="border-none bg-transparent p-0"
-        >
-          <Image
-            loading="lazy"
-            src="https://cdn.builder.io/api/v1/image/assets/TEMP/579006c474f7fd0463e8d5c08fe8fd4ed4a766705cb8b34c72e15d8db8c5fbf8?placeholderIfAbsent=true&apiKey=63d274d5dd09415cb8f5e51781b306a4.svg"
-            alt=""
-            width={32}
-            height={32}
-          />
+        <Button type="submit" variant={"white"} className="h-[30px] w-12">
+          <MoveRight className="w-6 h-6" />
         </Button>
       </form>
     </section>

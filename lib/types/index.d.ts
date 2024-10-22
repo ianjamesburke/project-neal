@@ -1,4 +1,12 @@
 export interface SidebarItem {
   icon: string;
-  label: string;
+  label:
+    | "Splice AI"
+    | "Script"
+    | "Elements"
+    | "Voice Over"
+    | "Format"
+    | "Brand"
+    | "Uploads";
+  locked?: boolean;
 }
