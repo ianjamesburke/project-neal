@@ -1,16 +1,12 @@
 "use client";
 
-import { KindeProvider } from "@kinde-oss/kinde-auth-nextjs";
+import { KindeProvider as KindeAuthProvider } from "@kinde-oss/kinde-auth-nextjs";
 
 /* interface Data {
   // Define the data structure here
 } */
 
-export default function UIProvider({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export function KindeProvider({ children }: { children: React.ReactNode }) {
   /** State to store the data fetched from the database */
   /* const [data, setData] = useState<Data | undefined>(undefined); */
   /** grabs data from database */
@@ -33,9 +29,5 @@ export default function UIProvider({
     setData(getData());
   }, []); */
 
-  return (
-    <div>
-      <KindeProvider>{children}</KindeProvider>
-    </div>
-  );
+  return <KindeAuthProvider>{children}</KindeAuthProvider>;
 }

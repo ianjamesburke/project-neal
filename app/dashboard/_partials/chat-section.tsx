@@ -23,7 +23,9 @@ interface ChatSectionProps {
   onRenderIdChange: (renderId: string | null) => void;
 }
 
-const ChatSection: React.FC<ChatSectionProps> = ({ onRenderIdChange }) => {
+export const ChatSection: React.FC<ChatSectionProps> = ({
+  onRenderIdChange,
+}) => {
   const initialMessage =
     "Hello! Welcome to Project-Neal. I'm here to help you create high converting video creative. Tell me what is your product called and tell me a bit about it. \n\n i only know about one product right now shhhh";
 
@@ -346,5 +348,3 @@ const ChatSection: React.FC<ChatSectionProps> = ({ onRenderIdChange }) => {
     </section>
   );
 };
-
-export default ChatSection;

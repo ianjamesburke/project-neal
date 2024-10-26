@@ -1,7 +1,7 @@
 "use client";
 
 import { SIDEBAR_ITEMS } from "@/lib/constants/sidebar-items";
-import { useSidebarStore } from "@/lib/store/sidebar-store";
+import { useSidebarStore } from "@/lib/store/use-sidebar-store";
 import { SidebarItem } from "@/lib/types";
 import { cn } from "@/lib/utils/cn";
 import { Menu } from "lucide-react";
@@ -44,7 +44,8 @@ export function Sidebar() {
                     !item.locked &&
                       "group-hover:text-white hover:border-neutral-800 hover:bg-dark-800",
                     item.locked && "cursor-default",
-                    mode === item.label && "!border-neutral-800 !bg-dark-700 !text-white"
+                    mode === item.label &&
+                      "!border-neutral-800 !bg-dark-700 !text-white"
                   )}
                 >
                   <Image
@@ -56,16 +57,22 @@ export function Sidebar() {
                     height={24}
                     className={cn(
                       "opacity-40 invert transition-all",
-                      mode === item.label && !item.locked && "opacity-100 !text-white",
-                      !item.locked && "group-hover:opacity-100 group-hover:text-white"
+                      mode === item.label &&
+                        !item.locked &&
+                        "opacity-100 !text-white",
+                      !item.locked &&
+                        "group-hover:opacity-100 group-hover:text-white"
                     )}
                   />
 
                   <span
                     className={cn(
                       "text-[10px] text-[#6c6c6c] opacity-100 transition-all",
-                      mode === item.label && !item.locked && "opacity-100 !text-white",
-                      !item.locked && "group-hover:opacity-100 group-hover:text-white"
+                      mode === item.label &&
+                        !item.locked &&
+                        "opacity-100 !text-white",
+                      !item.locked &&
+                        "group-hover:opacity-100 group-hover:text-white"
                     )}
                   >
                     {item.label}

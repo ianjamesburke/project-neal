@@ -21,11 +21,13 @@ const buttonVariants = cva(
         link: "text-primary underline-offset-4 hover:underline",
         dark: "border border-dark-700 bg-zinc-900 text-white  hover:bg-zinc-900/90",
         share:
-          "hover:bg-purple/90 bg-gradient-to-r from-purple to-[#6F58F6] text-white shadow",
+          "bg-gradient-to-r from-purple to-[#6F58F6] text-white shadow hover:bg-purple/90",
         purple:
-          "hover:bg-purple/80 bg-purple text-white border border-purple shadow",
+          "border border-purple bg-purple text-white shadow hover:bg-purple/80",
         white:
-          "hover:bg-white/80 bg-white text-black border border-white shadow",
+          "border border-white bg-white text-black shadow hover:bg-white/80",
+        toolbar:
+          "!h-8 !w-8 !p-1.5 text-white hover:bg-dark-700 [&>svg]:h-5 [&>svg]:w-5",
       },
       size: {
         default: "h-10 px-2.5 py-2",

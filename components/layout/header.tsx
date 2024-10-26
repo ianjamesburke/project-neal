@@ -1,6 +1,5 @@
 import { Button } from "@/components/ui/button";
-import { Download, Folder, Menu, TvMinimalPlay } from "lucide-react";
-import Image from "next/image";
+import { Download, Folder, TvMinimalPlay } from "lucide-react";
 import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -12,12 +11,8 @@ export async function Header() {
   return (
     <header className="flex h-16 items-center border-b border-neutral-800">
       <div className="flex w-full items-center justify-between">
-        <div className="flex gap-16 pl-16 text-base text-white">
-          <span>File</span>
-          <span>Edit</span>
-          <span>Resources</span>
-        </div>
-        <div className="mr-8 flex items-center gap-8">
+        <div className="flex gap-16 pl-16 text-base text-white"></div>
+        <div className="mr-8 flex  items-center justify-between gap-8">
           <div className="flex items-center gap-2 text-right text-base font-medium text-white">
             <Folder className="h-5 w-5 opacity-40" />
             <div className="basis-auto">
