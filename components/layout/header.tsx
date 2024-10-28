@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import { Download, Folder, TvMinimalPlay } from "lucide-react";
+import { ChevronRight, Download, Folder, TvMinimalPlay } from "lucide-react";
 import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -9,16 +9,19 @@ export async function Header() {
   const user = await getUser();
 
   return (
-    <header className="flex h-16 items-center border-b border-neutral-800">
+    <header className="flex h-16 items-center border-b border-dark-700">
       <div className="flex w-full items-center justify-between">
-        <div className="flex gap-16 pl-16 text-base text-white"></div>
-        <div className="mr-8 flex  items-center justify-between gap-8">
-          <div className="flex items-center gap-2 text-right text-base font-medium text-white">
-            <Folder className="h-5 w-5 opacity-40" />
-            <div className="basis-auto">
+        <div className="flex w-full gap-16 pl-4 text-base text-white"></div>
+        <div className="mr-4 flex w-full min-w-[798px] items-center justify-between gap-8">
+          <div className="flex items-center gap-2.5  text-base font-medium text-white">
+            <Folder className=" h-5 w-5 opacity-40" />
+            <div className="flex items-center gap-2.5">
               <span className="text-base text-white opacity-40">
-                Project Title /
+                Project Name
               </span>{" "}
+              <span>
+                <ChevronRight className="h-6 w-6" />
+              </span>
               File Name
             </div>
           </div>

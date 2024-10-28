@@ -26,12 +26,12 @@ export function DashboardContent() {
   };
 
   return (
-    <div className="flex h-[calc(100vh-64px)] max-md:flex-col">
-      <div className="w-full flex-1 border-r border-dark-700 p-4">
+    <div className="flex h-[calc(100vh-64px)] max-md:flex-col ">
+      <div className="w-[calc(100%-64px)] border-r border-dark-700 p-4">
         <SectionRenderer />
       </div>
 
-      <div className="flex w-full flex-1 flex-col">
+      <div className="flex w-full flex-col">
         <VideoEditorWindow renderId={renderId} />
         <BottomToolbar />
       </div>

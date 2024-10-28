@@ -8,7 +8,7 @@ export const VideoPreview = ({
   videoPlayerRef: React.RefObject<HTMLVideoElement>;
 }) => {
   return (
-    <div className="checkerboard flex grow items-center justify-center overflow-hidden rounded-lg">
+    <div className="dotboard flex grow items-center justify-center overflow-hidden rounded-lg">
       {videoUrl ? (
         // For some reason, you have to add key={videoUrl} to force the video to reload
         <video

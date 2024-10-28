@@ -56,6 +56,7 @@ const config = withUt({
           DEFAULT: "hsl(var(--purple))",
           foreground: "hsl(var(--purple-foreground))",
         },
+        "dark-900": "var(--dark-900)",
         "dark-800": "var(--dark-800)",
         "dark-700": "var(--dark-700)",
         "gray-dark": "var(--gray-dark)",

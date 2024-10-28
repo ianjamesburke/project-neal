@@ -7,6 +7,7 @@ import { VideoPreview } from "./_partials/video-preview";
 import { Timeline } from "./_partials/timeline";
 import { ClipToolbar } from "./_partials/clip-toolbar";
 import { LockKeyhole } from "lucide-react";
+import { BottomToolbar } from "../bottom-toolbar";
 
 interface VideoEditorWindowProps {
   renderId: string | null;
@@ -72,8 +73,9 @@ const VideoEditorWindow: React.FC<VideoEditorWindowProps> = ({ renderId }) => {
   }, [videoPlayerRef]);
 
   return (
-    <div className="mx-4 mt-4 flex h-full w-full flex-col overflow-x-hidden rounded-2xl rounded-b-none border border-b-0 border-dark-700">
+    <div className="mx-4 mt-4 flex h-[calc(100%-50px)] flex-col rounded-2xl rounded-b-none border border-b-0 border-dark-700 bg-dark-800">
       <TopToolbar />
+
       <VideoPreview videoUrl={videoUrl} videoPlayerRef={videoPlayerRef} />
       <ClipToolbar
         isPlaying={isPlaying}

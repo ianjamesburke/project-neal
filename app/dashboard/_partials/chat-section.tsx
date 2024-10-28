@@ -6,6 +6,7 @@ import { Input } from "@/components/ui/input";
 import { UploadButton } from "@/lib/utils/uploadthing";
 import { MoveRight, Paperclip } from "lucide-react";
 import { cn } from "@/lib/utils/cn";
+import { ScrollArea } from "@/components/ui/scroll-area";
 
 type Message = {
   id: number;
@@ -46,6 +47,86 @@ export const ChatSection: React.FC<ChatSectionProps> = ({
       id: 3,
       text: "People are tired of chemical-heavy skincare products.",
       sender: "user",
+    },
+    {
+      id: 4,
+      text: "Hello bro",
+      sender: "user",
+    },
+    {
+      id: 5,
+      text: "People are tired of chemical-heavy skincare products, so we introduced our totally organic facial cream.",
+      sender: "ai",
+    },
+    {
+      id: 4,
+      text: "Hello bro",
+      sender: "user",
+    },
+    {
+      id: 5,
+      text: "People are tired of chemical-heavy skincare products, so we introduced our totally organic facial cream.",
+      sender: "ai",
+    },
+    {
+      id: 4,
+      text: "Hello bro",
+      sender: "user",
+    },
+    {
+      id: 5,
+      text: "People are tired of chemical-heavy skincare products, so we introduced our totally organic facial cream.",
+      sender: "ai",
+    },
+    {
+      id: 4,
+      text: "Hello bro",
+      sender: "user",
+    },
+    {
+      id: 5,
+      text: "People are tired of chemical-heavy skincare products, so we introduced our totally organic facial cream.",
+      sender: "ai",
+    },
+    {
+      id: 4,
+      text: "Hello bro",
+      sender: "user",
+    },
+    {
+      id: 5,
+      text: "People are tired of chemical-heavy skincare products, so we introduced our totally organic facial cream.",
+      sender: "ai",
+    },
+    {
+      id: 4,
+      text: "Hello bro",
+      sender: "user",
+    },
+    {
+      id: 5,
+      text: "People are tired of chemical-heavy skincare products, so we introduced our totally organic facial cream.",
+      sender: "ai",
+    },
+    {
+      id: 4,
+      text: "Hello bro",
+      sender: "user",
+    },
+    {
+      id: 5,
+      text: "People are tired of chemical-heavy skincare products, so we introduced our totally organic facial cream.",
+      sender: "ai",
+    },
+    {
+      id: 4,
+      text: "Hello bro",
+      sender: "user",
+    },
+    {
+      id: 5,
+      text: "People are tired of chemical-heavy skincare products, so we introduced our totally organic facial cream.",
+      sender: "ai",
     },
     {
       id: 4,
@@ -243,9 +324,9 @@ export const ChatSection: React.FC<ChatSectionProps> = ({
   }, [isAIResponding, backendError]);
 
   return (
-    <section className="flex h-full w-full flex-col overflow-hidden rounded-2xl border border-dark-700 bg-dark-800 px-4 pb-4 pt-8 text-sm text-white">
-      <div ref={messagesContainerRef} className="grow overflow-y-auto">
-        <div className="flex flex-col">
+    <section className="flex h-full w-full flex-col overflow-hidden rounded-2xl border border-dark-700 bg-dark-800 pb-4 pt-8 text-sm text-white">
+      <ScrollArea>
+        <div ref={messagesContainerRef} className="flex flex-col px-4 pb-4">
           {messages.map((message, index) => (
             <div
               key={message.id}
@@ -322,29 +403,31 @@ export const ChatSection: React.FC<ChatSectionProps> = ({
             </div>
           ))}
         </div>
+      </ScrollArea>
+      <div className="px-4">
+        <form
+          onSubmit={(e) => {
+            e.preventDefault();
+            handleSendClick();
+          }}
+          className="flex h-10 w-full items-center rounded-lg border border-dark-700 bg-dark-800 p-1.5"
+        >
+          <div onClick={() => document.getElementById("file-input")?.click()}>
+            <Paperclip className="h-6 w-6" />
+          </div>
+          <input type="file" id="file-input" className="hidden" />
+          <Input
+            type="text"
+            placeholder="Respond to the AI..."
+            value={input}
+            onChange={(e) => setInput(e.target.value)}
+            className="mr-2 border-none bg-transparent pl-2.5 text-sm text-white focus:outline-none"
+          />
+          <Button type="submit" variant={"white"} className="h-[30px] w-12">
+            <MoveRight className="h-6 w-6" />
+          </Button>
+        </form>
       </div>
-      <form
-        onSubmit={(e) => {
-          e.preventDefault();
-          handleSendClick();
-        }}
-        className="flex h-10 w-full items-center rounded-lg border border-dark-700 bg-dark-800 p-1.5"
-      >
-        <div onClick={() => document.getElementById("file-input")?.click()}>
-          <Paperclip className="h-6 w-6" />
-        </div>
-        <input type="file" id="file-input" className="hidden" />
-        <Input
-          type="text"
-          placeholder="Respond to the AI..."
-          value={input}
-          onChange={(e) => setInput(e.target.value)}
-          className="mr-2 border-none bg-transparent pl-2.5 text-sm text-white focus:outline-none"
-        />
-        <Button type="submit" variant={"white"} className="h-[30px] w-12">
-          <MoveRight className="h-6 w-6" />
-        </Button>
-      </form>
     </section>
   );
 };
