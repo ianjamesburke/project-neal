@@ -16,6 +16,7 @@ app.debug = True
 
 load_dotenv(dotenv_path='../.env')
 
+
 try:
     api_key = os.environ.get('OPENAI_API_KEY')
     client = OpenAI(api_key=api_key)
@@ -447,7 +448,7 @@ def fetch_quincy_video():
             raise Exception("QUINCY_VIDEO_GENERATOR_PATH is not set in the environment variables.")
         
         response = requests.post(quincy_api_path, json={"quincy_prompt": context})
-        
+
     except Exception as e:
         logging.error(f"An error occurred in fetch_quincy_video: {e}")
         return jsonify({"error": "An error occurred while fetching the Quincy video path."}), 500
