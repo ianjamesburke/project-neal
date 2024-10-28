@@ -8,6 +8,7 @@ import {
   ZoomOut,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import Image from "next/image";
 export const BottomToolbar = () => {
   return (
     <div className="flex h-10 w-full items-center justify-end border-t border-t-dark-700 bg-neutral-950  px-8">
@@ -19,7 +20,13 @@ export const BottomToolbar = () => {
       </div>
       <div className="ml-[26px] flex items-center gap-4 text-white">
         <Button variant="toolbar" disabled>
-          <Maximize2 className="h-6 w-6" />
+          <Image
+            src="/assets/icons/touchpad.svg"
+            alt="touchpad"
+            width={0}
+            height={0}
+            sizes="100vw"
+          />
         </Button>
         <Button variant="toolbar" disabled>
           <LayoutGrid className="h-6 w-6" />

@@ -39,11 +39,11 @@ export async function Header() {
                 <Skeleton className="h-full w-full bg-muted-foreground" />
               </AvatarFallback>
             </Avatar>
-            <Button variant="dark">
+            <Button variant="white">
               <TvMinimalPlay className="h-4 w-4" />
               Preview
             </Button>
-            <Button variant="share">
+            <Button variant="white">
               <Download className="h-4 w-4" />
               Share
             </Button>
