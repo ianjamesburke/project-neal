@@ -441,7 +441,7 @@ def fetch_quincy_video():
     context = build_context(chat_log, footage_analysis)
 
     # send a return of mock render_id and video_url
-    # make a request to QUINCY_VIDEO_GENERATOR_PATH with context as the "quincy_prompt" in the payload
+    # make a fetch to request to QUINCY_VIDEO_GENERATOR_PATH with context as the "quincy_prompt" in the payload
     try:
         quincy_api_path = os.getenv('QUINCY_VIDEO_GENERATOR_PATH')
         if not quincy_api_path:
