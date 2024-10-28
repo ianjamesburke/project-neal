@@ -318,7 +318,7 @@ def get_render_status(render_id):
 
 
 ### ROUTES ###
-@app.route('/flask/render-status/<render_id>', methods=['GET'])
+@app.route('/api/flask/render-status/<render_id>', methods=['GET'])
 def render_status(render_id):
     try:
         status = get_render_status(render_id)
@@ -329,7 +329,7 @@ def render_status(render_id):
 
 
 
-@app.route("/flask/message-assistant", methods=['POST'])
+@app.route("/api/flask/message-assistant", methods=['POST'])
 def message_assistant_route():
     try:
         # get data
@@ -351,7 +351,7 @@ def message_assistant_route():
     
 
 
-@app.route('/flask/build-payload', methods=['POST'])
+@app.route('/api/flask/build-payload', methods=['POST'])
 def build_payload_route():
     try:
         data = request.json
@@ -418,7 +418,7 @@ def build_payload_route():
     
 
 
-@app.route('/flask/fetch-quincy-video', methods=['POST'])
+@app.route('/api/flask/fetch-quincy-video', methods=['POST'])
 def fetch_quincy_video():
 
     # GET CHAT LOG

@@ -26,7 +26,7 @@ const VideoEditorWindow: React.FC<VideoEditorWindowProps> = ({ renderId }) => {
     console.log("Beginning polling render status for:", renderId);
     const interval = setInterval(async () => {
       try {
-        const response = await fetch(`/flask/render-status/${renderId}`);
+        const response = await fetch(`/api/flask/render-status/${renderId}`);
         const data = await response.json();
 
         console.log("Polling render status:", data.status);

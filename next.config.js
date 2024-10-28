@@ -44,10 +44,10 @@ const nextConfig = {
   async rewrites() {
     return [
       {
-        source: '/flask/:path*',
+        source: '/api/flask/:path*',
         destination: process.env.NODE_ENV === 'development' 
-          ? 'http://127.0.0.1:5328/flask/:path*'
-          : '/flask/:path*'  // Direct to Flask folder in production
+          ? 'http://127.0.0.1:5328/api/flask/:path*'
+          : '/api/flask/:path*'  // Direct to Flask folder in production
       }
     ]
   },
