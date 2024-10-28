@@ -1,0 +1,5 @@
+[
+    {"role": "user", "content": "a short video of someone using a fabric shaver, start with a short clip of the red shorts"},
+    {"role": "assistant", "content": "sure, what styles video do you want?"},
+    {"role": "user", "content": "a short video of someone using a fabric shaver, start with a short clip of the blue shorts"}
+]

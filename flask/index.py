@@ -14,7 +14,7 @@ app = Flask(__name__)
 app.debug = True
 
 
-load_dotenv()
+load_dotenv(dotenv_path='../.env')
 
 try:
     api_key = os.environ.get('OPENAI_API_KEY')
@@ -26,8 +26,6 @@ except Exception as e:
 
 
 ### FUNCTIONS ###
-
-
 def message_assistant(chat_log, thread_id=None):
     """
     Function to interact with the assistant.
@@ -416,3 +414,50 @@ def build_payload_route():
     except Exception as e:
         logging.error(f"An error occurred in build_payload_route: {e}")
         return jsonify({"error": "An error occurred while starting the video rendering."}), 500
+    
+
+
+@app.route('/flask/fetch-quincy-video', methods=['POST'])
+def fetch_quincy_video():
+
+    # GET CHAT LOG
+    # RETURN render_id and a video_url
+
+    # # get chat-log
+
+    data = request.json
+    chat_log = data.get('chat_log', [])
+    print("chat log received by /flask/fetch-quincy-video")
+
+
+    # build context for request
+    # LATER add a layer to get a more focused script
+
+    # TEMP 
+    with open('static/clips.json', 'r') as f:
+        footage_analysis = json.load(f)
+
+    context = build_context(chat_log, footage_analysis)
+
+    # send a return of mock render_id and video_url
+    # make a request to QUINCY_VIDEO_GENERATOR_PATH with context as the "quincy_prompt" in the payload
+    try:
+        quincy_api_path = os.getenv('QUINCY_VIDEO_GENERATOR_PATH')
+        if not quincy_api_path:
+            raise Exception("QUINCY_VIDEO_GENERATOR_PATH is not set in the environment variables.")
+        
+        response = requests.post(quincy_api_path, json={"quincy_prompt": context})
+        
+    except Exception as e:
+        logging.error(f"An error occurred in fetch_quincy_video: {e}")
+        return jsonify({"error": "An error occurred while fetching the Quincy video path."}), 500
+
+    data = response.json()
+    render_id = data.get('render_id')
+    video_url = data.get('video_url')
+
+    response = {
+        "render_id": render_id,
+        "video_url": video_url
+    }
+    return jsonify(response), 200

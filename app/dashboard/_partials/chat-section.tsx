@@ -124,6 +124,7 @@ export const ChatSection: React.FC<ChatSectionProps> = ({
         setAskForUploads(true);
         setUploadMessageId(aiResponse.id);
       }
+      
     } catch (error) {
       console.error("Error fetching AI response:", error);
       let errorMessage =
@@ -169,7 +170,7 @@ export const ChatSection: React.FC<ChatSectionProps> = ({
   async function scriptReady(chatLog: { role: string; content: string }[]) {
     console.log("Script is ready! Sending fetch to build payload...");
     try {
-      const response = await fetch(`flask/build-payload`, {
+      const response = await fetch(`flask/fetch-quincy-video`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

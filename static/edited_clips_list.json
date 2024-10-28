@@ -1,0 +1,24 @@
+{
+    "clips": [
+        {
+            "words": "I've found a secret weapon to keep my clothes looking fresh and new. Check this out!",
+            "clip_name": "shaver2",
+            "trim": 0
+        },
+        {
+            "words": "Look at how effortlessly it takes away all the fuzz and lint from my favorite red shorts.",
+            "clip_name": "shaver2",
+            "trim": 5
+        },
+        {
+            "words": "It's so satisfying to see them transform back to their original look.",
+            "clip_name": "shaver1",
+            "trim": 0
+        },
+        {
+            "words": "This fabric shaver makes maintenance so easy, I can even use it while grabbing a coffee.",
+            "clip_name": "shaver1",
+            "trim": 9
+        }
+    ]
+}

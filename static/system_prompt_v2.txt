@@ -1,0 +1,25 @@
+
+
+
+...
+
+List of example outputs:
+
+INPUT:
+CHATLOG BEGIN:
+user: i want a video that talks about how your cloths look so much better when you use this cloths shaver
+CHATLOG END
+
+CLIPS BEGIN:
+[
+    {
+        "start": 0,
+        "end": 10,
+        "text": "a video about cloths shaver"
+    }
+]
+CLIPS END
+
+OUTPUT:
+
+

@@ -1,0 +1,54 @@
+{ 
+    "footage_analysis": [   
+        {
+            "name": "shaver1",
+            "clips": [
+                {
+                    "description": "Someone using the lint shaver on a black sweater",
+                    "in_frame": 2,
+                    "out_frame": 8
+                },
+                {
+                    "description": "someone emptying the lint shaver",
+                    "in_frame": 12,
+                    "out_frame": 16
+                },
+                {
+                    "description": "showing the shaver turning on and off",
+                    "in_frame": 21,
+                    "out_frame": 25
+                }
+            ]
+        },
+        {
+            "name": "shaver2",
+            "clips": [
+                {
+                    "description": "Someone using a fabric shaver on a pair of blue shorts",
+                    "in_frame": 4,
+                    "out_frame": 23
+                },
+                {
+                    "description": "continuing to use the fabric shaver on a pair of blue shorts",
+                    "in_frame": 16,
+                    "out_frame": 23
+                }
+            ]
+        },
+        {
+            "name": "shaver3",
+            "clips": [
+                {
+                    "description": "Someone using the fabric shaver on a small pair of pants shorts",
+                    "in_frame": 0,
+                    "out_frame": 15
+                },
+                {
+                    "description": "continuing to use the fabric shaver on a small pair of pants shorts",
+                    "in_frame": 16,
+                    "out_frame": 27
+                }
+            ]
+        }
+    ]
+}
