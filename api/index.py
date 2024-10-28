@@ -318,6 +318,14 @@ def get_render_status(render_id):
 
 
 ### ROUTES ###
+
+
+@app.route('/api/flask/test', methods=['GET'])
+def test():
+    return jsonify({"message": "Hello, World!"}), 200
+
+
+
 @app.route('/api/flask/render-status/<render_id>', methods=['GET'])
 def render_status(render_id):
     try:
