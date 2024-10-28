@@ -324,9 +324,12 @@ export const ChatSection: React.FC<ChatSectionProps> = ({
   }, [isAIResponding, backendError]);
 
   return (
-    <section className="flex h-full w-full flex-col overflow-hidden rounded-2xl border border-dark-700 bg-dark-800 pb-4 pt-8 text-sm text-white">
-      <ScrollArea>
-        <div ref={messagesContainerRef} className="flex flex-col px-4 pb-4">
+    <section className=" relative flex h-full w-full flex-col overflow-hidden rounded-2xl border border-dark-700 bg-dark-800 text-sm text-white">
+      <ScrollArea className=" pb-8">
+        <div
+          ref={messagesContainerRef}
+          className="flex flex-col px-4  pb-12  pt-8"
+        >
           {messages.map((message, index) => (
             <div
               key={message.id}
@@ -404,7 +407,7 @@ export const ChatSection: React.FC<ChatSectionProps> = ({
           ))}
         </div>
       </ScrollArea>
-      <div className="px-4">
+      <div className="absolute bottom-4 left-0 right-0 mx-4 z-10">
         <form
           onSubmit={(e) => {
             e.preventDefault();
