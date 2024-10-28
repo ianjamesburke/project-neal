@@ -72,7 +72,7 @@ export const ChatSection: React.FC<ChatSectionProps> = ({
 
   async function fetchAIResponse() {
     try {
-      const response = await fetch(`flask/message-assistant`, {
+      const response = await fetch(`/flask/message-assistant`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -170,7 +170,7 @@ export const ChatSection: React.FC<ChatSectionProps> = ({
   async function scriptReady(chatLog: { role: string; content: string }[]) {
     console.log("Script is ready! Sending fetch to build payload...");
     try {
-      const response = await fetch(`flask/fetch-quincy-video`, {
+      const response = await fetch(`/flask/fetch-quincy-video`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
