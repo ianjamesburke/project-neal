@@ -82,6 +82,8 @@ export const ChatSection: React.FC<ChatSectionProps> = ({
         body: JSON.stringify({ chat_log: chatLog, thread_id: threadId }),
       });
 
+      // returns json with response, script_ready, ask_for_uploads
+
       if (!response.ok) {
         const errorData = await response.json();
         throw new Error(
