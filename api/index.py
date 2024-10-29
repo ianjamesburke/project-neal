@@ -333,6 +333,12 @@ def get_render_status(render_id):
 def test():
     return jsonify({"response": "hello"}), 200
 
+@app.route('/api/chatbot', methods=['POST'])
+def chatbot():
+    from chatbot import chat
+    data = request.json
+    return chat(data)
+
 
 
 @app.route("/api/message-assistant", methods=['POST'])
