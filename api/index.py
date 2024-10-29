@@ -325,6 +325,18 @@ def get_render_status(render_id):
 
 
 ### ROUTES ###
+
+
+# test route
+@app.route('/api/flask/test', methods=['GET'])
+def test():
+    return jsonify({"response": "hello"}), 200
+
+
+@app.route("/api/flask/message-assistant", methods=['POST'])
+def message_assistant_route():
+    return jsonify({"response": "hello"}), 200
+
 @app.route('/api/flask/render-status/<render_id>', methods=['GET'])
 def render_status(render_id):
     try:
@@ -335,10 +347,6 @@ def render_status(render_id):
         return jsonify({"error": "An error occurred while checking render status."}), 500
 
 
-
-@app.route("/api/flask/message-assistant", methods=['POST'])
-def message_assistant_route():
-    return jsonify({"response": "hello"}), 200
     
 
 @app.route('/api/flask/build-payload', methods=['POST'])
