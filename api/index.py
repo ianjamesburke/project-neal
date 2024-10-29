@@ -24,8 +24,6 @@ try:
 except Exception as e:
     raise Exception(f"Error: {e}")
 
-
-
 ### FUNCTIONS ###
 def message_assistant(chat_log, thread_id=None):
     """
@@ -328,16 +326,16 @@ def get_render_status(render_id):
 
 
 # test route
-@app.route('/api/flask/test', methods=['GET'])
+@app.route('/api/test', methods=['GET'])
 def test():
     return jsonify({"response": "hello"}), 200
 
 
-@app.route("/api/flask/message-assistant", methods=['POST'])
+@app.route("/api/message-assistant", methods=['POST'])
 def message_assistant_route():
     return jsonify({"response": "hello"}), 200
 
-@app.route('/api/flask/render-status/<render_id>', methods=['GET'])
+@app.route('/api/render-status/<render_id>', methods=['GET'])
 def render_status(render_id):
     try:
         status = get_render_status(render_id)
@@ -349,7 +347,7 @@ def render_status(render_id):
 
     
 
-@app.route('/api/flask/build-payload', methods=['POST'])
+@app.route('/api/build-payload', methods=['POST'])
 def build_payload_route():
     try:
         data = request.json

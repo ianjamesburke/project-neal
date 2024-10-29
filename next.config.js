@@ -44,11 +44,11 @@ const nextConfig = {
   async rewrites() {
     return [
       {
-        source: "/api/flask/:path*",
+        source: "/api/:path*",
         destination:
           process.env.NODE_ENV === "development"
-            ? "http://127.0.0.1:5328/api/flask/:path*"
-            : "/api/flask/",
+            ? "http://127.0.0.1:5328/api/:path*"
+            : "/api/",
       },
     ];
   },

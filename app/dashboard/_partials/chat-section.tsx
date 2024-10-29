@@ -73,7 +73,7 @@ export const ChatSection: React.FC<ChatSectionProps> = ({
 
   async function fetchAIResponse() {
     try {
-      const response = await fetch(`/api/flask/message-assistant`, {
+      const response = await fetch(`/api/message-assistant`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
