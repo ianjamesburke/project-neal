@@ -58,86 +58,6 @@ export const ChatSection: React.FC<ChatSectionProps> = ({
       text: "People are tired of chemical-heavy skincare products, so we introduced our totally organic facial cream.",
       sender: "ai",
     },
-    {
-      id: 4,
-      text: "Hello bro",
-      sender: "user",
-    },
-    {
-      id: 5,
-      text: "People are tired of chemical-heavy skincare products, so we introduced our totally organic facial cream.",
-      sender: "ai",
-    },
-    {
-      id: 4,
-      text: "Hello bro",
-      sender: "user",
-    },
-    {
-      id: 5,
-      text: "People are tired of chemical-heavy skincare products, so we introduced our totally organic facial cream.",
-      sender: "ai",
-    },
-    {
-      id: 4,
-      text: "Hello bro",
-      sender: "user",
-    },
-    {
-      id: 5,
-      text: "People are tired of chemical-heavy skincare products, so we introduced our totally organic facial cream.",
-      sender: "ai",
-    },
-    {
-      id: 4,
-      text: "Hello bro",
-      sender: "user",
-    },
-    {
-      id: 5,
-      text: "People are tired of chemical-heavy skincare products, so we introduced our totally organic facial cream.",
-      sender: "ai",
-    },
-    {
-      id: 4,
-      text: "Hello bro",
-      sender: "user",
-    },
-    {
-      id: 5,
-      text: "People are tired of chemical-heavy skincare products, so we introduced our totally organic facial cream.",
-      sender: "ai",
-    },
-    {
-      id: 4,
-      text: "Hello bro",
-      sender: "user",
-    },
-    {
-      id: 5,
-      text: "People are tired of chemical-heavy skincare products, so we introduced our totally organic facial cream.",
-      sender: "ai",
-    },
-    {
-      id: 4,
-      text: "Hello bro",
-      sender: "user",
-    },
-    {
-      id: 5,
-      text: "People are tired of chemical-heavy skincare products, so we introduced our totally organic facial cream.",
-      sender: "ai",
-    },
-    {
-      id: 4,
-      text: "Hello bro",
-      sender: "user",
-    },
-    {
-      id: 5,
-      text: "People are tired of chemical-heavy skincare products, so we introduced our totally organic facial cream.",
-      sender: "ai",
-    },
   ]);
   const [input, setInput] = useState("");
   const messagesContainerRef = useRef<HTMLDivElement>(null);
@@ -153,7 +73,7 @@ export const ChatSection: React.FC<ChatSectionProps> = ({
 
   async function fetchAIResponse() {
     try {
-      const response = await fetch(`flask/message-assistant`, {
+      const response = await fetch(`/api/flask/message-assistant`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -250,7 +170,7 @@ export const ChatSection: React.FC<ChatSectionProps> = ({
   async function scriptReady(chatLog: { role: string; content: string }[]) {
     console.log("Script is ready! Sending fetch to build payload...");
     try {
-      const response = await fetch(`flask/build-payload`, {
+      const response = await fetch(`/api/flask/build-payload`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

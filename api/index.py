@@ -14,7 +14,7 @@ app = Flask(__name__)
 app.debug = True
 
 
-load_dotenv()
+load_dotenv(".env")
 
 try:
     api_key = os.environ.get('OPENAI_API_KEY')
@@ -24,10 +24,7 @@ except Exception as e:
 
 
 
-
 ### FUNCTIONS ###
-
-
 def message_assistant(chat_log, thread_id=None):
     """
     Function to interact with the assistant.
@@ -35,6 +32,13 @@ def message_assistant(chat_log, thread_id=None):
     if thread_id is None:
         thread = client.beta.threads.create()
         thread_id = thread.id
+
+    
+
+    # TEMP
+    # chat_log = [
+    #     {"role": "user", "content": "a short video of someone using a fabric shaver"}
+    # ]
 
     # Add new messages to the existing thread
     for message in chat_log:
@@ -319,7 +323,7 @@ def get_render_status(render_id):
 
 
 ### ROUTES ###
-@app.route('/flask/render-status/<render_id>', methods=['GET'])
+@app.route('/api/flask/render-status/<render_id>', methods=['GET'])
 def render_status(render_id):
     try:
         status = get_render_status(render_id)
@@ -330,29 +334,12 @@ def render_status(render_id):
 
 
 
-@app.route("/flask/message-assistant", methods=['POST'])
+@app.route("/api/flask/message-assistant", methods=['POST'])
 def message_assistant_route():
-    try:
-        # get data
-        data = request.json
-
-        # destructure data
-        chat_log = data.get('chat_log')
-        thread_id = data.get('thread_id')
-
-        # call function
-        response, script_ready, ask_for_uploads, thread_id = message_assistant(chat_log, thread_id)
-
-        # return result
-        return jsonify({ "response": response, "script_ready": script_ready, "ask_for_uploads": ask_for_uploads, "thread_id": thread_id })
-    
-    except Exception as e:
-        logging.error(f"Error in message_assistant_route: {e}")
-        return jsonify({"error": str(e)}), 500
+    return jsonify({"response": "hello"}), 200
     
 
-
-@app.route('/flask/build-payload', methods=['POST'])
+@app.route('/api/flask/build-payload', methods=['POST'])
 def build_payload_route():
     try:
         data = request.json
@@ -416,3 +403,4 @@ def build_payload_route():
     except Exception as e:
         logging.error(f"An error occurred in build_payload_route: {e}")
         return jsonify({"error": "An error occurred while starting the video rendering."}), 500
+    
