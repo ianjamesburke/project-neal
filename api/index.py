@@ -7,7 +7,6 @@ import uuid
 import base64
 import requests
 import json
-from dotenv import load_dotenv
 from flask_cors import CORS
 
 ### INITIALIZE APP ###
@@ -16,7 +15,11 @@ CORS(app)
 app.debug = True
 
 
-load_dotenv(".env")
+if os.getenv('FLASK_ENV') == 'development':
+    print("FLASK_ENV IS DEVELOPMENT")
+    from dotenv import load_dotenv
+    load_dotenv("../.env")
+
 
 try:
     api_key = os.environ.get('OPENAI_API_KEY')
