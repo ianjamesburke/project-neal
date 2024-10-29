@@ -8,9 +8,11 @@ import base64
 import requests
 import json
 from dotenv import load_dotenv
+from flask_cors import CORS
 
 ### INITIALIZE APP ###
 app = Flask(__name__)
+CORS(app)
 app.debug = True
 
 
