@@ -2,21 +2,39 @@
 
 import { useState } from "react";
 
-import ChatSection from "@/components/chat-section";
-import VideoEditorWindow from "@/components/video-editor-window";
+import { useSidebarStore } from "@/lib/store/use-sidebar-store";
+import { UploadSection } from "./upload-section";
+import { ChatSection } from "./chat-section";
+import VideoEditorWindow from "@/app/dashboard/_partials/video-editor-window";
+import { BottomToolbar } from "./bottom-toolbar";
 
-export default function DashboardContent() {
+export function DashboardContent() {
+  const { mode } = useSidebarStore();
+
   // States
   const [renderId, setRenderId] = useState<string | null>(null);
 
+  const SectionRenderer = () => {
+    if (mode === "Splice AI")
+      return <ChatSection onRenderIdChange={setRenderId} />;
+
+    if (mode === "Uploads") {
+      return <UploadSection />;
+    }
+
+    return null;
+  };
+
   return (
-    <>
-      <div className="w-1/3 overflow-auto">
-        <ChatSection onRenderIdChange={setRenderId} />
+    <div className="flex h-[calc(100vh-64px)] max-md:flex-col ">
+      <div className="w-[calc(100%-64px)] border-r border-dark-700 p-4">
+        <SectionRenderer />
       </div>
-      <div className="overflow-auto pl-4">
+
+      <div className="flex w-full flex-col">
         <VideoEditorWindow renderId={renderId} />
+        <BottomToolbar />
       </div>
-    </>
+    </div>
   );
 }

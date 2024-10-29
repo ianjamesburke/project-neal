@@ -7,32 +7,31 @@ export const SIDEBAR_ITEMS: SidebarItem[] = [
   },
   {
     icon: "/assets/icons/script.svg",
-
     label: "Script",
+    locked: true,
   },
   {
-    icon: "/assets/icons/design.svg",
-
-    label: "Design",
+    icon: "/assets/icons/paintbrush.svg",
+    label: "Elements",
+    locked: true,
   },
   {
     icon: "/assets/icons/audio.svg",
-
-    label: "Audio",
+    label: "Voice Over",
+    locked: true,
   },
   {
     icon: "/assets/icons/format.svg",
-
     label: "Format",
+    locked: true,
   },
   {
     icon: "/assets/icons/brand.svg",
-
     label: "Brand",
+    locked: true,
   },
   {
     icon: "/assets/icons/uploads.svg",
-
     label: "Uploads",
   },
 ];

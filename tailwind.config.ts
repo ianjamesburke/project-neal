@@ -1,10 +1,10 @@
 import { withUt } from "uploadthing/tw";
+import typography from "@tailwindcss/typography";
+import animate from "tailwindcss-animate";
 
-/** @type {import('tailwindcss').Config} */
-export default withUt({
+const config = withUt({
   darkMode: ["class"],
   content: [
-    "./pages/**/*.{js,ts,jsx,tsx,mdx}",
     "./components/**/*.{js,ts,jsx,tsx,mdx}",
     "./app/**/*.{js,ts,jsx,tsx,mdx}",
     "./layouts/**/*.{js,ts,jsx,tsx,mdx}",
@@ -52,9 +52,15 @@ export default withUt({
           DEFAULT: "hsl(var(--destructive))",
           foreground: "hsl(var(--destructive-foreground))",
         },
-        purple: "var(--purple)",
+        purple: {
+          DEFAULT: "hsl(var(--purple))",
+          foreground: "hsl(var(--purple-foreground))",
+        },
+        "dark-900": "var(--dark-900)",
         "dark-800": "var(--dark-800)",
         "dark-700": "var(--dark-700)",
+        "gray-dark": "var(--gray-dark)",
+        gray: "var(--gray)",
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",
@@ -68,5 +74,7 @@ export default withUt({
       },
     },
   },
-  plugins: [require("tailwindcss-animate")],
+  plugins: [typography, animate],
 });
+
+export default config;

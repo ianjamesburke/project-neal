@@ -43,10 +43,13 @@
     --chart-4: 43 74% 66%;
     --chart-5: 27 87% 67%;
     --radius: 0.5rem;
-    --purple: #8779db;
+    --purple: 249 58% 67%;
+    --purple-foreground: 249 90% 65%;
+    --dark-900: #121212;
     --dark-800: #101010;
     --dark-700: #232324;
-    --gray-dark: #d9d9d9;
+    --gray-dark: #6c6c6c;
+    --gray: #d9d9d9;
   }
   .dark {
     --background: 0 0% 3.9%;
@@ -73,19 +76,25 @@
     --chart-3: 30 80% 55%;
     --chart-4: 280 65% 60%;
     --chart-5: 340 75% 55%;
-    --purple: #8779db;
+    --purple: 249 58% 67%;
+    --purple-foreground: 249 90% 65%;
+    --dark-900: #121212;
     --dark-800: #101010;
     --dark-700: #232324;
-    --gray-dark: #d9d9d9;
+    --gray-dark: #6c6c6c;
+    --gray: #d9d9d9;
   }
   /* app/globals.css */
-  .checkerboard {
-    background-image: linear-gradient(45deg, #000 25%, transparent 25%),
-      linear-gradient(135deg, #000 25%, transparent 25%),
-      linear-gradient(45deg, transparent 75%, #000 75%),
-      linear-gradient(135deg, transparent 75%, #000 75%);
-    background-size: 40px 40px;
-    background-position: 0 0, 20px 0, 20px -20px, 0px 20px;
+  .dotboard {
+    background-image: radial-gradient(
+        circle,
+        var(--dark-700) 20%,
+        transparent 20%
+      ),
+      radial-gradient(circle, var(--dark-700) 20%, transparent 20%);
+    background-size: 10px 10px;
+    background-repeat: repeat;
+    background-color: var(--dark-800);
   }
 }
 

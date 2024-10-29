@@ -1,4 +1,4 @@
-import UIProvider from "@/components/ui-provider";
+import { KindeProvider } from "@/lib/providers/kinde-provider";
 import "./globals.css";
 import { Inter } from "next/font/google";
 
@@ -17,7 +17,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-        <UIProvider>{children}</UIProvider>
+        <KindeProvider>{children}</KindeProvider>
       </body>
     </html>
   );
