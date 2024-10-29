@@ -3,3 +3,4 @@ requests
 openai
 pydantic==2.9.2
 flask-cors
+python-dotenv
