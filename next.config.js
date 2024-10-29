@@ -53,19 +53,19 @@ const nextConfig = {
     ];
   },
 
-  async headers() {
-    return [
-      {
-        source: "/((?!api/).*)",
-        headers: [
-          {
-            key: "X-Frame-Options",
-            value: "DENY",
-          },
-        ],
-      },
-    ];
-  },
+  // async headers() {
+  //   return [
+  //     {
+  //       source: "/((?!api/).*)",
+  //       headers: [
+  //         {
+  //           key: "X-Frame-Options",
+  //           value: "DENY",
+  //         },
+  //       ],
+  //     },
+  //   ];
+  // },
 
   // Added environment variables
   env: {
