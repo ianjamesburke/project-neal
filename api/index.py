@@ -331,9 +331,12 @@ def test():
     return jsonify({"response": "hello"}), 200
 
 
+
 @app.route("/api/message-assistant", methods=['POST'])
 def message_assistant_route():
     return jsonify({"response": "hello"}), 200
+
+
 
 @app.route('/api/render-status/<render_id>', methods=['GET'])
 def render_status(render_id):
