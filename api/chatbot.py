@@ -12,25 +12,25 @@ FLASK_ENV = os.getenv('FLASK_ENV')
 def chat(data=None):
     if data is None:    
         data = request.json
-    thread_id = data.get('thread_id', None)
     chat_log = data.get('chat_log', [])
-
     client = OpenAI(api_key=os.getenv('OPENAI_API_KEY'))
-
 
     with open('prompts/chat_bot_prompt.txt', 'r') as file:
         prompt = file.read()
 
-    chat_log = [{'role': 'user', 'content': "hi"}]
     messages = [{"role": "system", "content": prompt}]
     for message in chat_log:
         messages.append(message)
+
+    
 
     class Response(BaseModel):
         response: str
         script_ready: bool
         ask_for_uploads: bool
 
+
+    print("ABOUT TO CALL GPT:", messages)
     completion = client.beta.chat.completions.parse(
         model="gpt-4o-2024-08-06",
         messages=messages,

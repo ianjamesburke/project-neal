@@ -1,4 +1,4 @@
-import { KindeProvider } from "@/lib/providers/kinde-provider";
+// import { KindeProvider } from "@/lib/providers/kinde-provider";
 import "./globals.css";
 import { Inter } from "next/font/google";
 
@@ -16,9 +16,13 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={inter.className}>
+
+      {/* TODO: Add KindeProvider back in */}
+
+      {/* <body className={inter.className}>
         <KindeProvider>{children}</KindeProvider>
-      </body>
+      </body> */}
+      <body className={inter.className}>{children}</body>
     </html>
   );
 }

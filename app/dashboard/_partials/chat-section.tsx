@@ -15,11 +15,6 @@ type Message = {
   suggestions?: string[];
 };
 
-type ChatLog = {
-  role: "user" | "assistant";
-  content: string;
-};
-
 interface ChatSectionProps {
   onRenderIdChange: (renderId: string | null) => void;
 }
@@ -28,42 +23,19 @@ export const ChatSection: React.FC<ChatSectionProps> = ({
   onRenderIdChange,
 }) => {
   const initialMessage =
-    "Hello! Welcome to Project-Neal. I'm here to help you create high converting video creative. Tell me what is your product called and tell me a bit about it. \n\n i only know about one product right now shhhh";
+    "Hey! Welcome to Splice AI. Here’s how it works. I’ll ask you to upload some b-roll footage of the product you’re advertising, and then I’ll ask you a few questions about the product itself. Then, I’ll chop up the footage, generate a script, and edit it into a full blown ad creative. Let’s begin!";
 
   // States
   const [messages, setMessages] = useState<Message[]>([
-    /* {
+    {
       id: 1,
       text: initialMessage,
       sender: "ai",
       suggestions: ["Enter debug mode"],
-    }, */
-    {
-      id: 2,
-      text: "People are tired of chemical-heavy skincare products, so we introduced our totally organic facial cream.",
-      sender: "ai",
-    },
-    {
-      id: 3,
-      text: "People are tired of chemical-heavy skincare products.",
-      sender: "user",
-    },
-    {
-      id: 4,
-      text: "Hello bro",
-      sender: "user",
-    },
-    {
-      id: 5,
-      text: "People are tired of chemical-heavy skincare products, so we introduced our totally organic facial cream.",
-      sender: "ai",
-    },
+    }
   ]);
   const [input, setInput] = useState("");
   const messagesContainerRef = useRef<HTMLDivElement>(null);
-  const [chatLog, setChatLog] = useState<ChatLog[]>([
-    { role: "assistant", content: initialMessage },
-  ]);
   const [isAIResponding, setIsAIResponding] = useState(false);
   const [threadId, setThreadId] = useState<string | null>(null);
   const [backendError, setBackendError] = useState(false);
@@ -73,16 +45,23 @@ export const ChatSection: React.FC<ChatSectionProps> = ({
 
   async function fetchAIResponse() {
     try {
+      const formattedMessages = messages.map(msg => ({
+        role: msg.sender === 'ai' ? 'assistant' : 'user',
+        content: msg.text
+      }));
+
+      console.log("FETCHING... formattedMessages:", formattedMessages);
       const response = await fetch(`/api/chatbot`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
           Accept: "application/json",
         },
-        body: JSON.stringify({ chat_log: chatLog, thread_id: threadId }),
+        body: JSON.stringify({ 
+          chat_log: formattedMessages, 
+          thread_id: threadId 
+        }),
       });
-
-      // returns json with response, script_ready, ask_for_uploads
 
       if (!response.ok) {
         const errorData = await response.json();
@@ -106,21 +85,12 @@ export const ChatSection: React.FC<ChatSectionProps> = ({
         suggestions: [],
       };
 
-      setMessages((prevMessages) => [...prevMessages, aiResponse]);
-
-      setChatLog((prevChatLog) => {
-        const updatedChatLog: ChatLog[] = [
-          ...prevChatLog,
-          { role: "assistant", content: data.response },
-        ];
-        console.log("Updated chat log after AI response:", updatedChatLog);
-        return updatedChatLog;
-      });
+      setMessages(prevMessages => [...prevMessages, aiResponse]);
 
       setThreadId(newThreadId);
 
       if (data.script_ready) {
-        scriptReady(chatLog);
+        scriptReady();
       }
 
       if (data.ask_for_uploads && !filesUploaded && uploadMessageId === null) {
@@ -136,7 +106,7 @@ export const ChatSection: React.FC<ChatSectionProps> = ({
         errorMessage += ` Error details: ${error.message}`;
       }
 
-      setMessages((prevMessages) => [
+      setMessages(prevMessages => [
         ...prevMessages,
         {
           id: messages.length + 1,
@@ -156,21 +126,17 @@ export const ChatSection: React.FC<ChatSectionProps> = ({
       text,
       sender: "user",
     };
-    setMessages((prevMessages) => [...prevMessages, newUserMessage]);
+    
+    setMessages(prevMessages => [...prevMessages, newUserMessage]);
     setInput("");
-
-    setChatLog((prevChatLog) => {
-      const updatedChatLog: ChatLog[] = [
-        ...prevChatLog,
-        { role: "user" as const, content: text },
-      ];
-      console.log("Updated chat log after user message:", updatedChatLog);
-      return updatedChatLog;
-    });
   }
 
-  async function scriptReady(chatLog: { role: string; content: string }[]) {
-    console.log("Script is ready! Sending fetch to build payload...");
+  async function scriptReady() {
+    const formattedMessages = messages.map(msg => ({
+      role: msg.sender === 'ai' ? 'assistant' : 'user',
+      content: msg.text
+    }));
+
     try {
       const response = await fetch(`/api/flask/build-payload`, {
         method: "POST",
@@ -178,7 +144,7 @@ export const ChatSection: React.FC<ChatSectionProps> = ({
           "Content-Type": "application/json",
           Accept: "application/json",
         },
-        body: JSON.stringify({ chat_log: chatLog }),
+        body: JSON.stringify({ chat_log: formattedMessages }),
       });
 
       if (!response.ok) {
@@ -205,10 +171,16 @@ export const ChatSection: React.FC<ChatSectionProps> = ({
     // Do not set askForUploads to false here
   };
 
-  const handleSendClick = () => {
-    if (input.trim()) {
-      sendMessage(input);
-    }
+  const handleSendClick = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!input.trim() || isAIResponding) return;
+
+    setMessages(prev => [...prev, {
+      id: messages.length + 1,
+      text: input,
+      sender: "user",
+    }]);
+    setInput("");
   };
 
   const scrollToBottom = () => {
@@ -232,12 +204,12 @@ export const ChatSection: React.FC<ChatSectionProps> = ({
   useEffect(() => {
     if (
       !isAIResponding &&
-      chatLog.length > 0 &&
-      chatLog[chatLog.length - 1].role === "user"
+      messages.length > 0 &&
+      messages[messages.length - 1].sender === "user"
     ) {
       setIsAIResponding(true);
     }
-  }, [chatLog, isAIResponding]);
+  }, [messages, isAIResponding]);
 
   useEffect(() => {
     if (isAIResponding && !backendError) {
@@ -333,7 +305,7 @@ export const ChatSection: React.FC<ChatSectionProps> = ({
         <form
           onSubmit={(e) => {
             e.preventDefault();
-            handleSendClick();
+            handleSendClick(e);
           }}
           className="flex h-10 w-full items-center rounded-lg border border-dark-700 bg-dark-800 p-1.5"
         >
@@ -348,7 +320,12 @@ export const ChatSection: React.FC<ChatSectionProps> = ({
             onChange={(e) => setInput(e.target.value)}
             className="mr-2 border-none bg-transparent pl-2.5 text-sm text-white focus:outline-none"
           />
-          <Button type="submit" variant={"white"} className="h-[30px] w-12">
+          <Button 
+            type="submit" 
+            variant={"white"} 
+            className="h-[30px] w-12"
+            disabled={isAIResponding}
+          >
             <MoveRight className="h-6 w-6" />
           </Button>
         </form>
