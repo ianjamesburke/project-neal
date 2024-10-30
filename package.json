@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "flask-dev": "pip3 install -r requirements.txt && FLASK_ENV=development python3 -m flask --app api/index run -p 5000",
+    "flask-dev": "pip3 install -r requirements.txt && python3 -m flask --app flask/index run -p 5328",
     "next-dev": "next dev",
     "dev": "concurrently \"pnpm run next-dev\" \"pnpm run flask-dev\"",
     "build": "next build",
@@ -39,7 +39,7 @@
     "react-dom": "^18.3.1",
     "react-draggable": "^4.4.6",
     "tailwind-merge": "^2.5.2",
-    "tailwindcss": "3.4.14",
+    "tailwindcss": "3.3.2",
     "tailwindcss-animate": "^1.0.7",
     "typescript": "^5.6.3",
     "uploadthing": "^7.0.2",
@@ -52,10 +52,8 @@
     "@types/node": "22.7.5",
     "@types/react": "^18.3.11",
     "@types/react-dom": "^18.3.0",
-    "@typescript-eslint/eslint-plugin": "^8.12.2",
-    "@typescript-eslint/parser": "^8.12.2",
-    "eslint": "^9.13.0",
-    "eslint-config-next": "15.0.2",
+    "eslint": "^8",
+    "eslint-config-next": "14.2.12",
     "next-flask": "link:",
     "prettier": "^3.3.3"
   }
