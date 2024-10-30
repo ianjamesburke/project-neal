@@ -440,6 +440,3 @@ def build_payload_route():
     except Exception as e:
         logging.error(f"An error occurred in build_payload_route: {e}")
         return jsonify({"error": "An error occurred while starting the video rendering."}), 500
-    
-# if __name__ == '__main__':
-#     app.run(host='0.0.0.0', port=8080)
