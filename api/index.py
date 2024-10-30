@@ -5,7 +5,7 @@ import os
 from pydantic import BaseModel, Field
 import uuid
 import base64
-import requests
+# import requests
 import json
 
 ### INITIALIZE APP ###
@@ -261,50 +261,50 @@ def encode_urls(payload):
             if isinstance(element['source'], str):
                 elements[index]['source'] = base64.urlsafe_b64encode(element['source'].encode()).decode()
 
-def start_video_render(payload):
+# def start_video_render(payload):
 
-    """
-    Sends a video to creatomate and returns the render ID and video URL.
+#     """
+#     Sends a video to creatomate and returns the render ID and video URL.
 
-    encode/decode urls if nessesary
-    """
-
-
-    url = "https://api.creatomate.com/v1/renders"
-    api_key = os.environ.get('CREATOMATE_API_KEY')
-    headers = {
-        "Authorization": f"Bearer {api_key}",
-        "Content-Type": "application/json"
-    }
-
-    # check if payload contains encoded urls
+#     encode/decode urls if nessesary
+#     """
 
 
-    response = requests.post(url, headers=headers, json=payload)
-    response.raise_for_status()  # Raises an error for bad status codes
+#     url = "https://api.creatomate.com/v1/renders"
+#     api_key = os.environ.get('CREATOMATE_API_KEY')
+#     headers = {
+#         "Authorization": f"Bearer {api_key}",
+#         "Content-Type": "application/json"
+#     }
 
-    json_response = response.json()
-    if isinstance(json_response, list) and len(json_response) > 0:
-        render_id = json_response[0].get('id')
-        video_url = json_response[0].get('url')
-        return render_id, video_url
-    else:
-        raise Exception("Unexpected response format from creatomate API")
+#     # check if payload contains encoded urls
 
-def get_render_status(render_id):
-    url = f"https://api.creatomate.com/v1/renders/{render_id}"
-    headers = {
-        "Authorization": f"Bearer {os.environ.get('CREATOMATE_API_KEY')}",
-    }
 
-    response = requests.get(url, headers=headers)
-    response.raise_for_status()
+#     response = requests.post(url, headers=headers, json=payload)
+#     response.raise_for_status()  # Raises an error for bad status codes
 
-    data = response.json()
-    return {
-        "status": data.get('status'),
-        "videoUrl": data.get('url')
-    }
+#     json_response = response.json()
+#     if isinstance(json_response, list) and len(json_response) > 0:
+#         render_id = json_response[0].get('id')
+#         video_url = json_response[0].get('url')
+#         return render_id, video_url
+#     else:
+#         raise Exception("Unexpected response format from creatomate API")
+
+# def get_render_status(render_id):
+#     url = f"https://api.creatomate.com/v1/renders/{render_id}"
+#     headers = {
+#         "Authorization": f"Bearer {os.environ.get('CREATOMATE_API_KEY')}",
+#     }
+
+#     response = requests.get(url, headers=headers)
+#     response.raise_for_status()
+
+#     data = response.json()
+#     return {
+#         "status": data.get('status'),
+#         "videoUrl": data.get('url')
+#     }
 
 
 
