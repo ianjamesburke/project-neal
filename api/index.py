@@ -122,7 +122,6 @@ def build_context(chat_log: list, footage_analysis: dict) -> str:
     '''
     return context
 
-
 def make_call_to_generate_editing_script(context):
     
     """
@@ -155,8 +154,6 @@ def make_call_to_generate_editing_script(context):
     clips_list = clips.get('clips', [])
 
     return clips_list
-
-
 
 def create_payload_from_clip_list_and_audio_url(data: dict) -> dict:
     try:
@@ -339,6 +336,9 @@ def chatbot():
     data = request.json
     return chat(data)
 
+@app.route('/api/analyze-footage', methods=['POST'])
+def analyze_footage():
+    data = request.json
 
 
 @app.route("/api/message-assistant", methods=['POST'])
