@@ -7,11 +7,9 @@ import uuid
 import base64
 import requests
 import json
-from flask_cors import CORS
 
 ### INITIALIZE APP ###
 app = Flask(__name__)
-CORS(app)
 app.debug = True
 
 FLASK_ENV = os.getenv('FLASK_ENV')
@@ -363,15 +361,6 @@ def chat(data=None):
 
 
     return jsonify({"response": data.response, "script_ready": data.script_ready, "ask_for_uploads": data.ask_for_uploads}), 200
-
-@app.route('/api/analyze-footage', methods=['POST'])
-def analyze_footage():
-    data = request.json
-
-
-@app.route("/api/message-assistant", methods=['POST'])
-def message_assistant_route():
-    return jsonify({"response": "hello"}), 200
 
 
 
