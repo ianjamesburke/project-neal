@@ -20,6 +20,7 @@ if os.getenv('FLASK_ENV') == 'development':
     load_dotenv("../.env")
 
 
+
 try:
     api_key = os.environ.get('OPENAI_API_KEY')
     client = OpenAI(api_key=api_key)
@@ -351,6 +352,9 @@ def chat(data=None):
         ask_for_uploads: bool
 
 
+
+    # TEMP
+    messages = [{"role": "user", "content": "a short video of someone using a fabric shaver"}]
     completion = client.beta.chat.completions.parse(
         model="gpt-4o-2024-08-06",
         messages=messages,
