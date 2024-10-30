@@ -14,6 +14,7 @@ app = Flask(__name__)
 CORS(app)
 app.debug = True
 
+FLASK_ENV = os.getenv('FLASK_ENV')
 
 if os.getenv('FLASK_ENV') == 'development':
     print("FLASK_ENV IS DEVELOPMENT")
@@ -80,7 +81,6 @@ def message_assistant(chat_log, thread_id=None):
     else:
         print(run.status)
         return f"openai assistant failed: {run.status}", None, None, thread_id
-
 
 def simplify_conversation(chat_log):
     simplified = []
@@ -324,17 +324,45 @@ def get_render_status(render_id):
 
 ### ROUTES ###
 
-
 # test route
 @app.route('/api/test', methods=['GET'])
 def test():
     return jsonify({"response": "hello"}), 200
 
+
+
 @app.route('/api/chatbot', methods=['POST'])
-def chatbot():
-    from chatbot import chat
-    data = request.json
-    return chat(data)
+def chat(data=None):
+    if data is None:    
+        data = request.json
+    chat_log = data.get('chat_log', [])
+    client = OpenAI(api_key=os.getenv('OPENAI_API_KEY'))
+
+    with open('prompts/chat_bot_prompt.txt', 'r') as file:
+        prompt = file.read()
+
+    messages = [{"role": "system", "content": prompt}]
+    for message in chat_log:
+        messages.append(message)
+
+    
+
+    class Response(BaseModel):
+        response: str
+        script_ready: bool
+        ask_for_uploads: bool
+
+
+    completion = client.beta.chat.completions.parse(
+        model="gpt-4o-2024-08-06",
+        messages=messages,
+        response_format=Response,
+    )
+
+    data = completion.choices[0].message.parsed
+
+
+    return jsonify({"response": data.response, "script_ready": data.script_ready, "ask_for_uploads": data.ask_for_uploads}), 200
 
 @app.route('/api/analyze-footage', methods=['POST'])
 def analyze_footage():
@@ -424,3 +452,5 @@ def build_payload_route():
         logging.error(f"An error occurred in build_payload_route: {e}")
         return jsonify({"error": "An error occurred while starting the video rendering."}), 500
     
+# if __name__ == '__main__':
+#     app.run(host='0.0.0.0', port=8080)
