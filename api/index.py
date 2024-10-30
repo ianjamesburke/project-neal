@@ -354,7 +354,7 @@ def chat(data=None):
 
 
     # TEMP
-    messages = [{"role": "user", "content": "a short video of someone using a fabric shaver"}]
+    # messages = [{"role": "user", "content": "a short video of someone using a fabric shaver"}]
     completion = client.beta.chat.completions.parse(
         model="gpt-4o-2024-08-06",
         messages=messages,
@@ -368,14 +368,14 @@ def chat(data=None):
 
 
 
-@app.route('/api/render-status/<render_id>', methods=['GET'])
-def render_status(render_id):
-    try:
-        status = get_render_status(render_id)
-        return jsonify(status), 200
-    except Exception as e:
-        print(f"An error occurred in render_status: {e}")
-        return jsonify({"error": "An error occurred while checking render status."}), 500
+# @app.route('/api/render-status/<render_id>', methods=['GET'])
+# def render_status(render_id):
+#     try:
+#         status = get_render_status(render_id)
+#         return jsonify(status), 200
+#     except Exception as e:
+#         print(f"An error occurred in render_status: {e}")
+#         return jsonify({"error": "An error occurred while checking render status."}), 500
 
 
     
