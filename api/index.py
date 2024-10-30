@@ -381,67 +381,67 @@ def chat(data=None):
 
     
 
-@app.route('/api/build-payload', methods=['POST'])
-def build_payload_route():
-    try:
-        data = request.json
-        chat_log = data.get('chat_log', [])
+# @app.route('/api/build-payload', methods=['POST'])
+# def build_payload_route():
+#     try:
+#         data = request.json
+#         chat_log = data.get('chat_log', [])
 
-        # TODO: Insert logic to get relevent footage for the users database,
-        # I currently have a placeholder footage analysis object
-        placeholder_footage_analysis = { 
-            "footage_analysis": [   
-                {
-                    "url": "https://utfs.io/f/mWiSbu5B60JIlsdlbQfRjLq1DG8ZYt30f4NFUwruh6dXgnCl",
-                    "clips": [
-                        {
-                            "description": "Someone using a fabric shaver",
-                            "in_frame": 0,
-                            "out_frame": 9
-                        },
-                        {
-                            "description": "Someone using a fabric shaver",
-                            "in_frame": 9,
-                            "out_frame": 26
-                        }
-                    ]
-                },
-                {
-                    "url": "https://utfs.io/f/mWiSbu5B60JISDpcFKTbIuWJV8nyPDQFXv0YmcE4dfi9HLTS",
-                    "clips": [
-                        {
-                            "description": "Someone using a fabric shaver on a blue pair of shorts",
-                            "in_frame": 0,
-                            "out_frame": 23
-                        }
-                    ]
-                },
-                {
-                    "url": "https://utfs.io/f/mWiSbu5B60JIHVLB3ODLDPsBZQR9AWmdNCqxkSh81V3Gtpyj",
-                    "clips": [
-                        {
-                            "description": "Someone using a fabric shaver",
-                            "in_frame": 0,
-                            "out_frame": 27
-                        }
-                    ]
-                }
-            ]
-        }
+#         # TODO: Insert logic to get relevent footage for the users database,
+#         # I currently have a placeholder footage analysis object
+#         placeholder_footage_analysis = { 
+#             "footage_analysis": [   
+#                 {
+#                     "url": "https://utfs.io/f/mWiSbu5B60JIlsdlbQfRjLq1DG8ZYt30f4NFUwruh6dXgnCl",
+#                     "clips": [
+#                         {
+#                             "description": "Someone using a fabric shaver",
+#                             "in_frame": 0,
+#                             "out_frame": 9
+#                         },
+#                         {
+#                             "description": "Someone using a fabric shaver",
+#                             "in_frame": 9,
+#                             "out_frame": 26
+#                         }
+#                     ]
+#                 },
+#                 {
+#                     "url": "https://utfs.io/f/mWiSbu5B60JISDpcFKTbIuWJV8nyPDQFXv0YmcE4dfi9HLTS",
+#                     "clips": [
+#                         {
+#                             "description": "Someone using a fabric shaver on a blue pair of shorts",
+#                             "in_frame": 0,
+#                             "out_frame": 23
+#                         }
+#                     ]
+#                 },
+#                 {
+#                     "url": "https://utfs.io/f/mWiSbu5B60JIHVLB3ODLDPsBZQR9AWmdNCqxkSh81V3Gtpyj",
+#                     "clips": [
+#                         {
+#                             "description": "Someone using a fabric shaver",
+#                             "in_frame": 0,
+#                             "out_frame": 27
+#                         }
+#                     ]
+#                 }
+#             ]
+#         }
 
-        placeholder_chat_log = [
-            {"role": "user", "content": "a short video of someone using a fabric shaver"}
-        ]
+#         placeholder_chat_log = [
+#             {"role": "user", "content": "a short video of someone using a fabric shaver"}
+#         ]
 
-        context = build_context(chat_log, placeholder_footage_analysis)
+#         context = build_context(chat_log, placeholder_footage_analysis)
 
-        clips_list = make_call_to_generate_editing_script(context)
-        payload = create_payload_from_clip_list_and_audio_url(clips_list)
+#         clips_list = make_call_to_generate_editing_script(context)
+#         payload = create_payload_from_clip_list_and_audio_url(clips_list)
 
-        render_id, video_url = start_video_render(payload)
+#         render_id, video_url = start_video_render(payload)
 
-        return jsonify({"render_id": render_id, "video_url": video_url}), 202
+#         return jsonify({"render_id": render_id, "video_url": video_url}), 202
 
-    except Exception as e:
-        logging.error(f"An error occurred in build_payload_route: {e}")
-        return jsonify({"error": "An error occurred while starting the video rendering."}), 500
+#     except Exception as e:
+#         logging.error(f"An error occurred in build_payload_route: {e}")
+#         return jsonify({"error": "An error occurred while starting the video rendering."}), 500

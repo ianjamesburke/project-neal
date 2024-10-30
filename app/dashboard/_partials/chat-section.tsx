@@ -31,7 +31,7 @@ export const ChatSection: React.FC<ChatSectionProps> = ({
       id: 1,
       text: initialMessage,
       sender: "ai",
-      suggestions: ["Enter debug mode"],
+      // suggestions: ["Enter debug mode"],
     }
   ]);
   const [input, setInput] = useState("");
@@ -39,9 +39,9 @@ export const ChatSection: React.FC<ChatSectionProps> = ({
   const [isAIResponding, setIsAIResponding] = useState(false);
   const [threadId, setThreadId] = useState<string | null>(null);
   const [backendError, setBackendError] = useState(false);
-  const [askForUploads, setAskForUploads] = useState(false);
+  const [askForUploads, setAskForUploads] = useState(true);
   const [filesUploaded, setFilesUploaded] = useState(false);
-  const [uploadMessageId, setUploadMessageId] = useState<number | null>(null);
+  const [uploadMessageId, setUploadMessageId] = useState<number | null>(1);
 
   async function fetchAIResponse() {
     try {
