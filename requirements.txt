@@ -1,2 +1,4 @@
 Flask==3.0.3
+flask_cors
 openai==1.52.2
+requests==2.31.0
