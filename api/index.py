@@ -355,6 +355,7 @@ def chat(data=None):
 
     # TEMP
     # messages = [{"role": "user", "content": "a short video of someone using a fabric shaver"}]
+
     completion = client.beta.chat.completions.parse(
         model="gpt-4o-2024-08-06",
         messages=messages,
