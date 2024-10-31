@@ -303,20 +303,20 @@ def encode_urls(payload):
 #     else:
 #         raise Exception("Unexpected response format from creatomate API")
 
-# def get_render_status(render_id):
-#     url = f"https://api.creatomate.com/v1/renders/{render_id}"
-#     headers = {
-#         "Authorization": f"Bearer {os.environ.get('CREATOMATE_API_KEY')}",
-#     }
+def get_render_status(render_id):
+    url = f"https://api.creatomate.com/v1/renders/{render_id}"
+    headers = {
+        "Authorization": f"Bearer {os.environ.get('CREATOMATE_API_KEY')}",
+    }
 
-#     response = requests.get(url, headers=headers)
-#     response.raise_for_status()
+    response = requests.get(url, headers=headers)
+    response.raise_for_status()
 
-#     data = response.json()
-#     return {
-#         "status": data.get('status'),
-#         "videoUrl": data.get('url')
-#     }
+    data = response.json()
+    return {
+        "status": data.get('status'),
+        "videoUrl": data.get('url')
+    }
 
 
 
@@ -454,26 +454,28 @@ def get_footage_analysis(data=None):
 
 
 
-# @app.route('/api/render-status/<render_id>', methods=['GET'])
-# def render_status(render_id):
-#     try:
-#         status = get_render_status(render_id)
-#         return jsonify(status), 200
-#     except Exception as e:
-#         print(f"An error occurred in render_status: {e}")
-#         return jsonify({"error": "An error occurred while checking render status."}), 500
+@app.route('/api/get-render-status/<render_id>', methods=['GET'])
+def get_render_status_route(render_id):
+    try:
+        status = get_render_status(render_id)
+        return jsonify(status), 200
+    except Exception as e:
+        print(f"An error occurred in render_status: {e}")
+        return jsonify({"error": "An error occurred while checking render status."}), 500
 
 
     
 
 @app.route('/api/build-payload', methods=['POST'])
 def build_payload_route(data=None):
-    logging.info("building payload")
-    logging.info(f"chatlog: {data}")
     try:
         if data is None:    
             data = request.json
-        chat_log = data.get('chat_log', [])
+
+        try:
+            chat_log = data.get('chat_log', [])
+        except:
+            chat_log = data
 
         # get footage from db and simplify
         response = supabase_client.table('project-neal-footage').select('*').execute()
@@ -504,6 +506,7 @@ def build_payload_route(data=None):
         }
         # make api request to https://project-quincy-535483726398.us-central1.run.app/generate-quincy-video
         response = requests.post(
+            # 'http://localhost:8000/api/generate-quincy-video',
             'https://project-quincy-535483726398.us-central1.run.app/api/generate-quincy-video',
             json=payload
         )
@@ -517,3 +520,7 @@ def build_payload_route(data=None):
         logging.error(f"An error occurred in build_payload_route: {e}")
         return jsonify({"error": "An error occurred while starting the video rendering."}), 500
     
+
+build_payload_route(data=[
+    {"role": "user", "content": "a short video of someone using a fabric shaver"}
+])
