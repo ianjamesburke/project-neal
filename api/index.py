@@ -5,8 +5,11 @@ import os
 from pydantic import BaseModel, Field
 import uuid
 import base64
-# import requests
 import json
+from .db import supabase_client
+import requests
+import string
+import random
 
 ### INITIALIZE APP ###
 app = Flask(__name__)
@@ -364,8 +367,80 @@ def chat(data=None):
 
     data = completion.choices[0].message.parsed
 
-
     return jsonify({"response": data.response, "script_ready": data.script_ready, "ask_for_uploads": data.ask_for_uploads}), 200
+
+
+
+@app.route('/api/put-footage-url', methods=['POST'])
+def put_footage_url():
+    data = request.json
+    footage_url = data.get('footage_url', '')
+    
+    # Validate URL is not empty
+    if not footage_url:
+        return jsonify({"success": False, "error": "No footage URL provided"}), 400
+
+    name = ''.join(random.choices(string.ascii_letters + string.digits, k=6))
+
+    try:
+        response = supabase_client.table('project-neal-footage').insert({
+            'ut_url': footage_url,
+            'footage_name': name
+        }).execute()
+        print("url added to db. response: ", response.data)
+        return jsonify({"success": True}), 200
+    except Exception as e:
+        return jsonify({"success": False, "error": str(e)}), 500
+
+
+@app.route('/api/get-footage-analysis', methods=['GET'])
+def get_footage_analysis(data=None):
+    """
+    Go throught the DB and get list of all urls that don't have visual_analysis
+    make a request to the footage analysis API for each url
+    save the analysis to the db
+    return a success message stating all urls have been processed
+    """
+    try:
+        # Get all footage entries without visual analysis
+        response = supabase_client.table('project-neal-footage').select('*').is_('visual_analysis', None).execute()
+        footage_entries = response.data
+
+        for entry in footage_entries:
+                        # Make request to footage analysis API
+            analysis_response = requests.post(
+                'https://project-quincy-535483726398.us-central1.run.app/api/quincy',
+                json = {
+                    'url': entry['ut_url'],
+                    'footage_name': entry['footage_name'],
+                    'id': entry['id']
+                }
+            )
+
+            # check for 500
+            if analysis_response.status_code == 500:
+                print("error: ", analysis_response.json())
+                return jsonify({"success": False, "error": "Failed to get footage analysis"}), 500
+            
+            if analysis_response.status_code == 200:
+                analysis_data = analysis_response.json()
+
+                # Update DB with analysis results
+                supabase_client.table('project-neal-footage').update({
+                    'visual_analysis': analysis_data
+                }).eq('footage_name', entry['footage_name']).execute()
+
+        return jsonify({
+            "success": True,
+            "message": f"Successfully processed {len(footage_entries)} footage entries"
+        }), 200
+
+    except Exception as e:
+        print(f"Error in get_footage_analysis: {str(e)}")
+        return jsonify({
+            "success": False,
+            "error": str(e)
+        }), 500
 
 
 

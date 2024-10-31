@@ -196,6 +196,8 @@ export const ChatSection: React.FC<ChatSectionProps> = ({
     sendMessage(suggestion, true);
   };
 
+
+
   // Effects
   useEffect(() => {
     scrollToBottom();
@@ -285,9 +287,30 @@ export const ChatSection: React.FC<ChatSectionProps> = ({
                       <div className="mt-4">
                         <UploadButton
                           endpoint="videoUploader"
-                          onClientUploadComplete={(res) => {
+                          onClientUploadComplete={async (res) => {
                             console.log("Files: ", res);
-                            alert("Upload Completed");
+                            for (const file of res) {
+                              try {
+                                const encodedUrl = encodeURIComponent(file.url);
+                                console.log("Uploading URL to DB: ", encodedUrl);
+                                const response = await fetch('/api/put-footage-url', {
+                                  method: 'POST',
+                                  headers: {
+                                    'Content-Type': 'application/json',
+                                  },
+                                  body: JSON.stringify({ footage_url: encodedUrl }),
+                                });
+
+                                if (!response.ok) {
+                                  throw new Error(`HTTP error! status: ${response.status}`);
+                                }
+
+                                const data = await response.json();
+                                console.log("DB response: ", data);
+                              } catch (error) {
+                                console.error("Error uploading footage URL to DB: ", error);
+                              }
+                            }
                           }}
                           onUploadError={(error: Error) => {
                             alert(`ERROR! ${error.message}`);
