@@ -6,7 +6,6 @@ from pydantic import BaseModel, Field
 import uuid
 import base64
 import json
-from .db import supabase_client
 import requests
 import string
 import random
@@ -21,6 +20,16 @@ if os.getenv('FLASK_ENV') == 'development':
     print("FLASK_ENV IS DEVELOPMENT")
     from dotenv import load_dotenv
     load_dotenv("../.env")
+
+
+### SUPABASE ###
+from supabase import create_client, Client
+import os
+url: str = os.getenv("SUPABASE_URL")
+key: str = os.getenv("SUPABASE_KEY")
+supabase_client: Client = create_client(url, key)
+print("Supabase client created")
+
 
 
 
@@ -391,6 +400,7 @@ def put_footage_url():
         return jsonify({"success": True}), 200
     except Exception as e:
         return jsonify({"success": False, "error": str(e)}), 500
+
 
 
 @app.route('/api/get-footage-analysis', methods=['GET'])
