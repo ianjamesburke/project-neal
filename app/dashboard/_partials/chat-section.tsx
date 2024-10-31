@@ -138,7 +138,7 @@ export const ChatSection: React.FC<ChatSectionProps> = ({
     }));
 
     try {
-      const response = await fetch(`/api/flask/build-payload`, {
+      const response = await fetch(`/api/build-payload`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

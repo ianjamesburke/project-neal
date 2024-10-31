@@ -466,67 +466,54 @@ def get_footage_analysis(data=None):
 
     
 
-# @app.route('/api/build-payload', methods=['POST'])
-# def build_payload_route():
-#     try:
-#         data = request.json
-#         chat_log = data.get('chat_log', [])
+@app.route('/api/build-payload', methods=['POST'])
+def build_payload_route(data=None):
+    logging.info("building payload")
+    logging.info(f"chatlog: {data}")
+    try:
+        if data is None:    
+            data = request.json
+        chat_log = data.get('chat_log', [])
 
-#         # TODO: Insert logic to get relevent footage for the users database,
-#         # I currently have a placeholder footage analysis object
-#         placeholder_footage_analysis = { 
-#             "footage_analysis": [   
-#                 {
-#                     "url": "https://utfs.io/f/mWiSbu5B60JIlsdlbQfRjLq1DG8ZYt30f4NFUwruh6dXgnCl",
-#                     "clips": [
-#                         {
-#                             "description": "Someone using a fabric shaver",
-#                             "in_frame": 0,
-#                             "out_frame": 9
-#                         },
-#                         {
-#                             "description": "Someone using a fabric shaver",
-#                             "in_frame": 9,
-#                             "out_frame": 26
-#                         }
-#                     ]
-#                 },
-#                 {
-#                     "url": "https://utfs.io/f/mWiSbu5B60JISDpcFKTbIuWJV8nyPDQFXv0YmcE4dfi9HLTS",
-#                     "clips": [
-#                         {
-#                             "description": "Someone using a fabric shaver on a blue pair of shorts",
-#                             "in_frame": 0,
-#                             "out_frame": 23
-#                         }
-#                     ]
-#                 },
-#                 {
-#                     "url": "https://utfs.io/f/mWiSbu5B60JIHVLB3ODLDPsBZQR9AWmdNCqxkSh81V3Gtpyj",
-#                     "clips": [
-#                         {
-#                             "description": "Someone using a fabric shaver",
-#                             "in_frame": 0,
-#                             "out_frame": 27
-#                         }
-#                     ]
-#                 }
-#             ]
-#         }
+        # get footage from db and simplify
+        response = supabase_client.table('project-neal-footage').select('*').execute()
+        footage_entries = response.data
 
-#         placeholder_chat_log = [
-#             {"role": "user", "content": "a short video of someone using a fabric shaver"}
-#         ]
+        # create mapping, footage name to encoded urls
+        footage_mapping = {}
+        for entry in footage_entries:
+            footage_mapping[entry['footage_name']] = entry['ut_url']
 
-#         context = build_context(chat_log, placeholder_footage_analysis)
+        simplified_analysis = []
+        for entry in footage_entries:
+            if entry.get('visual_analysis'):
+                for clip in entry['visual_analysis'].get('clips', []):
+                    simplified_analysis.append({
+                        'footage_name': entry['footage_name'],
+                        'description': clip.get('description'),
+                        'trim': clip.get('trim')
+                    })
+        
+        # simplify chat_log
+        simplified_chat_log = simplify_conversation(chat_log)
 
-#         clips_list = make_call_to_generate_editing_script(context)
-#         payload = create_payload_from_clip_list_and_audio_url(clips_list)
+        payload = {
+            'footage_mapping': footage_mapping,
+            'clips_list': simplified_analysis,
+            'chat_log': simplified_chat_log
+        }
+        # make api request to https://project-quincy-535483726398.us-central1.run.app/generate-quincy-video
+        response = requests.post(
+            'https://project-quincy-535483726398.us-central1.run.app/api/generate-quincy-video',
+            json=payload
+        )
 
-#         render_id, video_url = start_video_render(payload)
+        if response.status_code == 200:
+            return jsonify({"success": True, "render_id": response.json().get('render_id'), "video_url": response.json().get('video_url')}), 200
+        else:
+            return jsonify({"success": False, "error": "Failed to generate Quincy video"}), 500
 
-#         return jsonify({"render_id": render_id, "video_url": video_url}), 202
-
-#     except Exception as e:
-#         logging.error(f"An error occurred in build_payload_route: {e}")
-#         return jsonify({"error": "An error occurred while starting the video rendering."}), 500
+    except Exception as e:
+        logging.error(f"An error occurred in build_payload_route: {e}")
+        return jsonify({"error": "An error occurred while starting the video rendering."}), 500
+    
