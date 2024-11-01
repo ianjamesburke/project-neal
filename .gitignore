@@ -45,3 +45,5 @@ __pycache__
 .secrets.txt
 
 venv
+
+api/temp_init.py

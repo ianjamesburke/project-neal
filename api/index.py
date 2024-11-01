@@ -5,8 +5,10 @@ import os
 from pydantic import BaseModel, Field
 import uuid
 import base64
-# import requests
 import json
+import requests
+import string
+import random
 
 ### INITIALIZE APP ###
 app = Flask(__name__)
@@ -18,6 +20,16 @@ if os.getenv('FLASK_ENV') == 'development':
     print("FLASK_ENV IS DEVELOPMENT")
     from dotenv import load_dotenv
     load_dotenv("../.env")
+
+
+### SUPABASE ###
+from supabase import create_client, Client
+import os
+url: str = os.getenv("SUPABASE_URL")
+key: str = os.getenv("SUPABASE_KEY")
+supabase_client: Client = create_client(url, key)
+print("Supabase client created")
+
 
 
 
@@ -291,20 +303,20 @@ def encode_urls(payload):
 #     else:
 #         raise Exception("Unexpected response format from creatomate API")
 
-# def get_render_status(render_id):
-#     url = f"https://api.creatomate.com/v1/renders/{render_id}"
-#     headers = {
-#         "Authorization": f"Bearer {os.environ.get('CREATOMATE_API_KEY')}",
-#     }
+def get_render_status(render_id):
+    url = f"https://api.creatomate.com/v1/renders/{render_id}"
+    headers = {
+        "Authorization": f"Bearer {os.environ.get('CREATOMATE_API_KEY')}",
+    }
 
-#     response = requests.get(url, headers=headers)
-#     response.raise_for_status()
+    response = requests.get(url, headers=headers)
+    response.raise_for_status()
 
-#     data = response.json()
-#     return {
-#         "status": data.get('status'),
-#         "videoUrl": data.get('url')
-#     }
+    data = response.json()
+    return {
+        "status": data.get('status'),
+        "videoUrl": data.get('url')
+    }
 
 
 
@@ -364,84 +376,158 @@ def chat(data=None):
 
     data = completion.choices[0].message.parsed
 
-
     return jsonify({"response": data.response, "script_ready": data.script_ready, "ask_for_uploads": data.ask_for_uploads}), 200
 
 
 
-# @app.route('/api/render-status/<render_id>', methods=['GET'])
-# def render_status(render_id):
-#     try:
-#         status = get_render_status(render_id)
-#         return jsonify(status), 200
-#     except Exception as e:
-#         print(f"An error occurred in render_status: {e}")
-#         return jsonify({"error": "An error occurred while checking render status."}), 500
+@app.route('/api/put-footage-url', methods=['POST'])
+def put_footage_url():
+    data = request.json
+    footage_url = data.get('footage_url', '')
+    
+    # Validate URL is not empty
+    if not footage_url:
+        return jsonify({"success": False, "error": "No footage URL provided"}), 400
+
+    name = ''.join(random.choices(string.ascii_letters + string.digits, k=6))
+
+    try:
+        response = supabase_client.table('project-neal-footage').insert({
+            'ut_url': footage_url,
+            'footage_name': name
+        }).execute()
+        print("url added to db. response: ", response.data)
+        return jsonify({"success": True}), 200
+    except Exception as e:
+        return jsonify({"success": False, "error": str(e)}), 500
+
+
+
+@app.route('/api/get-footage-analysis', methods=['GET'])
+def get_footage_analysis(data=None):
+    """
+    Go throught the DB and get list of all urls that don't have visual_analysis
+    make a request to the footage analysis API for each url
+    save the analysis to the db
+    return a success message stating all urls have been processed
+    """
+    try:
+        # Get all footage entries without visual analysis
+        response = supabase_client.table('project-neal-footage').select('*').is_('visual_analysis', None).execute()
+        footage_entries = response.data
+
+        for entry in footage_entries:
+                        # Make request to footage analysis API
+            analysis_response = requests.post(
+                'https://project-quincy-535483726398.us-central1.run.app/api/quincy',
+                json = {
+                    'url': entry['ut_url'],
+                    'footage_name': entry['footage_name'],
+                    'id': entry['id']
+                }
+            )
+
+            # check for 500
+            if analysis_response.status_code == 500:
+                print("error: ", analysis_response.json())
+                return jsonify({"success": False, "error": "Failed to get footage analysis"}), 500
+            
+            if analysis_response.status_code == 200:
+                analysis_data = analysis_response.json()
+
+                # Update DB with analysis results
+                supabase_client.table('project-neal-footage').update({
+                    'visual_analysis': analysis_data
+                }).eq('footage_name', entry['footage_name']).execute()
+
+        return jsonify({
+            "success": True,
+            "message": f"Successfully processed {len(footage_entries)} footage entries"
+        }), 200
+
+    except Exception as e:
+        print(f"Error in get_footage_analysis: {str(e)}")
+        return jsonify({
+            "success": False,
+            "error": str(e)
+        }), 500
+
+
+
+@app.route('/api/get-render-status/<render_id>', methods=['GET'])
+def get_render_status_route(render_id):
+    try:
+        status = get_render_status(render_id)
+        return jsonify(status), 200
+    except Exception as e:
+        print(f"An error occurred in render_status: {e}")
+        return jsonify({"error": "An error occurred while checking render status."}), 500
 
 
     
 
-# @app.route('/api/build-payload', methods=['POST'])
-# def build_payload_route():
-#     try:
-#         data = request.json
-#         chat_log = data.get('chat_log', [])
+@app.route('/api/build-payload', methods=['POST'])
+def build_payload_route(data=None):
+    try:
+        # Log incoming data
+        logging.info(f"Received data: {data}")
+        
+        if data is None:    
+            data = request.json
+        logging.info(f"Processed data: {data}")
 
-#         # TODO: Insert logic to get relevent footage for the users database,
-#         # I currently have a placeholder footage analysis object
-#         placeholder_footage_analysis = { 
-#             "footage_analysis": [   
-#                 {
-#                     "url": "https://utfs.io/f/mWiSbu5B60JIlsdlbQfRjLq1DG8ZYt30f4NFUwruh6dXgnCl",
-#                     "clips": [
-#                         {
-#                             "description": "Someone using a fabric shaver",
-#                             "in_frame": 0,
-#                             "out_frame": 9
-#                         },
-#                         {
-#                             "description": "Someone using a fabric shaver",
-#                             "in_frame": 9,
-#                             "out_frame": 26
-#                         }
-#                     ]
-#                 },
-#                 {
-#                     "url": "https://utfs.io/f/mWiSbu5B60JISDpcFKTbIuWJV8nyPDQFXv0YmcE4dfi9HLTS",
-#                     "clips": [
-#                         {
-#                             "description": "Someone using a fabric shaver on a blue pair of shorts",
-#                             "in_frame": 0,
-#                             "out_frame": 23
-#                         }
-#                     ]
-#                 },
-#                 {
-#                     "url": "https://utfs.io/f/mWiSbu5B60JIHVLB3ODLDPsBZQR9AWmdNCqxkSh81V3Gtpyj",
-#                     "clips": [
-#                         {
-#                             "description": "Someone using a fabric shaver",
-#                             "in_frame": 0,
-#                             "out_frame": 27
-#                         }
-#                     ]
-#                 }
-#             ]
-#         }
+        try:
+            chat_log = data.get('chat_log', [])
+            logging.info(f"Chat log: {chat_log}")
+        except Exception as chat_error:
+            logging.error(f"Error processing chat_log: {chat_error}")
+            chat_log = data
 
-#         placeholder_chat_log = [
-#             {"role": "user", "content": "a short video of someone using a fabric shaver"}
-#         ]
+        # Log Supabase query attempt
+        logging.info("Attempting to query Supabase")
+        response = supabase_client.table('project-neal-footage').select('*').execute()
+        footage_entries = response.data
+        logging.info(f"Footage entries: {footage_entries}")
 
-#         context = build_context(chat_log, placeholder_footage_analysis)
+        # get footage from db and simplify
+        response = supabase_client.table('project-neal-footage').select('*').execute()
+        footage_entries = response.data
 
-#         clips_list = make_call_to_generate_editing_script(context)
-#         payload = create_payload_from_clip_list_and_audio_url(clips_list)
+        # create mapping, footage name to encoded urls
+        footage_mapping = {}
+        for entry in footage_entries:
+            footage_mapping[entry['footage_name']] = entry['ut_url']
 
-#         render_id, video_url = start_video_render(payload)
+        simplified_analysis = []
+        for entry in footage_entries:
+            if entry.get('visual_analysis'):
+                for clip in entry['visual_analysis'].get('clips', []):
+                    simplified_analysis.append({
+                        'footage_name': entry['footage_name'],
+                        'description': clip.get('description'),
+                        'trim': clip.get('trim')
+                    })
+        
+        # simplify chat_log
+        simplified_chat_log = simplify_conversation(chat_log)
 
-#         return jsonify({"render_id": render_id, "video_url": video_url}), 202
+        payload = {
+            'footage_mapping': footage_mapping,
+            'clips_list': simplified_analysis,
+            'chat_log': simplified_chat_log
+        }
+        # make api request to https://project-quincy-535483726398.us-central1.run.app/generate-quincy-video
+        response = requests.post(
+            # 'http://localhost:8000/api/generate-quincy-video',
+            'https://project-quincy-535483726398.us-central1.run.app/api/generate-quincy-video',
+            json=payload
+        )
 
-#     except Exception as e:
-#         logging.error(f"An error occurred in build_payload_route: {e}")
-#         return jsonify({"error": "An error occurred while starting the video rendering."}), 500
+        if response.status_code == 200:
+            return jsonify({"success": True, "render_id": response.json().get('render_id'), "video_url": response.json().get('video_url')}), 200
+        else:
+            return jsonify({"success": False, "error": "Failed to generate Quincy video"}), 500
+
+    except Exception as e:
+        logging.error(f"An error occurred in build_payload_route: {str(e)}", exc_info=True)  # Added exc_info for stack trace
+        return jsonify({"error": str(e)}), 500  # Return the actual error message

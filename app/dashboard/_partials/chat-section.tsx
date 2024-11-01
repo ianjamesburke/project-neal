@@ -8,6 +8,7 @@ import { MoveRight, Paperclip } from "lucide-react";
 import { cn } from "@/lib/utils/cn";
 import { ScrollArea } from "@/components/ui/scroll-area";
 
+
 type Message = {
   id: number;
   text: string;
@@ -17,23 +18,19 @@ type Message = {
 
 interface ChatSectionProps {
   onRenderIdChange: (renderId: string | null) => void;
+  messages: Message[];
+  setMessages: React.Dispatch<React.SetStateAction<Message[]>>;
 }
 
 export const ChatSection: React.FC<ChatSectionProps> = ({
   onRenderIdChange,
+  messages,
+  setMessages,
 }) => {
   const initialMessage =
     "Hey! Welcome to Splice AI. Here’s how it works. I’ll ask you to upload some b-roll footage of the product you’re advertising, and then I’ll ask you a few questions about the product itself. Then, I’ll chop up the footage, generate a script, and edit it into a full blown ad creative. Let’s begin!";
 
   // States
-  const [messages, setMessages] = useState<Message[]>([
-    {
-      id: 1,
-      text: initialMessage,
-      sender: "ai",
-      // suggestions: ["Enter debug mode"],
-    }
-  ]);
   const [input, setInput] = useState("");
   const messagesContainerRef = useRef<HTMLDivElement>(null);
   const [isAIResponding, setIsAIResponding] = useState(false);
@@ -42,6 +39,8 @@ export const ChatSection: React.FC<ChatSectionProps> = ({
   const [askForUploads, setAskForUploads] = useState(true);
   const [filesUploaded, setFilesUploaded] = useState(false);
   const [uploadMessageId, setUploadMessageId] = useState<number | null>(1);
+  const [isGeneratingVideo, setIsGeneratingVideo] = useState(false);
+
 
   async function fetchAIResponse() {
     try {
@@ -132,19 +131,22 @@ export const ChatSection: React.FC<ChatSectionProps> = ({
   }
 
   async function scriptReady() {
-    const formattedMessages = messages.map(msg => ({
-      role: msg.sender === 'ai' ? 'assistant' : 'user',
-      content: msg.text
-    }));
+    if (isGeneratingVideo) return;
+    setIsGeneratingVideo(true);
 
     try {
-      const response = await fetch(`/api/flask/build-payload`, {
+      const response = await fetch(`/api/build-payload`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
           Accept: "application/json",
         },
-        body: JSON.stringify({ chat_log: formattedMessages }),
+        body: JSON.stringify({ 
+          chat_log: messages.map(msg => ({
+            role: msg.sender === 'ai' ? 'assistant' : 'user',
+            content: msg.text
+          }))
+        }),
       });
 
       if (!response.ok) {
@@ -152,17 +154,30 @@ export const ChatSection: React.FC<ChatSectionProps> = ({
       }
 
       const data = await response.json();
-      const render_id = data.render_id;
-      const video_url = data.video_url;
-      console.log("build-payload data:", render_id, video_url);
+      console.log("build-payload data:", data.render_id, data.video_url);
+
+      setMessages(prev => [...prev, {
+        id: prev.length + 1,
+        text: "Your video is being generated! You'll see it appear on the right soon.",
+        sender: "ai"
+      }]);
 
       if (data.render_id) {
         onRenderIdChange(data.render_id);
       }
     } catch (error) {
       console.error("Error generating video:", error);
+      setMessages(prev => [...prev, {
+        id: prev.length + 1,
+        text: "Sorry, there was an error generating your video. Please try again.",
+        sender: "ai"
+      }]);
+    } finally {
+      setIsGeneratingVideo(false);
     }
   }
+
+
 
   const handleFileUpload = () => {
     console.log("Upload button clicked");
@@ -196,6 +211,8 @@ export const ChatSection: React.FC<ChatSectionProps> = ({
     sendMessage(suggestion, true);
   };
 
+
+
   // Effects
   useEffect(() => {
     scrollToBottom();
@@ -218,11 +235,11 @@ export const ChatSection: React.FC<ChatSectionProps> = ({
   }, [isAIResponding, backendError]);
 
   return (
-    <section className=" relative flex h-full w-full flex-col overflow-hidden rounded-2xl border border-dark-700 bg-dark-800 text-sm text-white">
-      <ScrollArea className=" pb-8">
+    <section className="relative flex h-full w-full flex-col overflow-hidden rounded-2xl border border-dark-700 bg-dark-800 text-sm text-white">
+      <ScrollArea className="pb-8">
         <div
           ref={messagesContainerRef}
-          className="flex flex-col px-4  pb-12  pt-8"
+          className="flex flex-col px-4 pb-12 pt-8"
         >
           {messages.map((message, index) => (
             <div
@@ -242,24 +259,13 @@ export const ChatSection: React.FC<ChatSectionProps> = ({
                     message.sender === "user" && "hidden"
                   )}
                 >
-                  {/* {message.sender === "ai" && (
-                    <Image
-                      loading="lazy"
-                      src="https://cdn.builder.io/api/v1/image/assets/TEMP/dd4368c4193fe4718cfa135c8756b207c6c60327fb1b953e7cc4b74b0e20c21b?placeholderIfAbsent=true&apiKey=63d274d5dd09415cb8f5e51781b306a4"
-                      alt="User avatar"
-                      width={32}
-                      height={32}
-                      className=" rounded-full object-contain"
-                    />
-                  )} */}
                   {message.sender === "ai" && (
                     <div className="h-8 w-8 rounded-full bg-gray"></div>
                   )}
                 </div>
-                {/* MESSAGE CONTENT */}
                 <div
                   className={` ${
-                    message.sender === "user" && "rounded-lg  bg-dark-700  p-3"
+                    message.sender === "user" && "rounded-lg bg-dark-700 p-3"
                   }`}
                 >
                   <p className="whitespace-pre-wrap text-base font-normal">
@@ -285,9 +291,30 @@ export const ChatSection: React.FC<ChatSectionProps> = ({
                       <div className="mt-4">
                         <UploadButton
                           endpoint="videoUploader"
-                          onClientUploadComplete={(res) => {
+                          onClientUploadComplete={async (res) => {
                             console.log("Files: ", res);
-                            alert("Upload Completed");
+                            for (const file of res) {
+                              try {
+                                const encodedUrl = encodeURIComponent(file.url);
+                                console.log("Uploading URL to DB: ", encodedUrl);
+                                const response = await fetch('/api/put-footage-url', {
+                                  method: 'POST',
+                                  headers: {
+                                    'Content-Type': 'application/json',
+                                  },
+                                  body: JSON.stringify({ footage_url: encodedUrl }),
+                                });
+
+                                if (!response.ok) {
+                                  throw new Error(`HTTP error! status: ${response.status}`);
+                                }
+
+                                const data = await response.json();
+                                console.log("DB response: ", data);
+                              } catch (error) {
+                                console.error("Error uploading footage URL to DB: ", error);
+                              }
+                            }
                           }}
                           onUploadError={(error: Error) => {
                             alert(`ERROR! ${error.message}`);

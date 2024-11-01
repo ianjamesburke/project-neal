@@ -25,7 +25,6 @@ export default function TestPage() {
         role: msg.sender === 'ai' ? 'assistant' : 'user',
         content: msg.text
       }));
-
       const response = await fetch(`/api/chatbot`, {
         method: "POST",
         headers: {
