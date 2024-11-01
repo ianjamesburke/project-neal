@@ -519,8 +519,3 @@ def build_payload_route(data=None):
     except Exception as e:
         logging.error(f"An error occurred in build_payload_route: {e}")
         return jsonify({"error": "An error occurred while starting the video rendering."}), 500
-    
-
-build_payload_route(data=[
-    {"role": "user", "content": "a short video of someone using a fabric shaver"}
-])
