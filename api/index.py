@@ -469,13 +469,25 @@ def get_render_status_route(render_id):
 @app.route('/api/build-payload', methods=['POST'])
 def build_payload_route(data=None):
     try:
+        # Log incoming data
+        logging.info(f"Received data: {data}")
+        
         if data is None:    
             data = request.json
+        logging.info(f"Processed data: {data}")
 
         try:
             chat_log = data.get('chat_log', [])
-        except:
+            logging.info(f"Chat log: {chat_log}")
+        except Exception as chat_error:
+            logging.error(f"Error processing chat_log: {chat_error}")
             chat_log = data
+
+        # Log Supabase query attempt
+        logging.info("Attempting to query Supabase")
+        response = supabase_client.table('project-neal-footage').select('*').execute()
+        footage_entries = response.data
+        logging.info(f"Footage entries: {footage_entries}")
 
         # get footage from db and simplify
         response = supabase_client.table('project-neal-footage').select('*').execute()
@@ -517,5 +529,5 @@ def build_payload_route(data=None):
             return jsonify({"success": False, "error": "Failed to generate Quincy video"}), 500
 
     except Exception as e:
-        logging.error(f"An error occurred in build_payload_route: {e}")
-        return jsonify({"error": "An error occurred while starting the video rendering."}), 500
+        logging.error(f"An error occurred in build_payload_route: {str(e)}", exc_info=True)  # Added exc_info for stack trace
+        return jsonify({"error": str(e)}), 500  # Return the actual error message
