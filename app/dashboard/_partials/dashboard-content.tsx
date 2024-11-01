@@ -8,6 +8,12 @@ import { ChatSection } from "./chat-section";
 import VideoEditorWindow from "@/app/dashboard/_partials/video-editor-window";
 import { BottomToolbar } from "./bottom-toolbar";
 
+interface Message {
+  id: number;
+  text: string;
+  sender: 'ai' | 'user';
+}
+
 export function DashboardContent() {
   const { mode } = useSidebarStore();
 
