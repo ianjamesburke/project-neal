@@ -483,14 +483,9 @@ def build_payload_route(data=None):
             logging.error(f"Error processing chat_log: {chat_error}")
             chat_log = data
 
-        # Log Supabase query attempt
-        logging.info("Attempting to query Supabase")
-        response = supabase_client.table('project-neal-footage').select('*').execute()
-        footage_entries = response.data
-        logging.info(f"Footage entries: {footage_entries}")
 
-        # get footage from db and simplify
-        response = supabase_client.table('project-neal-footage').select('*').execute()
+        # get footage url and analysis from db of row with 'use' = TRUE
+        response = supabase_client.table('project-neal-footage').select('ut_url, visual_analysis, footage_name').eq('use', True).execute()
         footage_entries = response.data
 
         # create mapping, footage name to encoded urls
