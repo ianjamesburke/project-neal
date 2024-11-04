@@ -394,7 +394,9 @@ def put_footage_url():
     try:
         response = supabase_client.table('project-neal-footage').insert({
             'ut_url': footage_url,
-            'footage_name': name
+            'footage_name': name,
+            'use': True,
+            'type': 'B-Roll'
         }).execute()
         print("url added to db. response: ", response.data)
         return jsonify({"success": True}), 200
