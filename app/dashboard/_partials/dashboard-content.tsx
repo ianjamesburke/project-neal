@@ -23,13 +23,8 @@ export function DashboardContent() {
   const [messages, setMessages] = useState<Message[]>([
     {
       id: 1,
-      text: "Welcome to Parallax! We create video content that converts. Where would you like to start?",
-      sender: "ai",
-      suggestions: [
-        "Transcribe a TikTok",
-        "Open previous project (coming soon)",
-        "Create a new project"
-      ],
+      text: "Welcome to Parallax! We create video content that converts. To begin, please upload your footage.",
+      sender: "ai"
     },
   ]);
 

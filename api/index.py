@@ -310,9 +310,9 @@ def chat(data=None):
 
     if latest_message == "Create a new project":
         # time.sleep(2)
-        return jsonify({"response": "Sure! Let's create a new project. Select an option below to get started.", "script_ready": False, "ask_for_uploads": False, "suggestions": ["Start from scratch", "Upload reference TikTok"]}), 200
+        return jsonify({"response": "Sure! Let's create a new project. Select an option below to get started.", "script_ready": False, "ask_for_uploads": False, "suggestions": ["Start from scratch", "Link to reference TikTok"]}), 200
 
-    if latest_message == "Upload reference TikTok":
+    if latest_message == "Link to reference TikTok":
         # time.sleep(2)
         return jsonify({"response": "Sure! Please provide the link to a single TikTok video.", "script_ready": False, "ask_for_uploads": True}), 200
     
@@ -338,7 +338,7 @@ def chat(data=None):
             except Exception as e:
                 logging.error(f"Error inserting tiktok into DB: {e}")
 
-            return jsonify({"response": "Awesome! I analyzed the video and will use it to generate a script. Now do you have any footage you'd like to upload?", "script_ready": False, "ask_for_uploads": True}), 200
+            return jsonify({"response": "Awesome! I analyzed the video and will use it to generate a script. Now, tell me a bit about your product.", "script_ready": False, "ask_for_uploads": True}), 200
         else:
             return jsonify({"response": "Sorry, something went wrong. Let's continue for now. Tell me what product you're selling?", "script_ready": False, "ask_for_uploads": False}), 200
 

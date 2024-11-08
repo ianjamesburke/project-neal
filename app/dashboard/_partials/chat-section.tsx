@@ -9,6 +9,7 @@ import { cn } from "@/lib/utils/cn";
 import { ScrollArea } from "@/components/ui/scroll-area";
 
 
+
 type Message = {
   id: number;
   text: string;
@@ -28,7 +29,9 @@ export const ChatSection: React.FC<ChatSectionProps> = ({
   setMessages,
 }) => {
   const initialMessage =
-    "Welcome to Splice AI! I can help you create engaging video content. Where would you like to start?";
+    "temp";
+
+
 
   // States
   const [input, setInput] = useState("");
@@ -38,7 +41,7 @@ export const ChatSection: React.FC<ChatSectionProps> = ({
   const [backendError, setBackendError] = useState(false);
   const [askForUploads, setAskForUploads] = useState(false);
   const [filesUploaded, setFilesUploaded] = useState(false);
-  const [uploadMessageId, setUploadMessageId] = useState<number | null>(null);
+  const [uploadMessageId, setUploadMessageId] = useState<number | null>(1);
   const [isGeneratingVideo, setIsGeneratingVideo] = useState(false);
 
   async function fetchAIResponse() {
@@ -83,18 +86,28 @@ export const ChatSection: React.FC<ChatSectionProps> = ({
         suggestions: data.suggestions || [],
       };
 
+      
       setMessages(prevMessages => [...prevMessages, aiResponse]);
-
+      
       setThreadId(newThreadId);
-
+      
       if (data.script_ready) {
         scriptReady();
       }
+      
 
-      if (data.ask_for_uploads && !filesUploaded && uploadMessageId === null) {
+      // Currently broken
+      console.log("About to check ask_for_uploads:", data.ask_for_uploads, filesUploaded, uploadMessageId);
+      if (data.ask_for_uploads && !filesUploaded && uploadMessageId === 0) {
+        console.log("Setting askForUploads to true");
         setAskForUploads(true);
+        console.log("Setting uploadMessageId to", aiResponse.id);
         setUploadMessageId(aiResponse.id);
+        console.log("uploadMessageId is now", uploadMessageId);
+
       }
+
+      
     } catch (error) {
       console.error("Error fetching AI response:", error);
       let errorMessage =
@@ -327,7 +340,27 @@ export const ChatSection: React.FC<ChatSectionProps> = ({
 
                                 const data = await response.json();
                                 console.log("DB response: ", data);
+                                
+                                // Add success message to chat
+                                setMessages(prevMessages => [...prevMessages, {
+                                  id: prevMessages.length + 1,
+                                  text: "Upload successful! Now let's get started. Select an option below to continue.",
+                                  sender: "ai",
+                                  suggestions: [
+                                    "Open previous project (coming soon)",
+                                    "Create a new project"
+                                  ]
+                                }]);
+                                
+                                // Optional: Set filesUploaded to true if you need it
+                                setFilesUploaded(true);
                               } catch (error) {
+                                // Add error message to chat
+                                setMessages(prevMessages => [...prevMessages, {
+                                  id: prevMessages.length + 1,
+                                  text: "Sorry, there was an error uploading your file.",
+                                  sender: "ai"
+                                }]);
                                 console.error("Error uploading footage URL to DB: ", error);
                               }
                             }
