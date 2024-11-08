@@ -318,7 +318,6 @@ def chat(data=None):
     
     # if latest_message is a link
     if latest_message.startswith("https://"):
-        # fetch https://tiktok-transcriber-cloud-run-535483726398.us-west1.run.app/api/transcribe-tiktok
         response = requests.post(
             'https://tiktok-transcriber-cloud-run-535483726398.us-west1.run.app/api/transcribe-tiktok',
             json = {'url': latest_message}
@@ -487,20 +486,20 @@ def build_payload_route(data=None):
 
 
         # get footage url and analysis from db of row with 'use' = TRUE
-        response = supabase_client.table('project-neal-footage').select('ut_url, visual_analysis, footage_name').eq('use', True).execute()
+        response = supabase_client.table('project-neal-footage').select('ut_url, visual_analysis, short_name').eq('use', True).execute()
         footage_entries = response.data
 
         # create mapping, footage name to encoded urls
         footage_mapping = {}
         for entry in footage_entries:
-            footage_mapping[entry['footage_name']] = entry['ut_url']
+            footage_mapping[entry['short_name']] = entry['ut_url']
 
         simplified_analysis = []
         for entry in footage_entries:
             if entry.get('visual_analysis'):
                 for clip in entry['visual_analysis'].get('clips', []):
                     simplified_analysis.append({
-                        'footage_name': entry['footage_name'],
+                        'short_name': entry['short_name'],
                         'description': clip.get('description'),
                         'trim': clip.get('trim')
                     })
@@ -515,7 +514,7 @@ def build_payload_route(data=None):
         }
         # make api request to https://project-quincy-535483726398.us-central1.run.app/generate-quincy-video
         response = requests.post(
-            # 'http://localhost:8000/api/generate-quincy-video',
+            # 'http://localhost:8080/api/generate-quincy-video',
             'https://project-quincy-535483726398.us-central1.run.app/api/generate-quincy-video',
             json=payload
         )
