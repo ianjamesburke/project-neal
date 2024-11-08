@@ -28,7 +28,7 @@ export const ChatSection: React.FC<ChatSectionProps> = ({
   setMessages,
 }) => {
   const initialMessage =
-    "Hey! Welcome to Splice AI. Here’s how it works. I’ll ask you to upload some b-roll footage of the product you’re advertising, and then I’ll ask you a few questions about the product itself. Then, I’ll chop up the footage, generate a script, and edit it into a full blown ad creative. Let’s begin!";
+    "Welcome to Splice AI! I can help you create engaging video content. Where would you like to start?";
 
   // States
   const [input, setInput] = useState("");
@@ -36,11 +36,10 @@ export const ChatSection: React.FC<ChatSectionProps> = ({
   const [isAIResponding, setIsAIResponding] = useState(false);
   const [threadId, setThreadId] = useState<string | null>(null);
   const [backendError, setBackendError] = useState(false);
-  const [askForUploads, setAskForUploads] = useState(true);
+  const [askForUploads, setAskForUploads] = useState(false);
   const [filesUploaded, setFilesUploaded] = useState(false);
-  const [uploadMessageId, setUploadMessageId] = useState<number | null>(1);
+  const [uploadMessageId, setUploadMessageId] = useState<number | null>(null);
   const [isGeneratingVideo, setIsGeneratingVideo] = useState(false);
-
 
   async function fetchAIResponse() {
     try {
@@ -81,7 +80,7 @@ export const ChatSection: React.FC<ChatSectionProps> = ({
         id: messages.length + 1,
         text: data.response,
         sender: "ai",
-        suggestions: [],
+        suggestions: data.suggestions || [],
       };
 
       setMessages(prevMessages => [...prevMessages, aiResponse]);
@@ -234,6 +233,23 @@ export const ChatSection: React.FC<ChatSectionProps> = ({
     }
   }, [isAIResponding, backendError]);
 
+  useEffect(() => {
+    if (messages.length === 0) {
+      setMessages([
+        {
+          id: 1,
+          text: initialMessage,
+          sender: "ai",
+          suggestions: [
+            "Transcribe a TikTok",
+            "Open previous project",
+            "Create a new project"
+          ],
+        },
+      ]);
+    }
+  }, []);
+
   return (
     <section className="relative flex h-full w-full flex-col overflow-hidden rounded-2xl border border-dark-700 bg-dark-800 text-sm text-white">
       <ScrollArea className="pb-8">
@@ -260,7 +276,7 @@ export const ChatSection: React.FC<ChatSectionProps> = ({
                   )}
                 >
                   {message.sender === "ai" && (
-                    <div className="h-8 w-8 rounded-full bg-gray"></div>
+                    <div className="h-8 w-8 rounded-full bg-purple-400"></div>
                   )}
                 </div>
                 <div
@@ -278,7 +294,7 @@ export const ChatSection: React.FC<ChatSectionProps> = ({
                           key={index}
                           variant="outline"
                           size="sm"
-                          className="mr-2 mt-2 border-neutral-600 bg-neutral-700 text-white transition-transform duration-200 ease-in-out hover:scale-105 hover:bg-neutral-600"
+                          className="mr-2 mt-2 border-neutral-600 bg-neutral-700 text-white transition-transform duration-200 ease-in-out hover:scale-105 hover:bg-neutral-600 hover:text-white"
                           onClick={() => handleSuggestionClick(suggestion)}
                         >
                           {suggestion}
