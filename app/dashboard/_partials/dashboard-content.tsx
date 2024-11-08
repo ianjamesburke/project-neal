@@ -12,6 +12,7 @@ interface Message {
   id: number;
   text: string;
   sender: 'ai' | 'user';
+  suggestions?: string[];
 }
 
 export function DashboardContent() {
@@ -22,8 +23,8 @@ export function DashboardContent() {
   const [messages, setMessages] = useState<Message[]>([
     {
       id: 1,
-      text: "Hey! Welcome to Splice AI. Here’s how it works. I’ll ask you to upload some b-roll footage of the product you’re advertising, and then I’ll ask you a few questions about the product itself. Then, I’ll chop up the footage, generate a script, and edit it into a full blown ad creative. Let’s begin!",
-      sender: "ai",
+      text: "Welcome to Parallax! We create video content that converts. To begin, please upload your footage.",
+      sender: "ai"
     },
   ]);
 

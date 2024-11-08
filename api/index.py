@@ -9,10 +9,19 @@ import json
 import requests
 import string
 import random
+import time
+
 
 ### INITIALIZE APP ###
+# Add logging configuration
+logging.basicConfig(
+    level=logging.INFO,
+    format='%(asctime)s - %(levelname)s - %(message)s'
+)
+
 app = Flask(__name__)
-app.debug = True
+app.config['DEBUG'] = True
+
 
 FLASK_ENV = os.getenv('FLASK_ENV')
 
@@ -20,6 +29,7 @@ if os.getenv('FLASK_ENV') == 'development':
     print("FLASK_ENV IS DEVELOPMENT")
     from dotenv import load_dotenv
     load_dotenv("../.env")
+
 
 
 ### SUPABASE ###
@@ -32,66 +42,12 @@ print("Supabase client created")
 
 
 
-
 try:
     api_key = os.environ.get('OPENAI_API_KEY')
     client = OpenAI(api_key=api_key)
 except Exception as e:
     raise Exception(f"Error: {e}")
 
-### FUNCTIONS ###
-def message_assistant(chat_log, thread_id=None):
-    """
-    Function to interact with the assistant.
-    """
-    if thread_id is None:
-        thread = client.beta.threads.create()
-        thread_id = thread.id
-
-    
-
-    # TEMP
-    # chat_log = [
-    #     {"role": "user", "content": "a short video of someone using a fabric shaver"}
-    # ]
-
-    # Add new messages to the existing thread
-    for message in chat_log:
-        client.beta.threads.messages.create(
-            thread_id=thread_id,
-            role=message["role"],
-            content=message["content"]
-        )
-
-    run = client.beta.threads.runs.create_and_poll(
-        thread_id=thread_id,
-        assistant_id=os.getenv('CHAT_ASSISTANT_ID')
-    )
-
-    if run.status == 'completed':
-        res = client.beta.threads.messages.list(thread_id=thread_id)
-        response = json.loads(res.data[0].content[0].text.value)
-        if not response:
-            response = "no ai response"
-
-        chat_log.append({"role": "assistant", "content": response['response']})
-
-        ai_response = response['response']
-
-        try:
-            script_ready = response['script_ready']
-        except:
-            script_ready = False
-
-        try:
-            ask_for_uploads = response['ask_for_uploads']
-        except:
-            ask_for_uploads = False
-
-        return ai_response, script_ready, ask_for_uploads, thread_id
-    else:
-        print(run.status)
-        return f"openai assistant failed: {run.status}", None, None, thread_id
 
 def simplify_conversation(chat_log):
     simplified = []
@@ -347,6 +303,47 @@ def chat(data=None):
     if data is None:    
         data = request.json
     chat_log = data.get('chat_log', [])
+
+
+    # check for "suggestions"
+    latest_message = chat_log[-1].get('content', '')
+
+    if latest_message == "Create a new project":
+        # time.sleep(2)
+        return jsonify({"response": "Sure! Let's create a new project. Select an option below to get started.", "script_ready": False, "ask_for_uploads": False, "suggestions": ["Start from scratch", "Link to reference TikTok"]}), 200
+
+    if latest_message == "Link to reference TikTok":
+        # time.sleep(2)
+        return jsonify({"response": "Sure! Please provide the link to a single TikTok video.", "script_ready": False, "ask_for_uploads": True}), 200
+    
+    # if latest_message is a link
+    if latest_message.startswith("https://"):
+        response = requests.post(
+            'https://tiktok-transcriber-cloud-run-535483726398.us-west1.run.app/api/transcribe-tiktok',
+            json = {'url': latest_message}
+        )
+
+        if response.status_code == 200:
+            data = response.json()
+            transcript = data.get('transcription', '')
+            logging.info(f"transcript: {transcript}")
+
+            # toss in DB
+            try:
+                supabase_client.table('tiktoks').insert({
+                    'transcript': transcript,
+                    'url': latest_message
+                }).execute()
+            except Exception as e:
+                logging.error(f"Error inserting tiktok into DB: {e}")
+
+            return jsonify({"response": "Awesome! I analyzed the video and will use it to generate a script. Now, tell me a bit about your product.", "script_ready": False, "ask_for_uploads": True}), 200
+        else:
+            return jsonify({"response": "Sorry, something went wrong. Let's continue for now. Tell me what product you're selling?", "script_ready": False, "ask_for_uploads": False}), 200
+
+
+
+
     client = OpenAI(api_key=os.getenv('OPENAI_API_KEY'))
 
     with open('prompts/chat_bot_prompt.txt', 'r') as file:
@@ -375,6 +372,8 @@ def chat(data=None):
     )
 
     data = completion.choices[0].message.parsed
+
+
 
     return jsonify({"response": data.response, "script_ready": data.script_ready, "ask_for_uploads": data.ask_for_uploads}), 200
 
@@ -487,20 +486,20 @@ def build_payload_route(data=None):
 
 
         # get footage url and analysis from db of row with 'use' = TRUE
-        response = supabase_client.table('project-neal-footage').select('ut_url, visual_analysis, footage_name').eq('use', True).execute()
+        response = supabase_client.table('project-neal-footage').select('ut_url, visual_analysis, short_name').eq('use', True).execute()
         footage_entries = response.data
 
         # create mapping, footage name to encoded urls
         footage_mapping = {}
         for entry in footage_entries:
-            footage_mapping[entry['footage_name']] = entry['ut_url']
+            footage_mapping[entry['short_name']] = entry['ut_url']
 
         simplified_analysis = []
         for entry in footage_entries:
             if entry.get('visual_analysis'):
                 for clip in entry['visual_analysis'].get('clips', []):
                     simplified_analysis.append({
-                        'footage_name': entry['footage_name'],
+                        'short_name': entry['short_name'],
                         'description': clip.get('description'),
                         'trim': clip.get('trim')
                     })
@@ -515,7 +514,7 @@ def build_payload_route(data=None):
         }
         # make api request to https://project-quincy-535483726398.us-central1.run.app/generate-quincy-video
         response = requests.post(
-            # 'http://localhost:8000/api/generate-quincy-video',
+            # 'http://localhost:8080/api/generate-quincy-video',
             'https://project-quincy-535483726398.us-central1.run.app/api/generate-quincy-video',
             json=payload
         )
@@ -528,3 +527,4 @@ def build_payload_route(data=None):
     except Exception as e:
         logging.error(f"An error occurred in build_payload_route: {str(e)}", exc_info=True)  # Added exc_info for stack trace
         return jsonify({"error": str(e)}), 500  # Return the actual error message
+    

@@ -68,19 +68,19 @@ export const ClipToolbar = ({
           </Button>
         </div>
 
-        <div className="flex items-center gap-2">
+        {/* <div className="flex items-center gap-2">
           <span>00:22</span>
           <span className="text-gray-dark"> / 01:19</span>
-        </div>
+        </div> */}
 
-        <div className="flex items-center gap-1">
+        {/* <div className="flex items-center gap-1">
           <Button variant="toolbar" disabled>
             <Undo2 />
           </Button>
           <Button variant="toolbar" disabled>
             <Redo2 />
           </Button>
-        </div>
+        </div> */}
       </div>
 
       {/* Right section */}

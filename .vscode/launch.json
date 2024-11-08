@@ -1,0 +1,20 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Flask",
+            "type": "debugpy",
+            "request": "launch",
+            "module": "flask",
+            "env": {
+                "FLASK_APP": "api/index.py",
+                "FLASK_DEBUG": "1"
+            },
+            "args": [
+                "run",
+                "--port=5000"
+            ],
+            "jinja": true
+        }
+    ]
+}

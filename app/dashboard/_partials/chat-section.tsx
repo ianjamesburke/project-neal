@@ -9,6 +9,7 @@ import { cn } from "@/lib/utils/cn";
 import { ScrollArea } from "@/components/ui/scroll-area";
 
 
+
 type Message = {
   id: number;
   text: string;
@@ -28,7 +29,9 @@ export const ChatSection: React.FC<ChatSectionProps> = ({
   setMessages,
 }) => {
   const initialMessage =
-    "Hey! Welcome to Splice AI. Here’s how it works. I’ll ask you to upload some b-roll footage of the product you’re advertising, and then I’ll ask you a few questions about the product itself. Then, I’ll chop up the footage, generate a script, and edit it into a full blown ad creative. Let’s begin!";
+    "temp";
+
+
 
   // States
   const [input, setInput] = useState("");
@@ -36,11 +39,10 @@ export const ChatSection: React.FC<ChatSectionProps> = ({
   const [isAIResponding, setIsAIResponding] = useState(false);
   const [threadId, setThreadId] = useState<string | null>(null);
   const [backendError, setBackendError] = useState(false);
-  const [askForUploads, setAskForUploads] = useState(true);
+  const [askForUploads, setAskForUploads] = useState(false);
   const [filesUploaded, setFilesUploaded] = useState(false);
   const [uploadMessageId, setUploadMessageId] = useState<number | null>(1);
   const [isGeneratingVideo, setIsGeneratingVideo] = useState(false);
-
 
   async function fetchAIResponse() {
     try {
@@ -81,21 +83,31 @@ export const ChatSection: React.FC<ChatSectionProps> = ({
         id: messages.length + 1,
         text: data.response,
         sender: "ai",
-        suggestions: [],
+        suggestions: data.suggestions || [],
       };
 
+      
       setMessages(prevMessages => [...prevMessages, aiResponse]);
-
+      
       setThreadId(newThreadId);
-
+      
       if (data.script_ready) {
         scriptReady();
       }
+      
 
-      if (data.ask_for_uploads && !filesUploaded && uploadMessageId === null) {
+      // Currently broken
+      console.log("About to check ask_for_uploads:", data.ask_for_uploads, filesUploaded, uploadMessageId);
+      if (data.ask_for_uploads && !filesUploaded && uploadMessageId === 0) {
+        console.log("Setting askForUploads to true");
         setAskForUploads(true);
+        console.log("Setting uploadMessageId to", aiResponse.id);
         setUploadMessageId(aiResponse.id);
+        console.log("uploadMessageId is now", uploadMessageId);
+
       }
+
+      
     } catch (error) {
       console.error("Error fetching AI response:", error);
       let errorMessage =
@@ -234,6 +246,23 @@ export const ChatSection: React.FC<ChatSectionProps> = ({
     }
   }, [isAIResponding, backendError]);
 
+  useEffect(() => {
+    if (messages.length === 0) {
+      setMessages([
+        {
+          id: 1,
+          text: initialMessage,
+          sender: "ai",
+          suggestions: [
+            "Transcribe a TikTok",
+            "Open previous project",
+            "Create a new project"
+          ],
+        },
+      ]);
+    }
+  }, []);
+
   return (
     <section className="relative flex h-full w-full flex-col overflow-hidden rounded-2xl border border-dark-700 bg-dark-800 text-sm text-white">
       <ScrollArea className="pb-8">
@@ -260,7 +289,7 @@ export const ChatSection: React.FC<ChatSectionProps> = ({
                   )}
                 >
                   {message.sender === "ai" && (
-                    <div className="h-8 w-8 rounded-full bg-gray"></div>
+                    <div className="h-8 w-8 rounded-full bg-purple-400"></div>
                   )}
                 </div>
                 <div
@@ -278,7 +307,7 @@ export const ChatSection: React.FC<ChatSectionProps> = ({
                           key={index}
                           variant="outline"
                           size="sm"
-                          className="mr-2 mt-2 border-neutral-600 bg-neutral-700 text-white transition-transform duration-200 ease-in-out hover:scale-105 hover:bg-neutral-600"
+                          className="mr-2 mt-2 border-neutral-600 bg-neutral-700 text-white transition-transform duration-200 ease-in-out hover:scale-105 hover:bg-neutral-600 hover:text-white"
                           onClick={() => handleSuggestionClick(suggestion)}
                         >
                           {suggestion}
@@ -311,7 +340,27 @@ export const ChatSection: React.FC<ChatSectionProps> = ({
 
                                 const data = await response.json();
                                 console.log("DB response: ", data);
+                                
+                                // Add success message to chat
+                                setMessages(prevMessages => [...prevMessages, {
+                                  id: prevMessages.length + 1,
+                                  text: "Upload successful! Now let's get started. Select an option below to continue.",
+                                  sender: "ai",
+                                  suggestions: [
+                                    "Open previous project (coming soon)",
+                                    "Create a new project"
+                                  ]
+                                }]);
+                                
+                                // Optional: Set filesUploaded to true if you need it
+                                setFilesUploaded(true);
                               } catch (error) {
+                                // Add error message to chat
+                                setMessages(prevMessages => [...prevMessages, {
+                                  id: prevMessages.length + 1,
+                                  text: "Sorry, there was an error uploading your file.",
+                                  sender: "ai"
+                                }]);
                                 console.error("Error uploading footage URL to DB: ", error);
                               }
                             }
